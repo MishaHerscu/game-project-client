@@ -1,6 +1,8 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
+$board-hover-color: '#add8E6';
+
 body {
   line-height: 1.5;
   padding-left: 10%;
@@ -25,7 +27,7 @@ form {
   margin: 10px;
 
   &:hover {
-    opacity: .5;
+    opacity: .8;
   }
 }
 
@@ -45,4 +47,14 @@ form {
 .game-table {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.cell {
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+
+  &:hover {
+    background-color: $board-hover-color;
+  }
 }
