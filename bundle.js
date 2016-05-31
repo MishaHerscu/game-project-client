@@ -727,13 +727,13 @@ webpackJsonp([0],[
 	  var bottomLeft = $('#cell-20').text();
 	  var bottomRight = $('#cell-22').text();
 
-	  if (topLeft !== '') {
+	  if (topLeft === 'X' || topLeft === 'O') {
 	    if (topLeft === center === bottomRight) {
 	      return true;
 	    }
 	  }
 
-	  if (topRight !== '') {
+	  if (topRight === 'X' || topRight === 'O') {
 	    if (topRight === center === bottomLeft) {
 	      return true;
 	    }

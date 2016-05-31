@@ -74,8 +74,10 @@ const newGame = function(data){
 
   gameLogic.gameOver = gameLogic.newGame.over;
   gameLogic.activeGame = true;
-  gameLogic.currentPlayer = gameLogic.newGame.player_x;
-  gameLogic.otherPlayer = gameLogic.newGame.player_o;
+  // gameLogic.currentPlayer = gameLogic.newGame.player_x;
+  // gameLogic.otherPlayer = gameLogic.newGame.player_o;
+  gameLogic.currentPlayer = gameLogic.players[0];
+  gameLogic.otherPlayer = gameLogic.players[1];
   gameLogic.currentSymbol = gameLogic.symbols[gameLogic.currentPlayer];
   gameLogic.otherSymbol = gameLogic.symbols[gameLogic.otherPlayer];
 
