@@ -459,7 +459,7 @@ webpackJsonp([0],[
 	var activeGame = false;
 	var gameOver = false;
 	var gameSize = 3;
-	var maxTurnCount = gameSize ^ 2 - 1;
+	var maxTurnCount = Math.pow(gameSize, 2);
 	var turnCount = 0;
 	var winner = null;
 	var winnerString = '';

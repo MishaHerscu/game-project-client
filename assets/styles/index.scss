@@ -22,6 +22,10 @@ div {
 
 form {
   margin: 10px;
+
+  &:hover {
+    opacity: .5;
+  }
 }
 
 .game-mgmt-button {
