@@ -6,6 +6,8 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
 @import 'theme';
 
+// MUST BE LAST
+@import 'breakpoints';
 
 body {
   background-color: $paper-white;
