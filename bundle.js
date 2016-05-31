@@ -606,6 +606,7 @@ webpackJsonp([0],[
 	  app.user = null;
 	  console.log('app: ', app);
 	  $('.not-signed-in').show();
+	  $('.hideable').hide();
 	};
 
 	var showBoard = function showBoard() {
