@@ -8,8 +8,6 @@ $plain-white: #fff;
 $plain-black: #000;
 $board-hover-blue: #7db8ff;
 
-$darker-grey: darken($plain-grey, 25%);
-
 @function tint($color, $percentage) {
   @return mix($plain-white, $color, $percentage);
 }

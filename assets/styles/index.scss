@@ -10,8 +10,6 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 body {
   background-color: $paper-white;
   line-height: 1.5;
-  padding-left: 10%;
-  padding-right: 10%;
 }
 
 td,
@@ -24,12 +22,12 @@ th {
 
 div {
   clear: left;
-  margin-left: 20%;
-  width: 60%;
+  margin-left: 5%;
+  width: 90%;
 }
 
 form {
-  margin: 10px;
+  margin: 5px;
 
   &:hover {
     opacity: .8;
