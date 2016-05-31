@@ -26,6 +26,7 @@ const signOutSuccess = function(){
   app.user = null;
   console.log('app: ', app);
   $('.not-signed-in').show();
+  $('.table-section').hide();
   $('.hideable').hide();
 };
 

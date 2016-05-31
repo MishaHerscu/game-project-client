@@ -39,9 +39,8 @@ const onSignOut = function(event){
 
   api.signOut()
   .done(ui.success)
-  .then(ui.hideBoard)
+  .then(ui.signOutSuccess)
   .fail(ui.failure);
-
 };
 
 const onChangePassword = function(event){
