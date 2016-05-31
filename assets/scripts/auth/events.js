@@ -161,10 +161,7 @@ const onSetCellValue = function(){
 
         console.log("current: ",currentPlayer,currentSymbol);
 
-
         $('#player-turn').text(currentPlayer + "'s Turn!");
-
-        return true;
 
       } else{
         if(gameLogic.turnCount < gameLogic.maxTurnCount){
@@ -199,6 +196,7 @@ const onSetCellValue = function(){
   api.updateGame();
   console.log('updated game object: ', gameLogic.newGame);
 
+  return true;
 };
 
 const addHandlers = () => {
