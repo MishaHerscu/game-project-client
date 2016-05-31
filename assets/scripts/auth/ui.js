@@ -18,13 +18,15 @@ const failure = (error) => {
 
 const signInSuccess = function(data){
   app.user = data.user;
-
+  $('.not-signed-in').hide();
   console.log('app: ', app);
 };
 
 const signOutSuccess = function(){
   app.user = null;
   console.log('app: ', app);
+  $('.not-signed-in').show();
+
 };
 
 const showBoard = function(){
@@ -84,6 +86,7 @@ const newGame = function(data){
 
   $('.table-section').show();
   $('.hideable').show();
+  $('.not-signed-in').hide();
 
 };
 

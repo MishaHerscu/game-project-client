@@ -33,7 +33,7 @@ const checkDiags = function(){
   let center = $('#cell-11').text();
   let bottomLeft = $('#cell-20').text();
   let bottomRight = $('#cell-22').text();
-
+gru
   if(topLeft !== ''){
     if(topLeft === center === bottomRight){
       return true;
