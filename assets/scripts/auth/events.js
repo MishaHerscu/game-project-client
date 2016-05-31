@@ -117,6 +117,9 @@ const onSetCellValue = function(){
       // set the new value using the currentSymbol
       $(this).text(currentSymbol);
 
+      // count turn number
+      gameLogic.turnCount += 1;
+
       // set the new value in the model
       gameLogic.boardDict[clickedCell] = currentSymbol;
       let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
@@ -149,8 +152,15 @@ const onSetCellValue = function(){
         return true;
 
       } else{
+        if(gameLogic.turnCount < gameLogic.maxTurnCount){
+          gameLogic.winner = currentPlayer;
+          gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+        } else {
+          gameLogic.winner = 'Tie';
+          gameLogic.winnerString = "Game over! It's a tie!";
+        }
         console.log('The game is over! Start a new game!');
-        $('#player-turn').text('Game over! ' + currentPlayer + ' Wins!');
+        $('#player-turn').text(gameLogic.winnerString);
         $('.table-section').hide();
         $('.game-over-section').show();
       }

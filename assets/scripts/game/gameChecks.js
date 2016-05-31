@@ -60,7 +60,8 @@ const checkGame = function(){
     checkSame($(".col-1")) === true ||
     checkSame($(".row-2")) === true ||
     checkSame($(".col-2")) === true ||
-    checkDiags() === true
+    checkDiags() === true ||
+    gameLogic.turnCount === gameLogic.maxTurnCount
   ){
     gameOver = true;
   }

@@ -21,6 +21,10 @@ let otherSymbol = symbols[otherPlayer];
 let activeGame = false;
 let gameOver = false;
 let gameSize = 3;
+let maxTurnCount = gameSize^2 - 1;
+let turnCount = 0;
+let winner = null;
+let winnerString = '';
 
 let newGame = {
   id: null,
@@ -126,4 +130,8 @@ module.exports = {
   updateGameInfo,
   boardTrans,
   gameStatus,
+  maxTurnCount,
+  turnCount,
+  winner,
+  winnerString,
 };

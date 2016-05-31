@@ -64,6 +64,9 @@ const newGame = function(data){
 
   // data about new game
   let gameData = data.game;
+  gameLogic.turnCount = 0;
+  gameLogic.winner = null;
+  gameLogic.winnerString = '';
 
   $('.table-section').hide();
   $('.hideable').hide();
