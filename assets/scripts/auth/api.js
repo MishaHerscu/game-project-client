@@ -80,20 +80,36 @@ const showOverGames = function(){
   });
 };
 
-const joinGame = function(){
+const showGameInfo = function(){
   return $.ajax({
     url: app.host + '/games/' + gameLogic.newGame.id,
-    method: 'PATCH',
+    method: 'GET',
     headers: {
       Authorization: 'Token token='+ app.user.token,
     },
-    data: '{}',
   });
 };
 
-const updateGame = function(data){
+// EXAMPLE PATCH
+// const update = function(form){
+//   let data = getFormFields(form);
+//   let id = data.book.id;
+//
+//   return $.ajax({
+//     url: app.host + '/books/' + id,
+//     method: 'PATCH',
+//     data: data,
+//   });
+// };
+
+const joinGame = function(){
+  let data = gameLogic.newGame;
+  let id = gameLogic.newGame.id;
+
+  console.log("data, id: ", data, id);
+
   return $.ajax({
-    url: app.host + '/games/' + gameLogic.newGame.id,
+    url: app.host + '/games/' + id,
     method: 'PATCH',
     headers: {
       Authorization: 'Token token='+ app.user.token,
@@ -102,13 +118,19 @@ const updateGame = function(data){
   });
 };
 
-const showGameInfo = function(){
+const updateGame = function(){
+  let data = gameLogic.newGame;
+  let id = gameLogic.newGame.id;
+
+  console.log("data, id: ", data, id);
+
   return $.ajax({
-    url: app.host + '/games/' + gameLogic.newGame.id,
-    method: 'GET',
+    url: app.host + '/games/' + id,
+    method: 'PATCH',
     headers: {
       Authorization: 'Token token='+ app.user.token,
     },
+    data: data,
   });
 };
 

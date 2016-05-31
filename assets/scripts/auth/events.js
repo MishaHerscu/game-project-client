@@ -131,21 +131,10 @@ const onSetCellValue = function(){
       gameLogic.boardDict[clickedCell] = currentSymbol;
       let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
       gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
+
       gameLogic.updateGameInfo();
 
-      gameLogic.gameStatus = [
-        '{',
-        '"game": {',
-          '"cell": {',
-            '"index":' + modelGameIndex,
-            '"value":' + currentSymbol,
-          '},',
-          '"over": ' + gameLogic.gameOver,
-        '}',
-      '}'
-      ].join('');
-
-      api.updateGame(gameLogic.gameStatus);
+      api.updateGame();
 
       console.log('current game: ', gameLogic.newGame);
 
