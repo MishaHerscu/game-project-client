@@ -28,11 +28,11 @@ const checkSame = function(dict){
 const checkDiags = function(){
 
   // define vars
-  let topLeft = $('#cell-00').text();
-  let topRight = $('#cell-02').text();
-  let center = $('#cell-11').text();
-  let bottomLeft = $('#cell-20').text();
-  let bottomRight = $('#cell-22').text();
+  let topLeft = gameLogic.newGame.cells[0];
+  let topRight = gameLogic.newGame.cells[2];
+  let center = gameLogic.newGame.cells[4];
+  let bottomLeft = gameLogic.newGame.cells[6];
+  let bottomRight = gameLogic.newGame.cells[8];
 
   if(topLeft === 'X' || topLeft === 'O'){
     if(topLeft === center === bottomRight){
