@@ -34,13 +34,13 @@ const checkDiags = function(){
   let bottomLeft = $('#cell-20').text();
   let bottomRight = $('#cell-22').text();
 
-  if(topLeft !== ''){
+  if(topLeft === 'X' || topLeft === 'O'){
     if(topLeft === center === bottomRight){
       return true;
     }
   }
 
-  if(topRight !== ''){
+  if(topRight === 'X' || topRight === 'O'){
     if(topRight === center === bottomLeft){
       return true;
     }
