@@ -104,6 +104,16 @@ const onShowGameInfo = function(){
   .fail(ui.failure);
 };
 
+const onShowAnyGameInfo = function(event){
+  event.preventDefault();
+  let data = $('#any-game-id').val();
+
+  console.log('data event target: ', data);
+  api.show(data)
+  .done(ui.successShowGameInfo)
+  .fail(ui.failure);
+};
+
 const onSetCellValue = function(){
 
   // you can only go if there is an active, non-over game
@@ -132,11 +142,8 @@ const onSetCellValue = function(){
       let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
       gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
 
+      // update model
       gameLogic.updateGameInfo();
-
-      api.updateGame();
-
-      console.log('current game: ', gameLogic.newGame);
 
       // check if the game is over
       gameLogic.gameOver = gameChecks.checkGame();
@@ -163,9 +170,11 @@ const onSetCellValue = function(){
         if(gameLogic.turnCount < gameLogic.maxTurnCount){
           gameLogic.winner = currentPlayer;
           gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+          gameLogic.newGame.over = true;
         } else {
           gameLogic.winner = 'Tie';
           gameLogic.winnerString = "Game over! It's a tie!";
+          gameLogic.newGame.over = true;
         }
         console.log('The game is over! Start a new game!');
         $('#player-turn').text(gameLogic.winnerString);
@@ -187,6 +196,9 @@ const onSetCellValue = function(){
     console.log('There is a weird error with gameOver');
   }
 
+  api.updateGame();
+  console.log('updated game object: ', gameLogic.newGame);
+
 };
 
 const addHandlers = () => {
@@ -202,7 +214,8 @@ const addHandlers = () => {
   $('#get-games').on('submit', onGetGames);
   $('#get-done-games').on('submit', onGetDoneGames);
   $('#join-game').on('submit', onJoinGame);
-  $('#show-game-info').on('submit', onShowGameInfo);
+  $('#show-this-game-info').on('submit', onShowGameInfo);
+  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
 
   //
   // table cells

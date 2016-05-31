@@ -47,32 +47,10 @@ const changePassword = function(data){
   });
 };
 
-// create new game
-const newGame = function(){
+// show game status
+const show = function(id){
   return $.ajax({
-    url: app.host + '/games',
-    method: 'POST',
-    headers: {
-      Authorization: 'Token token='+ app.user.token,
-    },
-  });
-};
-
-// show all user games
-const showGames = function(){
-  return $.ajax({
-    url: app.host + '/games',
-    method: 'GET',
-    headers: {
-      Authorization: 'Token token='+ app.user.token,
-    },
-  });
-};
-
-// show all over user games
-const showOverGames = function(){
-  return $.ajax({
-    url: app.host + '/games?over=true',
+    url: app.host + '/games/' + id,
     method: 'GET',
     headers: {
       Authorization: 'Token token='+ app.user.token,
@@ -90,17 +68,38 @@ const showGameInfo = function(){
   });
 };
 
-// EXAMPLE PATCH
-// const update = function(form){
-//   let data = getFormFields(form);
-//   let id = data.book.id;
-//
-//   return $.ajax({
-//     url: app.host + '/books/' + id,
-//     method: 'PATCH',
-//     data: data,
-//   });
-// };
+// show all user games
+const showGames = function(){
+  return $.ajax({
+    url: app.host + '/games',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token='+ app.user.token,
+    },
+  });
+};
+
+// create new game
+const newGame = function(){
+  return $.ajax({
+    url: app.host + '/games',
+    method: 'POST',
+    headers: {
+      Authorization: 'Token token='+ app.user.token,
+    },
+  });
+};
+
+// show all over user games
+const showOverGames = function(){
+  return $.ajax({
+    url: app.host + '/games?over=true',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token='+ app.user.token,
+    },
+  });
+};
 
 const joinGame = function(){
   let data = gameLogic.newGame;
@@ -145,4 +144,5 @@ module.exports = {
   joinGame,
   updateGame,
   showGameInfo,
+  show,
 };

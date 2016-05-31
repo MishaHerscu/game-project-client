@@ -4,7 +4,7 @@ const app = require('../app.js');
 const gameLogic = require('../game/gameLogic.js');
 const games = require('../game/games.js');
 
-const success = (data) => {
+const success = function(data){
   if(data){
     console.log(data);
   }else{
@@ -12,7 +12,7 @@ const success = (data) => {
   }
 };
 
-const failure = (error) => {
+const failure = function(error){
   console.error(error);
 };
 
@@ -61,12 +61,23 @@ const updateFinishedGames = function(data){
     }
   };
 
-const successShowGameInfo = function(){
-  $("#game-id-data").text(gameLogic.newGame.id);
-  $("#game-cells-data").text(gameLogic.newGame.cells);
-  $("#game-over-data").text(gameLogic.newGame.over);
-  $("#player-x-data").text(gameLogic.players[0]);
-  $("#player-o-data").text(gameLogic.players[1]);
+const successShowGameInfo = function(data){
+  let gameObject = data.game;
+  console.log(gameObject);
+  $("#game-id-data").text(gameObject.id);
+  $("#game-cells-data").text(gameObject.cells);
+  $("#game-over-data").text(gameObject.over);
+
+  if(gameObject.player_x === null){
+    $("#player-x-data").text("N/A");
+  }else{
+    $("#player-x-data").text(gameObject.player_x.email);
+  }
+  if(gameObject.player_o === null){
+    $("#player-o-data").text("N/A");
+  }else{
+    $("#player-o-data").text(gameObject.player_o.email);
+  }
 };
 
 const newGame = function(data){
