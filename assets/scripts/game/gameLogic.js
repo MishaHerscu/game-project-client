@@ -58,7 +58,7 @@ let boardTrans = [
   'cell-22'
 ];
 
-// json for game update
+// json for game update - this is the initial one
 let gameStatus = [
   '{',
   '"game": {',

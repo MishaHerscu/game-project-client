@@ -60,6 +60,14 @@ const updateFinishedGames = function(data){
     }
   };
 
+const successShowGameInfo = function(){
+  $("#game-id-data").text(gameLogic.newGame.id);
+  $("#game-cells-data").text(gameLogic.newGame.cells);
+  $("#game-over-data").text(gameLogic.newGame.over);
+  $("#player-x-data").text(gameLogic.players[0]);
+  $("#player-o-data").text(gameLogic.players[1]);
+};
+
 const newGame = function(data){
 
   // data about new game
@@ -104,5 +112,6 @@ module.exports = {
   hideBoard,
   updateGames,
   updateFinishedGames,
+  successShowGameInfo,
   newGame,
 };

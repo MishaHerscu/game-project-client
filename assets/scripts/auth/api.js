@@ -102,6 +102,16 @@ const updateGame = function(data){
   });
 };
 
+const showGameInfo = function(){
+  return $.ajax({
+    url: app.host + '/games/' + gameLogic.newGame.id,
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token='+ app.user.token,
+    },
+  });
+};
+
 module.exports = {
   signUp,
   signIn,
@@ -112,4 +122,5 @@ module.exports = {
   showOverGames,
   joinGame,
   updateGame,
+  showGameInfo,
 };
