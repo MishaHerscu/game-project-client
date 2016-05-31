@@ -1,0 +1,19 @@
+
+// Just house the color variables in this file
+
+$paper-white: #fefefe;
+$carbon: #4e4e4e;
+$plain-grey: #e5e5e5;
+$plain-white: #fff;
+$plain-black: #000;
+$board-hover-blue: #7db8ff;
+
+$darker-grey: darken($plain-grey, 25%);
+
+@function tint($color, $percentage) {
+  @return mix($plain-white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+  @return mix($plain-black, $color, $percentage);
+}

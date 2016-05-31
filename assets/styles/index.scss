@@ -1,8 +1,11 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
-$paper-white: #fefefe;
-$board-hover-blue: #7db8ff;
+@import 'colors';
+@import 'typography';
+
+@import 'theme';
+
 
 body {
   background-color: $paper-white;

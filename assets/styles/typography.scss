@@ -1,0 +1,24 @@
+// typography file
+
+$san-serif-family: tahoma, arial, san-serif;
+$line-height: 1.6;
+$font-size: 18px;
+$max-width: 650px;
+$vertical-margin: 40px;
+$horizontal-padding: 10px;
+$header-line-height: 1.2;
+
+body {
+  font-family: $san-serif-family;
+  font-size: $font-size;
+  line-height: $line-height;
+  margin: $vertical-margin auto;
+  max-width: $max-width;
+}
+
+h1,
+h2,
+h3 {
+  font-size: 1.5em;
+  line-height: $header-line-height;
+}
