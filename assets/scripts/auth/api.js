@@ -37,6 +37,9 @@ const signOut = function(){
 
 // change password
 const changePassword = function(data){
+
+  console.log('change pw data: ', data);
+
   return $.ajax({
     url: app.host + '/change-password/' + app.user.id,
     method: 'PATCH',
@@ -133,6 +136,20 @@ const updateGame = function(){
   });
 };
 
+const watchGame = function(){
+  let id = gameLogic.newGame.id;
+
+  console.log("watched id: ", id);
+
+  return $.ajax({
+    url: app.host + '/games/' + id + '/watch',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token='+ app.user.token,
+    },
+  });
+};
+
 module.exports = {
   signUp,
   signIn,
@@ -145,4 +162,5 @@ module.exports = {
   updateGame,
   showGameInfo,
   show,
+  watchGame,
 };
