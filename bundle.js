@@ -249,6 +249,7 @@ webpackJsonp([0],[
 	  //
 	  //buttons
 	  //
+
 	  $('#sign-up').on('submit', onSignUp);
 	  $('#sign-in').on('submit', onSignIn);
 	  $('#sign-out').on('submit', onSignOut);
@@ -448,13 +449,11 @@ webpackJsonp([0],[
 	  });
 	};
 
-	var joinGame = function joinGame() {
-	  var id = gameLogic.newGame.id;
-
-	  console.log("joined game id: ", id);
-
+	// join game
+	var joinGame = function joinGame(data) {
+	  console.log("data, should be game id: ", data);
 	  return $.ajax({
-	    url: app.host + '/games/' + id,
+	    url: app.host + '/games/' + data,
 	    method: 'PATCH',
 	    headers: {
 	      Authorization: 'Token token=' + app.user.token
@@ -462,6 +461,7 @@ webpackJsonp([0],[
 	  });
 	};
 
+	// update game on the back end with each move
 	var updateGame = function updateGame(data) {
 	  var id = gameLogic.newGame.id;
 
@@ -477,6 +477,7 @@ webpackJsonp([0],[
 	  });
 	};
 
+	// watch a game (streaming, requires wrapper)
 	var watchGame = function watchGame() {
 	  var id = gameLogic.newGame.id;
 
