@@ -21,6 +21,7 @@ const checkSame = function(dict){
       }
     }
   }
+  gameLogic.winner = gameLogic.currentPlayer;
   return true;
 };
 
@@ -36,12 +37,14 @@ const checkDiags = function(){
 
   if(topLeft === 'X' || topLeft === 'O'){
     if(topLeft === center && center === bottomRight){
+      gameLogic.winner = gameLogic.currentPlayer;
       return true;
     }
   }
 
   if(topRight === 'X' || topRight === 'O'){
     if(topRight === center && center === bottomLeft){
+      gameLogic.winner = gameLogic.currentPlayer;
       return true;
     }
   }

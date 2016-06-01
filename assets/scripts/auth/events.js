@@ -126,7 +126,6 @@ const onPlayThisGame = function(event){
   .fail(ui.failure);
 };
 
-
 const onSetCellValue = function(){
 
   // you can only go if there is an active, non-over game
@@ -161,10 +160,17 @@ const onSetCellValue = function(){
 
         // swap players
         let NewPlayersSymbols = gameLogic.swapPlayers();
+
         currentPlayer = NewPlayersSymbols[0];
         otherPlayer = NewPlayersSymbols[1];
         currentSymbol = NewPlayersSymbols[2];
         otherSymbol  = NewPlayersSymbols[3];
+
+        gameLogic.currentPlayer = NewPlayersSymbols[0];
+        gameLogic.otherPlayer = NewPlayersSymbols[1];
+        gameLogic.currentSymbol = NewPlayersSymbols[2];
+        gameLogic.otherSymbol  = NewPlayersSymbols[3];
+
         $('#player-turn').text(currentPlayer + "'s Turn!");
 
         // count turn number
@@ -173,12 +179,15 @@ const onSetCellValue = function(){
         // check if game over now
         gameLogic.gameOver = gameChecks.checkGame();
 
-        if(gameLogic.gameOver === true){
+        if(gameLogic.gameOver === true && gameLogic.winner === null){
           gameLogic.winner = 'Tie';
           gameLogic.winnerString = "Game over! It's a tie!";
           gameLogic.newGame.over = true;
+        } else {
+          gameLogic.winner = currentPlayer;
+          gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+          gameLogic.newGame.over = true;
         }
-
       } else{
         if(gameLogic.turnCount < gameLogic.maxTurnCount){
           gameLogic.winner = currentPlayer;
