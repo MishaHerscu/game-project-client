@@ -107,7 +107,6 @@ const showOverGames = function(){
 
 // join game
 const joinGame = function(data){
-  console.log("data, should be game id: ", data);
   return $.ajax({
     url: app.host + '/games/' + data,
     method: 'PATCH',

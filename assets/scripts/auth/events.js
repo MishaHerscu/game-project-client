@@ -89,7 +89,7 @@ const onGetDoneGames = function(event){
 
 const onJoinGame = function(event){
   event.preventDefault();
-  let data = getFormFields(event.target);
+  let data = $('#game-to-join').val();
 
   api.joinGame(data)
   .done(ui.success)
@@ -212,7 +212,7 @@ const addHandlers = () => {
   //
   //buttons
   //
-  
+
   $('#sign-up').on('submit', onSignUp);
   $('#sign-in').on('submit', onSignIn);
   $('#sign-out').on('submit', onSignOut);
