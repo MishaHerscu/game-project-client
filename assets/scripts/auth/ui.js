@@ -20,6 +20,7 @@ const signInSuccess = function(data){
   app.user = data.user;
   $('.not-signed-in').hide();
   $('#auth-token-td').text(app.user.token);
+  $('#any-game-auth').text(app.user.token);
   console.log('app: ', app);
 };
 

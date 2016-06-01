@@ -51,12 +51,12 @@ const changePassword = function(data){
 };
 
 // show game status
-const show = function(id){
+const show = function(gameId, authToken){
   return $.ajax({
-    url: app.host + '/games/' + id,
+    url: app.host + '/games/' + gameId,
     method: 'GET',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: authToken,
     },
   });
 };
@@ -106,12 +106,12 @@ const showOverGames = function(){
 };
 
 // join game
-const joinGame = function(data){
+const joinGame = function(gameId, authToken){
   return $.ajax({
-    url: app.host + '/games/' + data,
+    url: app.host + '/games/' + gameId,
     method: 'PATCH',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: authToken,
     },
     data: '',
   });
