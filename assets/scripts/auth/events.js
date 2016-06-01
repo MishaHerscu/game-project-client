@@ -5,6 +5,7 @@ const api = require('./api');
 const ui = require('./ui');
 const gameLogic = require('../game/gameLogic');
 const gameChecks = require('../game/gameChecks');
+const turnEffects = require('../game/turnEffects');
 
 let currentPlayer = gameLogic.currentPlayer;
 let currentSymbol = gameLogic.currentSymbol;
@@ -137,22 +138,15 @@ const onSetCellValue = function(){
     let clickedCell = this.id;
 
     // check if the cell is empty
-    if( currentVal !== ""){
-      console.log('Sorry! Someone already went there.');
+    if(!turnEffects.checkCellEmpty(currentVal)){
       return false;
-
     } else {
 
       // set the new value using the currentSymbol
       $(this).text(currentSymbol);
 
-      // count turn number
-      gameLogic.turnCount += 1;
-
-      // set the new value in the model
-      gameLogic.boardDict[clickedCell] = currentSymbol;
-      let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
-      gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
+      // update model
+      let modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
 
       // check if the game is over
       gameLogic.gameOver = gameChecks.checkGame();
@@ -161,20 +155,7 @@ const onSetCellValue = function(){
       gameLogic.updateGameInfo();
 
       // update object for API
-      let updateGameData = {
-        "game": {
-          "cell": {
-            "index": modelGameIndex,
-            "value": currentSymbol
-          },
-          "over": gameLogic.gameOver
-        }
-      };
-      console.log('updateGameData: ', updateGameData);
-
-      // update game in the back end
-      api.updateGame(updateGameData);
-      console.log('updated game object: ', gameLogic.newGame);
+      turnEffects.updateAPI(modelGameIndex, currentSymbol);
 
       if(gameLogic.gameOver === false){
 
@@ -186,6 +167,18 @@ const onSetCellValue = function(){
         otherSymbol  = NewPlayersSymbols[3];
         $('#player-turn').text(currentPlayer + "'s Turn!");
 
+        // count turn number
+        gameLogic.turnCount += 1;
+
+        // check if game over now
+        gameLogic.gameOver = gameChecks.checkGame();
+
+        if(gameLogic.gameOver === true){
+          gameLogic.winner = 'Tie';
+          gameLogic.winnerString = "Game over! It's a tie!";
+          gameLogic.newGame.over = true;
+        }
+
       } else{
         if(gameLogic.turnCount < gameLogic.maxTurnCount){
           gameLogic.winner = currentPlayer;
@@ -196,10 +189,12 @@ const onSetCellValue = function(){
           gameLogic.winnerString = "Game over! It's a tie!";
           gameLogic.newGame.over = true;
         }
+
         console.log('The game is over! Start a new game!');
         $('#player-turn').text(gameLogic.winnerString);
         $('.table-section').hide();
         $('.game-over-section').show();
+
       }
     }
   } else if (gameLogic.gameOver === true){
