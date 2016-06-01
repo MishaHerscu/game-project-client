@@ -136,7 +136,7 @@ webpackJsonp([0],[
 
 	var onJoinGame = function onJoinGame(event) {
 	  event.preventDefault();
-	  var data = getFormFields(event.target['game-id']);
+	  var data = $('#game-to-join').val();
 
 	  api.joinGame(data).done(ui.success).fail(ui.failure);
 	};
@@ -451,10 +451,8 @@ webpackJsonp([0],[
 
 	// join game
 	var joinGame = function joinGame(data) {
-	  var gameId = data;
-	  console.log("data, should be game id: ", gameId);
 	  return $.ajax({
-	    url: app.host + '/games/' + gameId,
+	    url: app.host + '/games/' + data,
 	    method: 'PATCH',
 	    headers: {
 	      Authorization: 'Token token=' + app.user.token
