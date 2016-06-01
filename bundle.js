@@ -434,7 +434,7 @@ webpackJsonp([0],[
 	    headers: {
 	      Authorization: 'Token token=' + app.user.token
 	    },
-	    data: '{}'
+	    data: ''
 	  });
 	};
 
@@ -456,7 +456,8 @@ webpackJsonp([0],[
 	    method: 'PATCH',
 	    headers: {
 	      Authorization: 'Token token=' + app.user.token
-	    }
+	    },
+	    data: ''
 	  });
 	};
 
