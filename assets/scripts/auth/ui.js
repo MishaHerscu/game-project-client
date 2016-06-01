@@ -20,6 +20,8 @@ const signInSuccess = function(data){
   app.user = data.user;
   $('.not-signed-in').hide();
   $('#auth-token-td').text(app.user.token);
+  $('#any-game-auth').val(app.user.token);
+  $('#game-to-play-auth').val(app.user.token);
   console.log('app: ', app);
 };
 
@@ -81,6 +83,12 @@ const successShowGameInfo = function(data){
   }
 };
 
+const successPlayThisGame = function(data){
+  let gameObject = data.game;
+  console.log(gameObject);
+  gameLogic.newGame = gameObject;
+};
+
 const newGame = function(data){
 
   // data about new game
@@ -127,4 +135,5 @@ module.exports = {
   updateFinishedGames,
   successShowGameInfo,
   newGame,
+  successPlayThisGame,
 };

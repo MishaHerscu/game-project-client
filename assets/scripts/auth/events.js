@@ -89,9 +89,10 @@ const onGetDoneGames = function(event){
 
 const onJoinGame = function(event){
   event.preventDefault();
-  let data = $('#game-to-join').val();
+  let gameId = $('#game-to-join').val();
+  let authToken = $('#auth-token-to-join').val();
 
-  api.joinGame(data)
+  api.joinGame(gameId, authToken)
   .done(ui.success)
   .fail(ui.failure);
 };
@@ -106,13 +107,24 @@ const onShowGameInfo = function(){
 
 const onShowAnyGameInfo = function(event){
   event.preventDefault();
-  let data = $('#any-game-id').val();
+  let gameId = $('#any-game-id').val();
+  let authToken = $('#any-game-auth').val();
 
-  console.log('data event target: ', data);
-  api.show(data)
+  api.show(gameId, authToken)
   .done(ui.successShowGameInfo)
   .fail(ui.failure);
 };
+
+const onPlayThisGame = function(event){
+  event.preventDefault();
+  let gameId = $('#game-to-play-id').val();
+  let authToken = $('#game-to-play-auth').val();
+
+  api.play(gameId, authToken)
+  .done(ui.successPlayThisGame)
+  .fail(ui.failure);
+};
+
 
 const onSetCellValue = function(){
 
@@ -223,6 +235,7 @@ const addHandlers = () => {
   $('#join-game').on('submit', onJoinGame);
   $('#show-this-game-info').on('submit', onShowGameInfo);
   $('#show-any-game-info').on('submit', onShowAnyGameInfo);
+  $('#play-this-game').on('submit', onPlayThisGame);
 
   //
   // table cells
