@@ -142,11 +142,28 @@ const onSetCellValue = function(){
       let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
       gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
 
+      // update object for API
+      let updateGameData = {
+        "game": {
+          "cell": {
+            "index": modelGameIndex,
+            "value": currentSymbol
+          },
+          "over": gameLogic.gameOver
+        }
+      };
+      console.log(updateGameData);
+
       // update model
       gameLogic.updateGameInfo();
 
       // check if the game is over
       gameLogic.gameOver = gameChecks.checkGame();
+
+      // ammend updateGameData based on gameOver
+      updateGameData.over = gameLogic.gameOver;
+      api.updateGame(updateGameData);
+      console.log('updated game object: ', gameLogic.newGame);
 
       if(gameLogic.gameOver === false){
 
@@ -187,9 +204,6 @@ const onSetCellValue = function(){
   } else {
     console.log('There is a weird error with gameOver');
   }
-
-  api.updateGame();
-  console.log('updated game object: ', gameLogic.newGame);
 
   return true;
 };

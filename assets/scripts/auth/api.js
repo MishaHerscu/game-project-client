@@ -106,10 +106,9 @@ const showOverGames = function(){
 };
 
 const joinGame = function(){
-  let data = gameLogic.newGame;
   let id = gameLogic.newGame.id;
 
-  console.log("data, id: ", data, id);
+  console.log("joined game id: ", id);
 
   return $.ajax({
     url: app.host + '/games/' + id,
@@ -117,12 +116,10 @@ const joinGame = function(){
     headers: {
       Authorization: 'Token token='+ app.user.token,
     },
-    data: data,
   });
 };
 
-const updateGame = function(){
-  let data = gameLogic.newGame;
+const updateGame = function(data){
   let id = gameLogic.newGame.id;
 
   console.log("data, id: ", data, id);
