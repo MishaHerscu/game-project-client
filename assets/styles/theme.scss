@@ -5,11 +5,22 @@ body {
   background-color: shade($paper-white, 0%);
   background-image: url($beach-background);
   color: $paper-white;
-  line-height: 1.5;
+  font-family: $san-serif-family;
+  font-size: $font-size;
+  line-height: $line-height;
   margin: auto;
+  max-width: $max-width;
   opacity: 0%;
   padding: auto;
 }
+
+h1,
+h2,
+h3 {
+  font-size: 1.5em;
+  line-height: $header-line-height;
+}
+
 
 nav {
   border: 0;
@@ -21,10 +32,10 @@ td,
 th {
   border: 3px solid $carbon;
   color: $paper-white;
-  height: 80px;
+  height: $table-line-height;
+  line-height: $table-line-height;
   opacity: 0%;
   text-align: center;
-  vertical-align: middle;
   width: 33%;
 }
 
@@ -57,7 +68,35 @@ legend {
 input {
   color: $carbon;
   opacity: 0%;
+
+  &[type=submit] {
+    background-color: $paper-white;
+    border: 0;
+    color: $carbon;
+    margin: 0;
+    opacity: 0%;
+  }
 }
+
+// input[type=text] {
+//   padding:5px;
+//   border:2px solid #ccc;
+//   -webkit-border-radius: 5px;
+//   border-radius: 5px;
+// }
+//
+// input[type=text]:focus {
+//     border-color:#333;
+// }
+//
+// input[type=submit] {
+//     padding:5px 15px;
+//     background:#ccc;
+//     border:0 none;
+//     cursor:pointer;
+//     -webkit-border-radius: 5px;
+//     border-radius: 5px;
+// }
 
 .game-mgmt-button {
   float: left;
@@ -90,12 +129,13 @@ input {
 
 .cell {
   font-weight: bold;
+  line-height: $table-line-height;
   opacity: 0%;
   text-align: center;
   vertical-align: middle;
 
   &:hover {
-    background: tint($board-hover-blue, 50%);
+    background: tint($board-hover-blue, 75%);
     opacity: 20%;
   }
 }
