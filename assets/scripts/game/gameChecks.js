@@ -35,13 +35,13 @@ const checkDiags = function(){
   let bottomRight = gameLogic.newGame.cells[8];
 
   if(topLeft === 'X' || topLeft === 'O'){
-    if(topLeft === center === bottomRight){
+    if(topLeft === center && center === bottomRight){
       return true;
     }
   }
 
   if(topRight === 'X' || topRight === 'O'){
-    if(topRight === center === bottomLeft){
+    if(topRight === center && center === bottomLeft){
       return true;
     }
   }
