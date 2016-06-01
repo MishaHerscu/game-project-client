@@ -105,13 +105,11 @@ const showOverGames = function(){
   });
 };
 
-const joinGame = function(){
-  let id = gameLogic.newGame.id;
-
-  console.log("joined game id: ", id);
-
+// join game
+const joinGame = function(data){
+  console.log("data, should be game id: ", data);
   return $.ajax({
-    url: app.host + '/games/' + id,
+    url: app.host + '/games/' + data,
     method: 'PATCH',
     headers: {
       Authorization: 'Token token='+ app.user.token,
@@ -119,6 +117,7 @@ const joinGame = function(){
   });
 };
 
+// update game on the back end with each move
 const updateGame = function(data){
   let id = gameLogic.newGame.id;
 
@@ -134,6 +133,7 @@ const updateGame = function(data){
   });
 };
 
+// watch a game (streaming, requires wrapper)
 const watchGame = function(){
   let id = gameLogic.newGame.id;
 
