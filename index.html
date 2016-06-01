@@ -67,7 +67,36 @@
         <h2>Player Stats</h2>
       </div>
 
+      <br>
+
+      <div id="game-management" class="hideable">
+
+        <form class="game-mgmt-button" id="new-game">
+            <input type="submit" name="submit" value="Start New Game!">
+        </form>
+
+        <form class="game-mgmt-button" id="get-games">
+            <input type="submit" name="submit" value="Refresh Games Info!">
+        </form>
+
+        <form class="game-mgmt-button hideable" id="get-done-games">
+            <input type="submit" name="submit" value="Refresh Done Games Info!">
+        </form>
+
+        <form class="game-setting" id="game-board-size">
+            <br>
+            <h4>
+              Board Size (default = 3)
+            </h4>
+            <!-- <input type="number" name="board-size" value="3" placeholder="board size"> -->
+        </form>
+
+      </div>
+
+      <br>
+
       <div id="player-stats" class="hideable stats-table">
+
         <table class="table table-bordered hideable">
           <tr>
             <th>Player ID</th>
@@ -80,36 +109,22 @@
             <td id="stats-finished-games"></td>
           </tr>
         </table>
+
       </div>
+
+      <div>
+        <h3 class="auth-token-header">Your Auth Token Shh!</h3>
+        <table class="table table-bordered hideable">
+          <tr>
+            <td id="auth-token-td" class="auth-token-td"></td>
+          </tr>
+        </table>
+    </div>
 
       <br>
 
       <div class="hideable">
         <h2>Game Management</h2>
-      </div>
-
-      <div id="game-management" class="hideable">
-
-        <form class="game-mgmt-button" id="new-game">
-            <input type="submit" name="submit" value="New Game!">
-        </form>
-
-        <form class="game-mgmt-button" id="get-games">
-            <input type="submit" name="submit" value="Refresh Games!">
-        </form>
-
-        <form class="game-mgmt-button hideable" id="get-done-games">
-            <input type="submit" name="submit" value="Refresh Done Games!">
-        </form>
-
-        <form class="game-setting" id="game-board-size">
-            <br>
-            <h4>
-              Board Size (default = 3)
-            </h4>
-            <!-- <input type="number" name="board-size" value="3" placeholder="board size"> -->
-        </form>
-
       </div>
 
       <br>

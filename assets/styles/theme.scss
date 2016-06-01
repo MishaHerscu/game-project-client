@@ -20,6 +20,7 @@ nav {
 td,
 th {
   border: 3px solid $carbon;
+  color: $paper-white;
   height: 80px;
   opacity: 0%;
   text-align: center;
@@ -74,6 +75,17 @@ input {
 .game-table {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.auth-token-header {
+  border: 0;
+  text-align: center;
+}
+
+.auth-token-td {
+  border: 0;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .cell {

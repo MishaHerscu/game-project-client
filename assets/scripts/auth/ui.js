@@ -19,6 +19,7 @@ const failure = function(error){
 const signInSuccess = function(data){
   app.user = data.user;
   $('.not-signed-in').hide();
+  $('#auth-token-td').text(app.user.token);
   console.log('app: ', app);
 };
 
