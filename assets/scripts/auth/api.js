@@ -90,6 +90,7 @@ const newGame = function(){
     headers: {
       Authorization: 'Token token='+ app.user.token,
     },
+    data: '{}',
   });
 };
 
