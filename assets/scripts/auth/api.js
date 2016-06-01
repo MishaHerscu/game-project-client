@@ -30,7 +30,7 @@ const signOut = function(){
     url: app.host + '/sign-out/' + app.user.id,
     method: 'DELETE',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
   });
 };
@@ -66,7 +66,7 @@ const showGameInfo = function(){
     url: app.host + '/games/' + gameLogic.newGame.id,
     method: 'GET',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
   });
 };
@@ -77,7 +77,7 @@ const showGames = function(){
     url: app.host + '/games',
     method: 'GET',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
   });
 };
@@ -88,7 +88,7 @@ const newGame = function(){
     url: app.host + '/games',
     method: 'POST',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
     data: '',
   });
@@ -100,7 +100,7 @@ const showOverGames = function(){
     url: app.host + '/games?over=true',
     method: 'GET',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
   });
 };
@@ -111,7 +111,7 @@ const joinGame = function(gameId, authToken){
     url: app.host + '/games/' + gameId,
     method: 'PATCH',
     headers: {
-      Authorization: authToken,
+      Authorization: 'Token token=' + authToken,
     },
     data: '',
   });
@@ -127,7 +127,7 @@ const updateGame = function(data){
     url: app.host + '/games/' + id,
     method: 'PATCH',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
     data: data,
   });
@@ -143,7 +143,7 @@ const watchGame = function(){
     url: app.host + '/games/' + id + '/watch',
     method: 'GET',
     headers: {
-      Authorization: 'Token token='+ app.user.token,
+      Authorization: 'Token token=' + app.user.token,
     },
   });
 };
