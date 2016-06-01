@@ -113,6 +113,7 @@ const joinGame = function(data){
     headers: {
       Authorization: 'Token token='+ app.user.token,
     },
+    data: '{}',
   });
 };
 
