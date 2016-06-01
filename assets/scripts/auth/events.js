@@ -151,16 +151,11 @@ const onSetCellValue = function(){
       if(gameLogic.gameOver === false){
 
         // swap players
-
-        console.log("current: ",currentPlayer,currentSymbol);
         let NewPlayersSymbols = gameLogic.swapPlayers();
         currentPlayer = NewPlayersSymbols[0];
         otherPlayer = NewPlayersSymbols[1];
         currentSymbol = NewPlayersSymbols[2];
         otherSymbol  = NewPlayersSymbols[3];
-
-        console.log("current: ",currentPlayer,currentSymbol);
-
         $('#player-turn').text(currentPlayer + "'s Turn!");
 
       } else{
