@@ -3,6 +3,7 @@
 const app = require('../app.js');
 const gameLogic = require('../game/gameLogic.js');
 const games = require('../game/games.js');
+const events = require('./events.js');
 
 const success = function(data){
   if(data){
@@ -10,6 +11,10 @@ const success = function(data){
   }else{
     console.log('GREAT SUCCESS!!!!!');
   }
+};
+
+const signUpSuccess = function(){
+  events.onSignIn();
 };
 
 const failure = function(error){
@@ -136,4 +141,5 @@ module.exports = {
   successShowGameInfo,
   newGame,
   successPlayThisGame,
+  signUpSuccess,
 };

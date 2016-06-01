@@ -19,8 +19,8 @@ const onSignUp = function(event){
   let data = getFormFields(event.target);
   api.signUp(data)
   .done(ui.success)
+  .then(ui.signUpSuccess)
   .fail(ui.failure);
-
 };
 
 const onSignIn = function(event){
