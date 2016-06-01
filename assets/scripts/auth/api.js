@@ -56,7 +56,17 @@ const show = function(gameId, authToken){
     url: app.host + '/games/' + gameId,
     method: 'GET',
     headers: {
-      Authorization: authToken,
+      Authorization: 'Token token=' + authToken,
+    },
+  });
+};
+
+const play = function(gameId, authToken){
+  return $.ajax({
+    url: app.host + '/games/' + gameId,
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + authToken,
     },
   });
 };
@@ -107,8 +117,15 @@ const showOverGames = function(){
 
 // join game
 const joinGame = function(gameId, authToken){
+
+  let id = Number(gameId);
+
+  console.log("gameId, authToken: ", gameId, authToken);
+  console.log(typeof authToken);
+  console.log(typeof id);
+
   return $.ajax({
-    url: app.host + '/games/' + gameId,
+    url: app.host + '/games/' + id,
     method: 'PATCH',
     headers: {
       Authorization: 'Token token=' + authToken,
@@ -122,6 +139,8 @@ const updateGame = function(data){
   let id = gameLogic.newGame.id;
 
   console.log("data, id: ", data, id);
+  console.log(typeof app.user.token);
+  console.log(typeof gameLogic.newGame.id);
 
   return $.ajax({
     url: app.host + '/games/' + id,
@@ -134,7 +153,7 @@ const updateGame = function(data){
 };
 
 // watch a game (streaming, requires wrapper)
-const watchGame = function(){
+const watchGame = function(gameId, authToken){
   let id = gameLogic.newGame.id;
 
   console.log("watched id: ", id);
@@ -143,7 +162,7 @@ const watchGame = function(){
     url: app.host + '/games/' + id + '/watch',
     method: 'GET',
     headers: {
-      Authorization: 'Token token=' + app.user.token,
+      Authorization: 'Token token=' + authToken,
     },
   });
 };
@@ -161,4 +180,5 @@ module.exports = {
   showGameInfo,
   show,
   watchGame,
+  play,
 };

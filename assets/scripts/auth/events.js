@@ -115,6 +115,17 @@ const onShowAnyGameInfo = function(event){
   .fail(ui.failure);
 };
 
+const onPlayThisGame = function(event){
+  event.preventDefault();
+  let gameId = $('#game-to-play-id').val();
+  let authToken = $('#game-to-play-auth').val();
+
+  api.play(gameId, authToken)
+  .done(ui.successPlayThisGame)
+  .fail(ui.failure);
+};
+
+
 const onSetCellValue = function(){
 
   // you can only go if there is an active, non-over game
@@ -224,6 +235,7 @@ const addHandlers = () => {
   $('#join-game').on('submit', onJoinGame);
   $('#show-this-game-info').on('submit', onShowGameInfo);
   $('#show-any-game-info').on('submit', onShowAnyGameInfo);
+  $('#play-this-game').on('submit', onPlayThisGame);
 
   //
   // table cells
