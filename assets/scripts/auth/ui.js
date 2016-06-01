@@ -3,7 +3,6 @@
 const app = require('../app.js');
 const gameLogic = require('../game/gameLogic.js');
 const games = require('../game/games.js');
-const events = require('./events.js');
 
 const success = function(data){
   if(data){
@@ -14,7 +13,9 @@ const success = function(data){
 };
 
 const signUpSuccess = function(){
-  events.onSignIn();
+  $('#sign-in-email').val($('#sign-up-email').val());
+  $('#sign-in-pw').val($('#sign-up-pw').val());
+  $('#sign-in').submit();
 };
 
 const failure = function(error){

@@ -701,7 +701,6 @@ webpackJsonp([0],[
 	var app = __webpack_require__(3);
 	var gameLogic = __webpack_require__(7);
 	var games = __webpack_require__(10);
-	var events = __webpack_require__(4);
 
 	var success = function success(data) {
 	  if (data) {
@@ -712,7 +711,9 @@ webpackJsonp([0],[
 	};
 
 	var signUpSuccess = function signUpSuccess() {
-	  events.onSignIn();
+	  $('#sign-in-email').val($('#sign-up-email').val());
+	  $('#sign-in-pw').val($('#sign-up-pw').val());
+	  $('#sign-in').submit();
 	};
 
 	var failure = function failure(error) {
