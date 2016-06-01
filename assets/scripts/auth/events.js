@@ -142,6 +142,12 @@ const onSetCellValue = function(){
       let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
       gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
 
+      // check if the game is over
+      gameLogic.gameOver = gameChecks.checkGame();
+
+      // update model
+      gameLogic.updateGameInfo();
+
       // update object for API
       let updateGameData = {
         "game": {
@@ -152,16 +158,9 @@ const onSetCellValue = function(){
           "over": gameLogic.gameOver
         }
       };
-      console.log(updateGameData);
+      console.log('updateGameData: ', updateGameData);
 
-      // update model
-      gameLogic.updateGameInfo();
-
-      // check if the game is over
-      gameLogic.gameOver = gameChecks.checkGame();
-
-      // ammend updateGameData based on gameOver
-      updateGameData.over = gameLogic.gameOver;
+      // update game in the back end
       api.updateGame(updateGameData);
       console.log('updated game object: ', gameLogic.newGame);
 
