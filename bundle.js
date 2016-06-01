@@ -136,9 +136,10 @@ webpackJsonp([0],[
 
 	var onJoinGame = function onJoinGame(event) {
 	  event.preventDefault();
-	  var data = $('#game-to-join').val();
+	  var gameId = $('#game-to-join').val();
+	  var authToken = $('#auth-token-to-join').val();
 
-	  api.joinGame(data).done(ui.success).fail(ui.failure);
+	  api.joinGame(gameId, authToken).done(ui.success).fail(ui.failure);
 	};
 
 	var onShowGameInfo = function onShowGameInfo() {
@@ -149,10 +150,18 @@ webpackJsonp([0],[
 
 	var onShowAnyGameInfo = function onShowAnyGameInfo(event) {
 	  event.preventDefault();
-	  var data = $('#any-game-id').val();
+	  var gameId = $('#any-game-id').val();
+	  var authToken = $('#any-game-auth').val();
 
-	  console.log('data event target: ', data);
-	  api.show(data).done(ui.successShowGameInfo).fail(ui.failure);
+	  api.show(gameId, authToken).done(ui.successShowGameInfo).fail(ui.failure);
+	};
+
+	var onPlayThisGame = function onPlayThisGame(event) {
+	  event.preventDefault();
+	  var gameId = $('#game-to-play-id').val();
+	  var authToken = $('#game-to-play-auth').val();
+
+	  api.play(gameId, authToken).done(ui.successPlayThisGame).fail(ui.failure);
 	};
 
 	var onSetCellValue = function onSetCellValue() {
@@ -260,6 +269,7 @@ webpackJsonp([0],[
 	  $('#join-game').on('submit', onJoinGame);
 	  $('#show-this-game-info').on('submit', onShowGameInfo);
 	  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
+	  $('#play-this-game').on('submit', onPlayThisGame);
 
 	  //
 	  // table cells
@@ -344,6 +354,8 @@ webpackJsonp([0],[
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var app = __webpack_require__(3);
 	var gameLogic = __webpack_require__(7);
 
@@ -395,12 +407,22 @@ webpackJsonp([0],[
 	};
 
 	// show game status
-	var show = function show(id) {
+	var show = function show(gameId, authToken) {
 	  return $.ajax({
-	    url: app.host + '/games/' + id,
+	    url: app.host + '/games/' + gameId,
 	    method: 'GET',
 	    headers: {
-	      Authorization: 'Token token=' + app.user.token
+	      Authorization: 'Token token=' + authToken
+	    }
+	  });
+	};
+
+	var play = function play(gameId, authToken) {
+	  return $.ajax({
+	    url: app.host + '/games/' + gameId,
+	    method: 'GET',
+	    headers: {
+	      Authorization: 'Token token=' + authToken
 	    }
 	  });
 	};
@@ -450,12 +472,19 @@ webpackJsonp([0],[
 	};
 
 	// join game
-	var joinGame = function joinGame(data) {
+	var joinGame = function joinGame(gameId, authToken) {
+
+	  var id = Number(gameId);
+
+	  console.log("gameId, authToken: ", gameId, authToken);
+	  console.log(typeof authToken === 'undefined' ? 'undefined' : _typeof(authToken));
+	  console.log(typeof id === 'undefined' ? 'undefined' : _typeof(id));
+
 	  return $.ajax({
-	    url: app.host + '/games/' + data,
+	    url: app.host + '/games/' + id,
 	    method: 'PATCH',
 	    headers: {
-	      Authorization: 'Token token=' + app.user.token
+	      Authorization: 'Token token=' + authToken
 	    },
 	    data: ''
 	  });
@@ -466,6 +495,8 @@ webpackJsonp([0],[
 	  var id = gameLogic.newGame.id;
 
 	  console.log("data, id: ", data, id);
+	  console.log(_typeof(app.user.token));
+	  console.log(_typeof(gameLogic.newGame.id));
 
 	  return $.ajax({
 	    url: app.host + '/games/' + id,
@@ -478,7 +509,7 @@ webpackJsonp([0],[
 	};
 
 	// watch a game (streaming, requires wrapper)
-	var watchGame = function watchGame() {
+	var watchGame = function watchGame(gameId, authToken) {
 	  var id = gameLogic.newGame.id;
 
 	  console.log("watched id: ", id);
@@ -487,7 +518,7 @@ webpackJsonp([0],[
 	    url: app.host + '/games/' + id + '/watch',
 	    method: 'GET',
 	    headers: {
-	      Authorization: 'Token token=' + app.user.token
+	      Authorization: 'Token token=' + authToken
 	    }
 	  });
 	};
@@ -504,7 +535,8 @@ webpackJsonp([0],[
 	  updateGame: updateGame,
 	  showGameInfo: showGameInfo,
 	  show: show,
-	  watchGame: watchGame
+	  watchGame: watchGame,
+	  play: play
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -672,6 +704,8 @@ webpackJsonp([0],[
 	  app.user = data.user;
 	  $('.not-signed-in').hide();
 	  $('#auth-token-td').text(app.user.token);
+	  $('#any-game-auth').val(app.user.token);
+	  $('#game-to-play-auth').val(app.user.token);
 	  console.log('app: ', app);
 	};
 
@@ -733,6 +767,12 @@ webpackJsonp([0],[
 	  }
 	};
 
+	var successPlayThisGame = function successPlayThisGame(data) {
+	  var gameObject = data.game;
+	  console.log(gameObject);
+	  gameLogic.newGame = gameObject;
+	};
+
 	var newGame = function newGame(data) {
 
 	  // data about new game
@@ -777,7 +817,8 @@ webpackJsonp([0],[
 	  updateGames: updateGames,
 	  updateFinishedGames: updateFinishedGames,
 	  successShowGameInfo: successShowGameInfo,
-	  newGame: newGame
+	  newGame: newGame,
+	  successPlayThisGame: successPlayThisGame
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
