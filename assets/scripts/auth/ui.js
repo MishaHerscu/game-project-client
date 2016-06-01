@@ -16,6 +16,8 @@ const signUpSuccess = function(){
   $('#sign-in-email').val($('#sign-up-email').val());
   $('#sign-in-pw').val($('#sign-up-pw').val());
   $('#sign-in').submit();
+  $('#signUpModal').modal('hide');
+
 };
 
 const failure = function(error){
@@ -28,6 +30,7 @@ const signInSuccess = function(data){
   $('#auth-token-td').text(app.user.token);
   $('#any-game-auth').val(app.user.token);
   $('#game-to-play-auth').val(app.user.token);
+  $('#signInModal').modal('hide');
   console.log('app: ', app);
 };
 
