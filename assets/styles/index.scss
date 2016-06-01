@@ -9,11 +9,6 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 // MUST BE LAST
 @import 'breakpoints';
 
-body {
-  background-color: $paper-white;
-  line-height: 1.5;
-}
-
 td,
 th {
   height: 60px;
@@ -59,6 +54,33 @@ form {
   height: 33.333vw;
   text-align: center;
   vertical-align: middle;
+
+// .container {
+//   width: 50%;
+//   margin: auto 25%;
+// }
+
+// article {
+//   @include make-row();
+//   section {
+//     @include make-lg-column(4);
+//     @include make-md-column(4);
+//     @include make-sm-column(4);
+//     @include make-xs-column(4);
+//     border: 1px solid #000;
+//     height: 16.666vw;
+//   }
+// }
+// ​
+// @media (max-width: 992px) {
+//   .container {
+//     width: 90%;
+//     margin: auto 5%;
+//     & section {
+//       height: 30vw;
+//     }
+//   }
+// }
 
   &:hover {
     background: $board-hover-blue;
