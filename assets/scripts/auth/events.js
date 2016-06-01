@@ -147,14 +147,14 @@ const onSetCellValue = function(){
       // update model
       let modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
 
-      // check if the game is over
-      gameLogic.gameOver = gameChecks.checkGame();
-
       // update model
       gameLogic.updateGameInfo();
 
       // update object for API
       turnEffects.updateAPI(modelGameIndex, currentSymbol);
+
+      // check if the game is over
+      gameLogic.gameOver = gameChecks.checkGame();
 
       if(gameLogic.gameOver === false){
 
@@ -171,30 +171,41 @@ const onSetCellValue = function(){
         gameLogic.currentSymbol = NewPlayersSymbols[2];
         gameLogic.otherSymbol  = NewPlayersSymbols[3];
 
-        $('#player-turn').text(currentPlayer + "'s Turn!");
-
         // count turn number
         gameLogic.turnCount += 1;
 
         // check if game over now
         gameLogic.gameOver = gameChecks.checkGame();
 
-        if(gameLogic.gameOver === true && gameLogic.winner === null){
+        if(gameLogic.gameOver !== true){
+          $('#player-turn').text(currentPlayer + "'s Turn!");
+        } else if (gameLogic.winner === null){
           gameLogic.winner = 'Tie';
           gameLogic.winnerString = "Game over! It's a tie!";
           gameLogic.newGame.over = true;
+
+          $('#player-turn').text(gameLogic.winnerString);
+          $('.table-section').hide();
+          $('.game-over-section').show();
+
         } else {
-          gameLogic.winner = currentPlayer;
-          gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+          gameLogic.winner = otherPlayer;
+          gameLogic.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
           gameLogic.newGame.over = true;
+
+          $('#player-turn').text(gameLogic.winnerString);
+          $('.table-section').hide();
+          $('.game-over-section').show();
+
         }
+
       } else{
         if(gameLogic.turnCount < gameLogic.maxTurnCount){
           gameLogic.winner = currentPlayer;
           gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
           gameLogic.newGame.over = true;
         } else {
-          gameLogic.winner = 'Tie';
+          gameLogic.winner = null;
           gameLogic.winnerString = "Game over! It's a tie!";
           gameLogic.newGame.over = true;
         }
