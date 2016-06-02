@@ -145,7 +145,7 @@ webpackJsonp([0],[
 	  api.joinGame(gameId).done(ui.success).then(ui.successJoin).fail(ui.failure);
 	};
 
-	var onShowGameInfo = function onShowGameInfo() {
+	var onShowGameInfo = function onShowGameInfo(event) {
 	  event.preventDefault();
 
 	  api.showGameInfo().done(ui.successShowGameInfo).fail(ui.failure);

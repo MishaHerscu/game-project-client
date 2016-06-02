@@ -99,7 +99,7 @@ const onJoinGame = function(event){
   .fail(ui.failure);
 };
 
-const onShowGameInfo = function(){
+const onShowGameInfo = function(event){
   event.preventDefault();
 
   api.showGameInfo()
