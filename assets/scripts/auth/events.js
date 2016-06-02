@@ -95,6 +95,7 @@ const onJoinGame = function(event){
 
   api.joinGame(gameId)
   .done(ui.success)
+  .then(ui.successJoin)
   .fail(ui.failure);
 };
 

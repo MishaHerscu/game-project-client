@@ -60,6 +60,10 @@ const hideBoard = function(){
   $('.hideable').hide();
 };
 
+const successJoin = function(data){
+  gameModel.newGame = data.game;
+};
+
 const updateGames = function(data){
 
   // set objects
@@ -102,9 +106,7 @@ const successShowGameInfo = function(data){
 };
 
 const successPlayThisGame = function(data){
-  let gameObject = data.game;
-  console.log(gameObject);
-  gameModel.newGame = gameObject;
+  gameModel.newGame = data.game;
 };
 
 const newGame = function(data){
@@ -159,4 +161,5 @@ module.exports = {
   newGame,
   successPlayThisGame,
   signUpSuccess,
+  successJoin,
 };
