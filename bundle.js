@@ -142,7 +142,7 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  var gameId = $('#game-to-join').val();
 
-	  api.joinGame(gameId).done(ui.success).fail(ui.failure);
+	  api.joinGame(gameId).done(ui.success).then(ui.successJoin).fail(ui.failure);
 	};
 
 	var onShowGameInfo = function onShowGameInfo() {
@@ -774,6 +774,10 @@ webpackJsonp([0],[
 	  $('.hideable').hide();
 	};
 
+	var successJoin = function successJoin(data) {
+	  gameModel.newGame = data.game;
+	};
+
 	var updateGames = function updateGames(data) {
 
 	  // set objects
@@ -816,9 +820,7 @@ webpackJsonp([0],[
 	};
 
 	var successPlayThisGame = function successPlayThisGame(data) {
-	  var gameObject = data.game;
-	  console.log(gameObject);
-	  gameModel.newGame = gameObject;
+	  gameModel.newGame = data.game;
 	};
 
 	var newGame = function newGame(data) {
@@ -871,7 +873,8 @@ webpackJsonp([0],[
 	  successShowGameInfo: successShowGameInfo,
 	  newGame: newGame,
 	  successPlayThisGame: successPlayThisGame,
-	  signUpSuccess: signUpSuccess
+	  signUpSuccess: signUpSuccess,
+	  successJoin: successJoin
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
