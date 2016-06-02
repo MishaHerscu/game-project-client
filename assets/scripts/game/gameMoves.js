@@ -1,8 +1,8 @@
 'use strict';
 
-const gameModel = require('./gameModel');
-const gameChecks = require('./gameChecks');
-const turnEffects = require('./turnEffects');
+const gameModel = require('./gameModel.js');
+const gameChecks = require('./gameChecks.js');
+const turnEffects = require('./turnEffects.js');
 
 let currentPlayer = gameModel.currentPlayer;
 let currentSymbol = gameModel.currentSymbol;

@@ -1,10 +1,10 @@
 'use strict';
 
-const getFormFields = require('../../../../lib/get-form-fields');
-const api = require('./api');
-const ui = require('./ui');
-const gameUi = require('../gameActions/ui');
-const gameModel = require('../../game/gameModel');
+const getFormFields = require('../../../../lib/get-form-fields.js');
+const api = require('./api.js');
+const ui = require('./ui.js');
+const gameUi = require('../gameActions/ui.js');
+const gameModel = require('../../game/gameModel.js');
 
 const onSignUp = function(event){
   event.preventDefault();

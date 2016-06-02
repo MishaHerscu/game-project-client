@@ -1,7 +1,7 @@
 'use strict';
 
-const api = require('./api');
-const ui = require('./ui');
+const api = require('./api.js');
+const ui = require('./ui.js');
 
 const onNewGame = function(event){
   event.preventDefault();

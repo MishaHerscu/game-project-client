@@ -1,8 +1,8 @@
 'use strict';
 
-const gameModel = require('./gameModel');
-const gameApi = require('../apiActions/gameActions/api');
-const gameUi = require('../apiActions/gameActions/ui');
+const gameModel = require('./gameModel.js');
+const gameApi = require('../apiActions/gameActions/api.js');
+const gameUi = require('../apiActions/gameActions/ui.js');
 
 
 const checkCellEmpty = function(val){

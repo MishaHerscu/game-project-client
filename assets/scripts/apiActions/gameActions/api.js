@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../../app.js');
-const gameModel = require('../../game/gameModel');
+const gameModel = require('../../game/gameModel.js');
 
 // show game status
 const show = function(gameId, authToken){

@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../../app.js');
-const gameModel = require('../../game/gameModel');
+const gameModel = require('../../game/gameModel.js');
 
 // create new user
 const signUp = function(data){

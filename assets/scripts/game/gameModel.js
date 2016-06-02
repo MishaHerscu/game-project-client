@@ -5,7 +5,7 @@
 //
 
 // const games = require('./games');
-const players_file = require('./players');
+const players_file = require('./players.js');
 
 let symbols = players_file.symbols;
 let players = players_file.players;
