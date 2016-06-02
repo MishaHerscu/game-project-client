@@ -12,6 +12,11 @@ let otherSymbol = gameModel.otherPlayer;
 
 const redrawBoard = function(){
 
+  // check that game exists
+  if(gameModel.newGame.cells === null){
+    return false;
+  }
+
   // set variables
   let max = gameModel.newGame.cells.length;
 

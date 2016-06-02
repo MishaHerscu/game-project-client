@@ -656,6 +656,11 @@ webpackJsonp([0],[
 
 	var redrawBoard = function redrawBoard() {
 
+	  // check that game exists
+	  if (gameModel.newGame.cells === null) {
+	    return false;
+	  }
+
 	  // set variables
 	  var max = gameModel.newGame.cells.length;
 
