@@ -578,22 +578,39 @@ webpackJsonp([0],[
 	  // instantiate new game
 	  gameModel.newGame = new games.game(gameData);
 
+	  // reset gameOver and activeGame
 	  gameModel.gameOver = gameModel.newGame.over;
 	  gameModel.activeGame = true;
-	  // gameModel.currentPlayer = gameModel.newGame.player_x;
-	  // gameModel.otherPlayer = gameModel.newGame.player_o;
-	  gameModel.currentPlayer = gameModel.players[0];
-	  gameModel.otherPlayer = gameModel.players[1];
+
+	  // set initial params
+	  if (gameModel.newGame.player_x !== null && gameModel.newGame.player_x !== undefined) {
+	    gameModel.currentPlayer = gameModel.newGame.player_x;
+	  } else {
+	    gameModel.currentPlayer = gameModel.players[0];
+	  }
+
+	  if (gameModel.newGame.player_o !== null && gameModel.newGame.player_o !== undefined) {
+	    gameModel.currentPlayer = gameModel.newGame.player_0;
+	  } else {
+	    gameModel.currentPlayer = gameModel.players[1];
+	  }
+
 	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
 	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 
+	  // display status
 	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
 	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
-	  $('.cell').text('');
+	  // update grid
+	  for (var i = 0, max = gameModel.newGame.cells.length; i < max; i++) {
+	    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
+	  }
 
+	  // update game info
 	  gameModel.updateGameInfo();
 
+	  // reset view
 	  $('.table-section').show();
 	  $('.hideable').show();
 	  $('.not-signed-in').hide();
