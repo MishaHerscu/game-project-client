@@ -18,9 +18,10 @@ const failure = function(error){
 };
 
 const successWatch = function(data){
-  gameModel.watchGame = data.game;
+  gameModel.newGame = data.game;
   $('#show-this-game-info').submit();
   gameModel.activeGame = true;
+  gameModel.gameOver = gameModel.newGame.over;
 
   let newWatcher = gameWatcherMaker.gameWatcher(gameModel.watchGame.id, app.user.token);
   gameWatcherAttachHandler.addHandlers(newWatcher);
