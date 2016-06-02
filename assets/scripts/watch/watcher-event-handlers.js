@@ -1,5 +1,7 @@
 'use strict';
 
+const gameMoves = require('../game/gameMoves');
+
 const onChange = function(data){
   if (data.timeout) { //not an error
     this.close();
@@ -9,6 +11,7 @@ const onChange = function(data){
     let cell = game.cell;
     $('#watch-index').val(cell.index);
     $('#watch-value').val(cell.value);
+    gameMoves.redrawBoard();
   } else {
     console.log(data);
   }

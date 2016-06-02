@@ -44,8 +44,8 @@ webpackJsonp([0],[
 	app.finished_games = [];
 
 	var authEvents = __webpack_require__(4);
-	var gameEvents = __webpack_require__(15);
-	var gameMoves = __webpack_require__(17);
+	var gameEvents = __webpack_require__(19);
+	var gameMoves = __webpack_require__(11);
 	var watchEvents = __webpack_require__(20);
 
 	// On document ready
@@ -478,9 +478,10 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var gameModel = __webpack_require__(7);
-	var games = __webpack_require__(11);
-	var gameWatcherMaker = __webpack_require__(12);
-	var gameWatcherAttachHandler = __webpack_require__(14);
+	var gameMoves = __webpack_require__(11);
+	var games = __webpack_require__(15);
+	var gameWatcherMaker = __webpack_require__(16);
+	var gameWatcherAttachHandler = __webpack_require__(18);
 
 	var success = function success(data) {
 	  if (data) {
@@ -603,9 +604,7 @@ webpackJsonp([0],[
 	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
 	  // update grid
-	  for (var i = 0, max = gameModel.newGame.cells.length; i < max; i++) {
-	    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
-	  }
+	  gameMoves.redrawBoard();
 
 	  // update game info
 	  gameModel.updateGameInfo();
@@ -633,226 +632,290 @@ webpackJsonp([0],[
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	//
-	// define games objects
-	//
+	var gameModel = __webpack_require__(7);
+	var gameChecks = __webpack_require__(12);
+	var turnEffects = __webpack_require__(13);
 
-	// create new game
+	var currentPlayer = gameModel.currentPlayer;
+	var currentSymbol = gameModel.currentSymbol;
+	var otherPlayer = gameModel.otherPlayer;
+	var otherSymbol = gameModel.otherPlayer;
 
-	var game = function game(gameData) {
-	  this.id = gameData.id;
-	  this.cells = gameData.cells;
-	  this.over = gameData.over;
-	  this.player_x = gameData.player_x;
-	  this.player_o = gameData.player_o;
+	var redrawBoard = function redrawBoard() {
+
+	  // set variables
+	  var max = gameModel.newGame.cells.length;
+
+	  // update model
+	  for (var i = 0; i < max; i++) {
+	    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
+	  }
+
+	  // update board
+	  for (var _i = 0; _i < max; _i++) {
+	    $(gameModel.boardTrans[_i]).text(gameModel.newGame.cells[_i]);
+	  }
+
+	  return true;
+	};
+
+	var onSetCellValue = function onSetCellValue() {
+
+	  // you can only go if there is an active, non-over game
+	  // eventually maybe these variables should be combined into one
+	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
+
+	    // the clicked cell and the value of that cell
+	    var currentVal = $(this).text();
+	    var clickedCell = this.id;
+
+	    // check if the cell is empty
+	    if (!turnEffects.checkCellEmpty(currentVal)) {
+	      return false;
+	    } else {
+
+	      // set the new value using the currentSymbol
+	      $(this).text(currentSymbol);
+
+	      // update model
+	      var modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
+
+	      // update model
+	      gameModel.updateGameInfo();
+
+	      // check if the game is over
+	      gameModel.gameOver = gameChecks.checkGame();
+
+	      // update object for API
+	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
+
+	      if (gameModel.gameOver === false) {
+
+	        // swap players
+	        var NewPlayersSymbols = gameModel.swapPlayers();
+
+	        currentPlayer = NewPlayersSymbols[0];
+	        otherPlayer = NewPlayersSymbols[1];
+	        currentSymbol = NewPlayersSymbols[2];
+	        otherSymbol = NewPlayersSymbols[3];
+
+	        gameModel.currentPlayer = NewPlayersSymbols[0];
+	        gameModel.otherPlayer = NewPlayersSymbols[1];
+	        gameModel.currentSymbol = NewPlayersSymbols[2];
+	        gameModel.otherSymbol = NewPlayersSymbols[3];
+
+	        // count turn number
+	        gameModel.turnCount += 1;
+
+	        // check if game over now
+	        gameModel.gameOver = gameChecks.checkGame();
+
+	        if (gameModel.gameOver !== true) {
+	          $('#player-turn').text(currentPlayer + "'s Turn!");
+	          $('#game-update-modal').text(currentPlayer + "'s Turn!");
+	        } else if (gameModel.winner === null) {
+	          gameModel.winner = 'Tie';
+	          gameModel.winnerString = "Game over! It's a tie!";
+	          gameModel.newGame.over = true;
+
+	          $('#player-turn').text(gameModel.winnerString);
+	          $('#game-update-modal').text(gameModel.winnerString);
+	          $('#gameUpdateModal').modal('show');
+
+	          $('.table-section').hide();
+	          $('.game-over-section').show();
+	        } else {
+	          gameModel.winner = otherPlayer;
+	          gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+	          gameModel.newGame.over = true;
+
+	          $('#player-turn').text(gameModel.winnerString);
+	          $('#game-update-modal').text(gameModel.winnerString);
+	          $('#gameUpdateModal').modal('show');
+
+	          $('.table-section').hide();
+	          $('.game-over-section').show();
+	        }
+	      } else {
+	        if (gameModel.turnCount < gameModel.maxTurnCount) {
+	          gameModel.winner = currentPlayer;
+	          gameModel.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+	          gameModel.newGame.over = true;
+	        } else {
+	          gameModel.winner = null;
+	          gameModel.winnerString = "Game over! It's a tie!";
+	          gameModel.newGame.over = true;
+	        }
+
+	        console.log('The game is over! Start a new game!');
+	        $('#player-turn').text(gameModel.winnerString);
+	        $('#game-update-modal').text(gameModel.winnerString);
+	        $('#gameUpdateModal').modal('show');
+
+	        $('.table-section').hide();
+	        $('.game-over-section').show();
+	      }
+	    }
+	  } else if (gameModel.gameOver === true) {
+
+	    console.log('The game is over! Start a new game!');
+	    $('.table-section').hide();
+
+	    $('#player-turn').text('Game over! Start a new Game!');
+	    $('#game-update-modal').text('Game over! Start a new Game!');
+
+	    $('.game-over-section').show();
+	  } else if (gameModel.activeGame === false) {
+	    console.log('You need to activate or start a game!');
+	  } else {
+	    console.log('There is a weird error with gameOver');
+	  }
+
+	  return true;
+	};
+
+	var addHandlers = function addHandlers() {
+	  $('.cell').on('click', onSetCellValue);
 	};
 
 	module.exports = {
-	  game: game
+	  redrawBoard: redrawBoard,
+	  addHandlers: addHandlers
 	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	var watcherMaker = __webpack_require__(13);
-	var app = __webpack_require__(3);
+	// imports
 
-	// let gameWatcher = watcherMaker.resourceWatcher('<server>/games/:id/watch', {
-	//       Authorization: 'Token token=<token>'[,
-	//       timeout: <timeout>]
-	// });
+	var gameModel = __webpack_require__(7);
 
-	var gameWatcher = function gameWatcher(id, authToken) {
+	// check whether dict values are the same
+	// the keys have to be 0, 1, 2 etc.
+	// this is based on matching the format we get from jQuery
+	var checkSame = function checkSame(dict) {
+	  var checkVal = $(dict[0]).text();
 
-	  var gameWatcherObject = watcherMaker.resourceWatcher(app.host + '/games/' + id + '/watch', {
-	    Authorization: 'Token token=' + authToken,
-	    timeout: 30
-	  });
+	  if (checkVal === "") {
 
-	  return gameWatcherObject;
+	    return false;
+	  } else {
+
+	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
+	      if ($(dict[i]).text() !== checkVal) {
+	        return false;
+	      }
+	    }
+	  }
+	  gameModel.winner = gameModel.currentPlayer;
+	  return true;
+	};
+
+	// check diagonal win conditions
+	var checkDiags = function checkDiags() {
+
+	  // define vars
+	  var topLeft = gameModel.newGame.cells[0];
+	  var topRight = gameModel.newGame.cells[2];
+	  var center = gameModel.newGame.cells[4];
+	  var bottomLeft = gameModel.newGame.cells[6];
+	  var bottomRight = gameModel.newGame.cells[8];
+
+	  if (topLeft === 'X' || topLeft === 'O') {
+	    if (topLeft === center && center === bottomRight) {
+	      gameModel.winner = gameModel.currentPlayer;
+	      return true;
+	    }
+	  }
+
+	  if (topRight === 'X' || topRight === 'O') {
+	    if (topRight === center && center === bottomLeft) {
+	      gameModel.winner = gameModel.currentPlayer;
+	      return true;
+	    }
+	  }
+
+	  return false;
+	};
+
+	// check the game
+	var checkGame = function checkGame() {
+	  var gameOver = false;
+	  if (checkSame($(".row-0")) === true || checkSame($(".col-0")) === true || checkSame($(".row-1")) === true || checkSame($(".col-1")) === true || checkSame($(".row-2")) === true || checkSame($(".col-2")) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
+	    gameOver = true;
+	  }
+
+	  console.log('gameOver: ', gameOver);
+	  return gameOver;
 	};
 
 	module.exports = {
-	  gameWatcher: gameWatcher
+	  checkSame: checkSame,
+	  checkDiags: checkDiags,
+	  checkGame: checkGame
 	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 13 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resourceWatcher = function resourceWatcher(url, conf) {
-	  var token = function token(conf) {
-	    return conf && (conf = conf.Authorization) && (conf = typeof conf === 'string' && conf.split('=')) && Array.isArray(conf) && conf[1];
-	  };
+	var gameModel = __webpack_require__(7);
+	var gameApi = __webpack_require__(14);
+	var gameUi = __webpack_require__(10);
 
-	  url += '?token=' + token(conf);
-	  url += conf.timeout ? '&timeout=' + conf.timeout : '';
-	  var es = new EventSource(url); //jshint ignore: line
-	  var close = function close() {
-	    es.close();
-	  };
+	var checkCellEmpty = function checkCellEmpty(val) {
+	  if (val !== "") {
+	    console.log('Sorry! Someone already went there.');
+	    return false;
+	  } else {
+	    return true;
+	  }
+	};
 
-	  var makeHandler = function makeHandler(handler, close) {
-	    return function (e) {
-	      if (close) {
-	        close();
-	      }
+	var updateModelValues = function updateModelValues(currentSymbol, clickedCell) {
+	  gameModel.boardDict[clickedCell] = currentSymbol;
+	  var modelGameIndex = gameModel.boardTrans.indexOf(clickedCell);
+	  gameModel.newGame.cells[modelGameIndex] = currentSymbol;
+	  return modelGameIndex;
+	};
 
-	      return handler(e.data ? JSON.parse(e.data) : e);
-	    };
-	  };
-
-	  var on = function on(event, handler) {
-	    switch (event) {
-	      case 'connect':
-	        es.onopen = makeHandler(handler);
-	        break;
-	      case 'change':
-	        es.onmessage = makeHandler(handler);
-	        break;
-	      case 'error':
-	        es.onerror = makeHandler(handler, close);
-	        break;
-	      default:
-	        console.error('Unknown event type:' + event);
-	        break;
+	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
+	  var updateGameData = {
+	    "game": {
+	      "cell": {
+	        "index": modelGameIndex,
+	        "value": currentSymbol
+	      },
+	      "over": gameModel.gameOver
 	    }
 	  };
+	  console.log('updateGameData: ', updateGameData);
 
-	  return {
-	    close: close,
-	    on: on
-	  };
+	  // update game in the back end
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).fail(gameUi.failure);
+
+	  console.log('updated game object: ', gameModel.newGame);
 	};
 
 	module.exports = {
-	  resourceWatcher: resourceWatcher
+	  checkCellEmpty: checkCellEmpty,
+	  updateModelValues: updateModelValues,
+	  updateAPI: updateAPI
 	};
 
 /***/ },
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
-
-	var onChange = function onChange(data) {
-	  if (data.timeout) {
-	    //not an error
-	    this.close();
-	    return console.warn(data.timeout);
-	  } else if (data.game && data.game.cell) {
-	    var game = data.game;
-	    var cell = game.cell;
-	    $('#watch-index').val(cell.index);
-	    $('#watch-value').val(cell.value);
-	  } else {
-	    console.log(data);
-	  }
-	};
-
-	var onError = function onError(event) {
-	  console.error('an error has occurred with the stream', event);
-	};
-
-	var addHandlers = function addHandlers(newWatcher) {
-
-	  newWatcher.on('change', onChange);
-	  newWatcher.on('error', onError);
-	};
-
-	module.exports = {
-	  addHandlers: addHandlers
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
-
-	var api = __webpack_require__(16);
-	var ui = __webpack_require__(10);
-
-	var onNewGame = function onNewGame(event) {
-	  event.preventDefault();
-
-	  api.newGame().done(ui.success).then(ui.newGame).then(ui.showBoard).then(ui.updateGames).then(ui.updateFinishedGames).fail(ui.failure);
-	};
-
-	var onGetGames = function onGetGames(event) {
-	  event.preventDefault();
-
-	  api.showGames().done(ui.success).then(ui.updateGames).fail(ui.failure);
-	};
-
-	var onGetDoneGames = function onGetDoneGames(event) {
-	  event.preventDefault();
-
-	  api.showOverGames().done(ui.success).then(ui.updateFinishedGames).fail(ui.failure);
-	};
-
-	var onJoinGame = function onJoinGame(event) {
-	  event.preventDefault();
-	  var gameId = $('#game-to-join').val();
-
-	  api.joinGame(gameId).done(ui.success).then(ui.successJoin).fail(ui.failure);
-	};
-
-	var onShowGameInfo = function onShowGameInfo(event) {
-	  event.preventDefault();
-
-	  api.showGameInfo().done(ui.successShowGameInfo).fail(ui.failure);
-	};
-
-	var onShowAnyGameInfo = function onShowAnyGameInfo(event) {
-	  event.preventDefault();
-	  var gameId = $('#any-game-id').val();
-	  var authToken = $('#any-game-auth').val();
-
-	  api.show(gameId, authToken).done(ui.successShowGameInfo).fail(ui.failure);
-	};
-
-	var onPlayThisGame = function onPlayThisGame(event) {
-	  event.preventDefault();
-	  var gameId = $('#game-to-play-id').val();
-	  var authToken = $('#game-to-play-auth').val();
-
-	  api.play(gameId, authToken).done(ui.successPlayThisGame).fail(ui.failure);
-	};
-
-	var addHandlers = function addHandlers() {
-
-	  //
-	  //buttons
-	  //
-
-	  $('#new-game').on('submit', onNewGame);
-	  $('#get-games').on('submit', onGetGames);
-	  $('#get-done-games').on('submit', onGetDoneGames);
-	  $('#join-game').on('submit', onJoinGame);
-	  $('#show-this-game-info').on('submit', onShowGameInfo);
-	  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
-	  $('#play-this-game').on('submit', onPlayThisGame);
-	  $('#start-another-game').on('submit', onNewGame);
-	};
-
-	module.exports = {
-	  addHandlers: addHandlers
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -986,137 +1049,144 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	//
+	// define games objects
+	//
+
+	// create new game
+
+	var game = function game(gameData) {
+	  this.id = gameData.id;
+	  this.cells = gameData.cells;
+	  this.over = gameData.over;
+	  this.player_x = gameData.player_x;
+	  this.player_o = gameData.player_o;
+	};
+
+	module.exports = {
+	  game: game
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var watcherMaker = __webpack_require__(17);
+	var app = __webpack_require__(3);
+
+	// let gameWatcher = watcherMaker.resourceWatcher('<server>/games/:id/watch', {
+	//       Authorization: 'Token token=<token>'[,
+	//       timeout: <timeout>]
+	// });
+
+	var gameWatcher = function gameWatcher(id, authToken) {
+
+	  var gameWatcherObject = watcherMaker.resourceWatcher(app.host + '/games/' + id + '/watch', {
+	    Authorization: 'Token token=' + authToken,
+	    timeout: 30
+	  });
+
+	  return gameWatcherObject;
+	};
+
+	module.exports = {
+	  gameWatcher: gameWatcher
+	};
+
+/***/ },
 /* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var resourceWatcher = function resourceWatcher(url, conf) {
+	  var token = function token(conf) {
+	    return conf && (conf = conf.Authorization) && (conf = typeof conf === 'string' && conf.split('=')) && Array.isArray(conf) && conf[1];
+	  };
+
+	  url += '?token=' + token(conf);
+	  url += conf.timeout ? '&timeout=' + conf.timeout : '';
+	  var es = new EventSource(url); //jshint ignore: line
+	  var close = function close() {
+	    es.close();
+	  };
+
+	  var makeHandler = function makeHandler(handler, close) {
+	    return function (e) {
+	      if (close) {
+	        close();
+	      }
+
+	      return handler(e.data ? JSON.parse(e.data) : e);
+	    };
+	  };
+
+	  var on = function on(event, handler) {
+	    switch (event) {
+	      case 'connect':
+	        es.onopen = makeHandler(handler);
+	        break;
+	      case 'change':
+	        es.onmessage = makeHandler(handler);
+	        break;
+	      case 'error':
+	        es.onerror = makeHandler(handler, close);
+	        break;
+	      default:
+	        console.error('Unknown event type:' + event);
+	        break;
+	    }
+	  };
+
+	  return {
+	    close: close,
+	    on: on
+	  };
+	};
+
+	module.exports = {
+	  resourceWatcher: resourceWatcher
+	};
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	var gameModel = __webpack_require__(7);
-	var gameChecks = __webpack_require__(18);
-	var turnEffects = __webpack_require__(19);
+	var gameMoves = __webpack_require__(11);
 
-	var currentPlayer = gameModel.currentPlayer;
-	var currentSymbol = gameModel.currentSymbol;
-	var otherPlayer = gameModel.otherPlayer;
-	var otherSymbol = gameModel.otherPlayer;
-
-	var onSetCellValue = function onSetCellValue() {
-
-	  // you can only go if there is an active, non-over game
-	  // eventually maybe these variables should be combined into one
-	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
-
-	    // the clicked cell and the value of that cell
-	    var currentVal = $(this).text();
-	    var clickedCell = this.id;
-
-	    // check if the cell is empty
-	    if (!turnEffects.checkCellEmpty(currentVal)) {
-	      return false;
-	    } else {
-
-	      // set the new value using the currentSymbol
-	      $(this).text(currentSymbol);
-
-	      // update model
-	      var modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
-
-	      // update model
-	      gameModel.updateGameInfo();
-
-	      // check if the game is over
-	      gameModel.gameOver = gameChecks.checkGame();
-
-	      // update object for API
-	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
-
-	      if (gameModel.gameOver === false) {
-
-	        // swap players
-	        var NewPlayersSymbols = gameModel.swapPlayers();
-
-	        currentPlayer = NewPlayersSymbols[0];
-	        otherPlayer = NewPlayersSymbols[1];
-	        currentSymbol = NewPlayersSymbols[2];
-	        otherSymbol = NewPlayersSymbols[3];
-
-	        gameModel.currentPlayer = NewPlayersSymbols[0];
-	        gameModel.otherPlayer = NewPlayersSymbols[1];
-	        gameModel.currentSymbol = NewPlayersSymbols[2];
-	        gameModel.otherSymbol = NewPlayersSymbols[3];
-
-	        // count turn number
-	        gameModel.turnCount += 1;
-
-	        // check if game over now
-	        gameModel.gameOver = gameChecks.checkGame();
-
-	        if (gameModel.gameOver !== true) {
-	          $('#player-turn').text(currentPlayer + "'s Turn!");
-	          $('#game-update-modal').text(currentPlayer + "'s Turn!");
-	        } else if (gameModel.winner === null) {
-	          gameModel.winner = 'Tie';
-	          gameModel.winnerString = "Game over! It's a tie!";
-	          gameModel.newGame.over = true;
-
-	          $('#player-turn').text(gameModel.winnerString);
-	          $('#game-update-modal').text(gameModel.winnerString);
-	          $('#gameUpdateModal').modal('show');
-
-	          $('.table-section').hide();
-	          $('.game-over-section').show();
-	        } else {
-	          gameModel.winner = otherPlayer;
-	          gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
-	          gameModel.newGame.over = true;
-
-	          $('#player-turn').text(gameModel.winnerString);
-	          $('#game-update-modal').text(gameModel.winnerString);
-	          $('#gameUpdateModal').modal('show');
-
-	          $('.table-section').hide();
-	          $('.game-over-section').show();
-	        }
-	      } else {
-	        if (gameModel.turnCount < gameModel.maxTurnCount) {
-	          gameModel.winner = currentPlayer;
-	          gameModel.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
-	          gameModel.newGame.over = true;
-	        } else {
-	          gameModel.winner = null;
-	          gameModel.winnerString = "Game over! It's a tie!";
-	          gameModel.newGame.over = true;
-	        }
-
-	        console.log('The game is over! Start a new game!');
-	        $('#player-turn').text(gameModel.winnerString);
-	        $('#game-update-modal').text(gameModel.winnerString);
-	        $('#gameUpdateModal').modal('show');
-
-	        $('.table-section').hide();
-	        $('.game-over-section').show();
-	      }
-	    }
-	  } else if (gameModel.gameOver === true) {
-
-	    console.log('The game is over! Start a new game!');
-	    $('.table-section').hide();
-
-	    $('#player-turn').text('Game over! Start a new Game!');
-	    $('#game-update-modal').text('Game over! Start a new Game!');
-
-	    $('.game-over-section').show();
-	  } else if (gameModel.activeGame === false) {
-	    console.log('You need to activate or start a game!');
+	var onChange = function onChange(data) {
+	  if (data.timeout) {
+	    //not an error
+	    this.close();
+	    return console.warn(data.timeout);
+	  } else if (data.game && data.game.cell) {
+	    var game = data.game;
+	    var cell = game.cell;
+	    $('#watch-index').val(cell.index);
+	    $('#watch-value').val(cell.value);
+	    gameMoves.redrawBoard();
 	  } else {
-	    console.log('There is a weird error with gameOver');
+	    console.log(data);
 	  }
-
-	  return true;
 	};
 
-	var addHandlers = function addHandlers() {
-	  $('.cell').on('click', onSetCellValue);
+	var onError = function onError(event) {
+	  console.error('an error has occurred with the stream', event);
+	};
+
+	var addHandlers = function addHandlers(newWatcher) {
+
+	  newWatcher.on('change', onChange);
+	  newWatcher.on('error', onError);
 	};
 
 	module.exports = {
@@ -1125,130 +1195,81 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	// imports
+	var api = __webpack_require__(14);
+	var ui = __webpack_require__(10);
 
-	var gameModel = __webpack_require__(7);
+	var onNewGame = function onNewGame(event) {
+	  event.preventDefault();
 
-	// check whether dict values are the same
-	// the keys have to be 0, 1, 2 etc.
-	// this is based on matching the format we get from jQuery
-	var checkSame = function checkSame(dict) {
-	  var checkVal = $(dict[0]).text();
-
-	  if (checkVal === "") {
-
-	    return false;
-	  } else {
-
-	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
-	      if ($(dict[i]).text() !== checkVal) {
-	        return false;
-	      }
-	    }
-	  }
-	  gameModel.winner = gameModel.currentPlayer;
-	  return true;
+	  api.newGame().done(ui.success).then(ui.newGame).then(ui.showBoard).then(ui.updateGames).then(ui.updateFinishedGames).fail(ui.failure);
 	};
 
-	// check diagonal win conditions
-	var checkDiags = function checkDiags() {
+	var onGetGames = function onGetGames(event) {
+	  event.preventDefault();
 
-	  // define vars
-	  var topLeft = gameModel.newGame.cells[0];
-	  var topRight = gameModel.newGame.cells[2];
-	  var center = gameModel.newGame.cells[4];
-	  var bottomLeft = gameModel.newGame.cells[6];
-	  var bottomRight = gameModel.newGame.cells[8];
-
-	  if (topLeft === 'X' || topLeft === 'O') {
-	    if (topLeft === center && center === bottomRight) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      return true;
-	    }
-	  }
-
-	  if (topRight === 'X' || topRight === 'O') {
-	    if (topRight === center && center === bottomLeft) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      return true;
-	    }
-	  }
-
-	  return false;
+	  api.showGames().done(ui.success).then(ui.updateGames).fail(ui.failure);
 	};
 
-	// check the game
-	var checkGame = function checkGame() {
-	  var gameOver = false;
-	  if (checkSame($(".row-0")) === true || checkSame($(".col-0")) === true || checkSame($(".row-1")) === true || checkSame($(".col-1")) === true || checkSame($(".row-2")) === true || checkSame($(".col-2")) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
-	    gameOver = true;
-	  }
+	var onGetDoneGames = function onGetDoneGames(event) {
+	  event.preventDefault();
 
-	  console.log('gameOver: ', gameOver);
-	  return gameOver;
+	  api.showOverGames().done(ui.success).then(ui.updateFinishedGames).fail(ui.failure);
+	};
+
+	var onJoinGame = function onJoinGame(event) {
+	  event.preventDefault();
+	  var gameId = $('#game-to-join').val();
+
+	  api.joinGame(gameId).done(ui.success).then(ui.successJoin).fail(ui.failure);
+	};
+
+	var onShowGameInfo = function onShowGameInfo(event) {
+	  event.preventDefault();
+
+	  api.showGameInfo().done(ui.successShowGameInfo).fail(ui.failure);
+	};
+
+	var onShowAnyGameInfo = function onShowAnyGameInfo(event) {
+	  event.preventDefault();
+	  var gameId = $('#any-game-id').val();
+	  var authToken = $('#any-game-auth').val();
+
+	  api.show(gameId, authToken).done(ui.successShowGameInfo).fail(ui.failure);
+	};
+
+	var onPlayThisGame = function onPlayThisGame(event) {
+	  event.preventDefault();
+	  var gameId = $('#game-to-play-id').val();
+	  var authToken = $('#game-to-play-auth').val();
+
+	  api.play(gameId, authToken).done(ui.successPlayThisGame).fail(ui.failure);
+	};
+
+	var addHandlers = function addHandlers() {
+
+	  //
+	  //buttons
+	  //
+
+	  $('#new-game').on('submit', onNewGame);
+	  $('#get-games').on('submit', onGetGames);
+	  $('#get-done-games').on('submit', onGetDoneGames);
+	  $('#join-game').on('submit', onJoinGame);
+	  $('#show-this-game-info').on('submit', onShowGameInfo);
+	  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
+	  $('#play-this-game').on('submit', onPlayThisGame);
+	  $('#start-another-game').on('submit', onNewGame);
 	};
 
 	module.exports = {
-	  checkSame: checkSame,
-	  checkDiags: checkDiags,
-	  checkGame: checkGame
+	  addHandlers: addHandlers
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var gameModel = __webpack_require__(7);
-	var gameApi = __webpack_require__(16);
-	var gameUi = __webpack_require__(10);
-
-	var checkCellEmpty = function checkCellEmpty(val) {
-	  if (val !== "") {
-	    console.log('Sorry! Someone already went there.');
-	    return false;
-	  } else {
-	    return true;
-	  }
-	};
-
-	var updateModelValues = function updateModelValues(currentSymbol, clickedCell) {
-	  gameModel.boardDict[clickedCell] = currentSymbol;
-	  var modelGameIndex = gameModel.boardTrans.indexOf(clickedCell);
-	  gameModel.newGame.cells[modelGameIndex] = currentSymbol;
-	  return modelGameIndex;
-	};
-
-	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
-	  var updateGameData = {
-	    "game": {
-	      "cell": {
-	        "index": modelGameIndex,
-	        "value": currentSymbol
-	      },
-	      "over": gameModel.gameOver
-	    }
-	  };
-	  console.log('updateGameData: ', updateGameData);
-
-	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).fail(gameUi.failure);
-
-	  console.log('updated game object: ', gameModel.newGame);
-	};
-
-	module.exports = {
-	  checkCellEmpty: checkCellEmpty,
-	  updateModelValues: updateModelValues,
-	  updateAPI: updateAPI
-	};
 
 /***/ },
 /* 20 */
@@ -1258,8 +1279,8 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var gameModel = __webpack_require__(7);
-	var gameWatcherMaker = __webpack_require__(12);
-	var gameWatcherAttachHandler = __webpack_require__(14);
+	var gameWatcherMaker = __webpack_require__(16);
+	var gameWatcherAttachHandler = __webpack_require__(18);
 
 	var onWatchGame = function onWatchGame(event) {
 	  event.preventDefault();

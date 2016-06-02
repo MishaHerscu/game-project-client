@@ -2,6 +2,7 @@
 
 const app = require('../../app.js');
 const gameModel = require('../../game/gameModel.js');
+const gameMoves = require('../../game/gameMoves.js');
 const games = require('../../game/games.js');
 const gameWatcherMaker = require('../../watch/make-watcher.js');
 const gameWatcherAttachHandler = require('../../watch/watcher-event-handlers.js');
@@ -127,9 +128,7 @@ const newGame = function(data){
   $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
   // update grid
-  for(let i = 0, max = gameModel.newGame.cells.length; i < max; i++){
-    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
-  }
+  gameMoves.redrawBoard();
 
   // update game info
   gameModel.updateGameInfo();

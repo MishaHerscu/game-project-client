@@ -10,6 +10,24 @@ let otherPlayer = gameModel.otherPlayer;
 let otherSymbol = gameModel.otherPlayer;
 
 
+const redrawBoard = function(){
+
+  // set variables
+  let max = gameModel.newGame.cells.length;
+
+  // update model
+  for(let i = 0; i < max; i++){
+    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
+  }
+
+  // update board
+  for(let i = 0; i < max; i++){
+    $(gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
+  }
+
+  return true;
+};
+
 const onSetCellValue = function(){
 
   // you can only go if there is an active, non-over game
@@ -138,5 +156,6 @@ const addHandlers = () => {
 
 
 module.exports = {
+  redrawBoard,
   addHandlers,
 };
