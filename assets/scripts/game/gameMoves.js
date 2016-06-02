@@ -17,18 +17,21 @@ const redrawBoard = function(){
     return false;
   }
 
+  console.log('redraw function, after check, so newGame.cells isn\t null');
+
   // set variables
   let max = gameModel.newGame.cells.length;
 
-  // update model
-  for(let i = 0; i < max; i++){
-    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
-  }
+  console.log('redraw function, max: ', max);
+
+  console.log('redraw function, newGame: ', gameModel.newGame);
 
   // update board
   for(let i = 0; i < max; i++){
-    $(gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
+    $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
   }
+
+  console.log('redraw function, board should have updated by now');
 
   return true;
 };

@@ -661,18 +661,21 @@ webpackJsonp([0],[
 	    return false;
 	  }
 
+	  console.log('redraw function, after check, so newGame.cells isn\t null');
+
 	  // set variables
 	  var max = gameModel.newGame.cells.length;
 
-	  // update model
-	  for (var i = 0; i < max; i++) {
-	    gameModel.boardDict[gameModel.boardTrans[i]] = gameModel.newGame.cells[i];
-	  }
+	  console.log('redraw function, max: ', max);
+
+	  console.log('redraw function, newGame: ', gameModel.newGame);
 
 	  // update board
-	  for (var _i = 0; _i < max; _i++) {
-	    $(gameModel.boardTrans[_i]).text(gameModel.newGame.cells[_i]);
+	  for (var i = 0; i < max; i++) {
+	    $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
 	  }
+
+	  console.log('redraw function, board should have updated by now');
 
 	  return true;
 	};
@@ -1173,9 +1176,10 @@ webpackJsonp([0],[
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	var gameMoves = __webpack_require__(11);
+	var gameModel = __webpack_require__(7);
 
 	var onChange = function onChange(data) {
 	  if (data.timeout) {
@@ -1185,8 +1189,12 @@ webpackJsonp([0],[
 	  } else if (data.game && data.game.cell) {
 	    var game = data.game;
 	    var cell = game.cell;
-	    $('#watch-index').val(cell.index);
-	    $('#watch-value').val(cell.value);
+	    // $('#watch-index').val(cell.index);
+	    // $('#watch-value').val(cell.value);
+
+	    gameModel.newGame.cells[cell.index] = cell.value;
+
+	    // redraw Board
 	    gameMoves.redrawBoard();
 	  } else {
 	    console.log(data);
@@ -1206,7 +1214,6 @@ webpackJsonp([0],[
 	module.exports = {
 	  addHandlers: addHandlers
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 19 */
@@ -1304,9 +1311,6 @@ webpackJsonp([0],[
 
 	  // make watcher
 	  var watcher = gameWatcherMaker.gameWatcher(gameId, app.user.token);
-
-	  // // set up model version of watched game
-	  // gameModel.watchGame = watcher.game;
 
 	  // attach handlers to watcher
 	  gameWatcherAttachHandler.addHandlers(watcher);

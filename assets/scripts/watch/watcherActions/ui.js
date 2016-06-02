@@ -30,6 +30,10 @@ const successWatch = function(data){
 
   let newWatcher = gameWatcherMaker.gameWatcher(gameModel.watchGame.id, app.user.token);
   gameWatcherAttachHandler.addHandlers(newWatcher);
+
+  // redraw Board
+  gameMoves.redrawBoard();
+  
 };
 
 module.exports = {
