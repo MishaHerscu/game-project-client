@@ -2,7 +2,7 @@
 
 const onChange = function(data){
   if (data.timeout) { //not an error
-    $('#game-watcher').close();
+    this.close();
     return console.warn(data.timeout);
   } else if (data.game && data.game.cell) {
     let game = data.game;

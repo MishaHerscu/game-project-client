@@ -733,7 +733,7 @@ webpackJsonp([0],[
 	var onChange = function onChange(data) {
 	  if (data.timeout) {
 	    //not an error
-	    $('#game-watcher').close();
+	    this.close();
 	    return console.warn(data.timeout);
 	  } else if (data.game && data.game.cell) {
 	    var game = data.game;
