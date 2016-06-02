@@ -81,18 +81,18 @@ webpackJsonp([0],[
 	var getFormFields = __webpack_require__(5);
 	var api = __webpack_require__(6);
 	var ui = __webpack_require__(9);
-	var gameLogic = __webpack_require__(7);
+	var gameModel = __webpack_require__(7);
 	var gameChecks = __webpack_require__(11);
 	var turnEffects = __webpack_require__(12);
 
-	var currentPlayer = gameLogic.currentPlayer;
-	var currentSymbol = gameLogic.currentSymbol;
-	var otherPlayer = gameLogic.otherPlayer;
-	var otherSymbol = gameLogic.otherPlayer;
+	var currentPlayer = gameModel.currentPlayer;
+	var currentSymbol = gameModel.currentSymbol;
+	var otherPlayer = gameModel.otherPlayer;
+	var otherSymbol = gameModel.otherPlayer;
 
 	var onSignUp = function onSignUp(event) {
 	  event.preventDefault();
-	  gameLogic.activeGame = false;
+	  gameModel.activeGame = false;
 
 	  var data = getFormFields(event.target);
 	  api.signUp(data).done(ui.success).then(ui.signUpSuccess).fail(ui.failure);
@@ -100,7 +100,7 @@ webpackJsonp([0],[
 
 	var onSignIn = function onSignIn(event) {
 	  event.preventDefault();
-	  gameLogic.activeGame = false;
+	  gameModel.activeGame = false;
 
 	  var data = getFormFields(event.target);
 	  api.signIn(data).done(ui.signInSuccess).then(ui.showBoard).fail(ui.failure);
@@ -108,7 +108,7 @@ webpackJsonp([0],[
 
 	var onSignOut = function onSignOut(event) {
 	  event.preventDefault();
-	  gameLogic.activeGame = false;
+	  gameModel.activeGame = false;
 
 	  api.signOut().done(ui.success).then(ui.signOutSuccess).fail(ui.failure);
 	};
@@ -172,7 +172,7 @@ webpackJsonp([0],[
 
 	  // you can only go if there is an active, non-over game
 	  // eventually maybe these variables should be combined into one
-	  if (gameLogic.gameOver === false && gameLogic.activeGame === true) {
+	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
 
 	    // the clicked cell and the value of that cell
 	    var currentVal = $(this).text();
@@ -190,82 +190,82 @@ webpackJsonp([0],[
 	      var modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
 
 	      // update model
-	      gameLogic.updateGameInfo();
+	      gameModel.updateGameInfo();
 
 	      // update object for API
 	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
 
 	      // check if the game is over
-	      gameLogic.gameOver = gameChecks.checkGame();
+	      gameModel.gameOver = gameChecks.checkGame();
 
-	      if (gameLogic.gameOver === false) {
+	      if (gameModel.gameOver === false) {
 
 	        // swap players
-	        var NewPlayersSymbols = gameLogic.swapPlayers();
+	        var NewPlayersSymbols = gameModel.swapPlayers();
 
 	        currentPlayer = NewPlayersSymbols[0];
 	        otherPlayer = NewPlayersSymbols[1];
 	        currentSymbol = NewPlayersSymbols[2];
 	        otherSymbol = NewPlayersSymbols[3];
 
-	        gameLogic.currentPlayer = NewPlayersSymbols[0];
-	        gameLogic.otherPlayer = NewPlayersSymbols[1];
-	        gameLogic.currentSymbol = NewPlayersSymbols[2];
-	        gameLogic.otherSymbol = NewPlayersSymbols[3];
+	        gameModel.currentPlayer = NewPlayersSymbols[0];
+	        gameModel.otherPlayer = NewPlayersSymbols[1];
+	        gameModel.currentSymbol = NewPlayersSymbols[2];
+	        gameModel.otherSymbol = NewPlayersSymbols[3];
 
 	        // count turn number
-	        gameLogic.turnCount += 1;
+	        gameModel.turnCount += 1;
 
 	        // check if game over now
-	        gameLogic.gameOver = gameChecks.checkGame();
+	        gameModel.gameOver = gameChecks.checkGame();
 
-	        if (gameLogic.gameOver !== true) {
+	        if (gameModel.gameOver !== true) {
 	          $('#player-turn').text(currentPlayer + "'s Turn!");
 	          $('#game-update-modal').text(currentPlayer + "'s Turn!");
-	        } else if (gameLogic.winner === null) {
-	          gameLogic.winner = 'Tie';
-	          gameLogic.winnerString = "Game over! It's a tie!";
-	          gameLogic.newGame.over = true;
+	        } else if (gameModel.winner === null) {
+	          gameModel.winner = 'Tie';
+	          gameModel.winnerString = "Game over! It's a tie!";
+	          gameModel.newGame.over = true;
 
-	          $('#player-turn').text(gameLogic.winnerString);
-	          $('#game-update-modal').text(gameLogic.winnerString);
+	          $('#player-turn').text(gameModel.winnerString);
+	          $('#game-update-modal').text(gameModel.winnerString);
 	          $('#gameUpdateModal').modal('show');
 
 	          $('.table-section').hide();
 	          $('.game-over-section').show();
 	        } else {
-	          gameLogic.winner = otherPlayer;
-	          gameLogic.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
-	          gameLogic.newGame.over = true;
+	          gameModel.winner = otherPlayer;
+	          gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+	          gameModel.newGame.over = true;
 
-	          $('#player-turn').text(gameLogic.winnerString);
-	          $('#game-update-modal').text(gameLogic.winnerString);
+	          $('#player-turn').text(gameModel.winnerString);
+	          $('#game-update-modal').text(gameModel.winnerString);
 	          $('#gameUpdateModal').modal('show');
 
 	          $('.table-section').hide();
 	          $('.game-over-section').show();
 	        }
 	      } else {
-	        if (gameLogic.turnCount < gameLogic.maxTurnCount) {
-	          gameLogic.winner = currentPlayer;
-	          gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
-	          gameLogic.newGame.over = true;
+	        if (gameModel.turnCount < gameModel.maxTurnCount) {
+	          gameModel.winner = currentPlayer;
+	          gameModel.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+	          gameModel.newGame.over = true;
 	        } else {
-	          gameLogic.winner = null;
-	          gameLogic.winnerString = "Game over! It's a tie!";
-	          gameLogic.newGame.over = true;
+	          gameModel.winner = null;
+	          gameModel.winnerString = "Game over! It's a tie!";
+	          gameModel.newGame.over = true;
 	        }
 
 	        console.log('The game is over! Start a new game!');
-	        $('#player-turn').text(gameLogic.winnerString);
-	        $('#game-update-modal').text(gameLogic.winnerString);
+	        $('#player-turn').text(gameModel.winnerString);
+	        $('#game-update-modal').text(gameModel.winnerString);
 	        $('#gameUpdateModal').modal('show');
 
 	        $('.table-section').hide();
 	        $('.game-over-section').show();
 	      }
 	    }
-	  } else if (gameLogic.gameOver === true) {
+	  } else if (gameModel.gameOver === true) {
 
 	    console.log('The game is over! Start a new game!');
 	    $('.table-section').hide();
@@ -274,7 +274,7 @@ webpackJsonp([0],[
 	    $('#game-update-modal').text('Game over! Start a new Game!');
 
 	    $('.game-over-section').show();
-	  } else if (gameLogic.activeGame === false) {
+	  } else if (gameModel.activeGame === false) {
 	    console.log('You need to activate or start a game!');
 	  } else {
 	    console.log('There is a weird error with gameOver');
@@ -389,7 +389,7 @@ webpackJsonp([0],[
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var app = __webpack_require__(3);
-	var gameLogic = __webpack_require__(7);
+	var gameModel = __webpack_require__(7);
 
 	// create new user
 	var signUp = function signUp(data) {
@@ -461,7 +461,7 @@ webpackJsonp([0],[
 
 	var showGameInfo = function showGameInfo() {
 	  return $.ajax({
-	    url: app.host + '/games/' + gameLogic.newGame.id,
+	    url: app.host + '/games/' + gameModel.newGame.id,
 	    method: 'GET',
 	    headers: {
 	      Authorization: 'Token token=' + app.user.token
@@ -520,11 +520,11 @@ webpackJsonp([0],[
 
 	// update game on the back end with each move
 	var updateGame = function updateGame(data) {
-	  var id = gameLogic.newGame.id;
+	  var id = gameModel.newGame.id;
 
 	  console.log("data, id: ", data, id);
 	  console.log(_typeof(app.user.token));
-	  console.log(_typeof(gameLogic.newGame.id));
+	  console.log(_typeof(gameModel.newGame.id));
 
 	  return $.ajax({
 	    url: app.host + '/games/' + id,
@@ -538,7 +538,7 @@ webpackJsonp([0],[
 
 	// watch a game (streaming, requires wrapper)
 	var watchGame = function watchGame(gameId, authToken) {
-	  var id = gameLogic.newGame.id;
+	  var id = gameModel.newGame.id;
 
 	  console.log("watched id: ", id);
 
@@ -701,9 +701,15 @@ webpackJsonp([0],[
 	  Player_O: "O"
 	};
 
+	var altSymbols = {
+	  Player_X: "X",
+	  Player_O: "O"
+	};
+
 	module.exports = {
 	  symbols: symbols,
-	  players: players
+	  players: players,
+	  altSymbols: altSymbols
 	};
 
 /***/ },
@@ -713,7 +719,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameLogic = __webpack_require__(7);
+	var gameModel = __webpack_require__(7);
 	var games = __webpack_require__(10);
 
 	var success = function success(data) {
@@ -815,39 +821,39 @@ webpackJsonp([0],[
 	var successPlayThisGame = function successPlayThisGame(data) {
 	  var gameObject = data.game;
 	  console.log(gameObject);
-	  gameLogic.newGame = gameObject;
+	  gameModel.newGame = gameObject;
 	};
 
 	var newGame = function newGame(data) {
 
 	  // data about new game
 	  var gameData = data.game;
-	  gameLogic.turnCount = 0;
-	  gameLogic.winner = null;
-	  gameLogic.winnerString = '';
+	  gameModel.turnCount = 0;
+	  gameModel.winner = null;
+	  gameModel.winnerString = '';
 
 	  $('.table-section').hide();
 	  $('.hideable').hide();
 	  $('.game-over-section').hide();
 
 	  // instantiate new game
-	  gameLogic.newGame = new games.game(gameData);
+	  gameModel.newGame = new games.game(gameData);
 
-	  gameLogic.gameOver = gameLogic.newGame.over;
-	  gameLogic.activeGame = true;
-	  // gameLogic.currentPlayer = gameLogic.newGame.player_x;
-	  // gameLogic.otherPlayer = gameLogic.newGame.player_o;
-	  gameLogic.currentPlayer = gameLogic.players[0];
-	  gameLogic.otherPlayer = gameLogic.players[1];
-	  gameLogic.currentSymbol = gameLogic.symbols[gameLogic.currentPlayer];
-	  gameLogic.otherSymbol = gameLogic.symbols[gameLogic.otherPlayer];
+	  gameModel.gameOver = gameModel.newGame.over;
+	  gameModel.activeGame = true;
+	  // gameModel.currentPlayer = gameModel.newGame.player_x;
+	  // gameModel.otherPlayer = gameModel.newGame.player_o;
+	  gameModel.currentPlayer = gameModel.players[0];
+	  gameModel.otherPlayer = gameModel.players[1];
+	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
+	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 
-	  $('#player-turn').text(gameLogic.currentPlayer + "'s Turn!");
-	  $('#game-update-modal').text(gameLogic.currentPlayer + "'s Turn!");
+	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
 	  $('.cell').text('');
 
-	  gameLogic.updateGameInfo();
+	  gameModel.updateGameInfo();
 
 	  $('.table-section').show();
 	  $('.hideable').show();
@@ -903,7 +909,7 @@ webpackJsonp([0],[
 
 	// imports
 
-	var gameLogic = __webpack_require__(7);
+	var gameModel = __webpack_require__(7);
 
 	// check whether dict values are the same
 	// the keys have to be 0, 1, 2 etc.
@@ -916,13 +922,13 @@ webpackJsonp([0],[
 	    return false;
 	  } else {
 
-	    for (var i = 0, max = gameLogic.gameSize; i < max; i++) {
+	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
 	      if ($(dict[i]).text() !== checkVal) {
 	        return false;
 	      }
 	    }
 	  }
-	  gameLogic.winner = gameLogic.currentPlayer;
+	  gameModel.winner = gameModel.currentPlayer;
 	  return true;
 	};
 
@@ -930,22 +936,22 @@ webpackJsonp([0],[
 	var checkDiags = function checkDiags() {
 
 	  // define vars
-	  var topLeft = gameLogic.newGame.cells[0];
-	  var topRight = gameLogic.newGame.cells[2];
-	  var center = gameLogic.newGame.cells[4];
-	  var bottomLeft = gameLogic.newGame.cells[6];
-	  var bottomRight = gameLogic.newGame.cells[8];
+	  var topLeft = gameModel.newGame.cells[0];
+	  var topRight = gameModel.newGame.cells[2];
+	  var center = gameModel.newGame.cells[4];
+	  var bottomLeft = gameModel.newGame.cells[6];
+	  var bottomRight = gameModel.newGame.cells[8];
 
 	  if (topLeft === 'X' || topLeft === 'O') {
 	    if (topLeft === center && center === bottomRight) {
-	      gameLogic.winner = gameLogic.currentPlayer;
+	      gameModel.winner = gameModel.currentPlayer;
 	      return true;
 	    }
 	  }
 
 	  if (topRight === 'X' || topRight === 'O') {
 	    if (topRight === center && center === bottomLeft) {
-	      gameLogic.winner = gameLogic.currentPlayer;
+	      gameModel.winner = gameModel.currentPlayer;
 	      return true;
 	    }
 	  }
@@ -956,7 +962,7 @@ webpackJsonp([0],[
 	// check the game
 	var checkGame = function checkGame() {
 	  var gameOver = false;
-	  if (checkSame($(".row-0")) === true || checkSame($(".col-0")) === true || checkSame($(".row-1")) === true || checkSame($(".col-1")) === true || checkSame($(".row-2")) === true || checkSame($(".col-2")) === true || checkDiags() === true || gameLogic.turnCount === gameLogic.maxTurnCount) {
+	  if (checkSame($(".row-0")) === true || checkSame($(".col-0")) === true || checkSame($(".row-1")) === true || checkSame($(".col-1")) === true || checkSame($(".row-2")) === true || checkSame($(".col-2")) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
 	    gameOver = true;
 	  }
 
@@ -977,7 +983,7 @@ webpackJsonp([0],[
 
 	'use strict';
 
-	var gameLogic = __webpack_require__(7);
+	var gameModel = __webpack_require__(7);
 	var api = __webpack_require__(6);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
@@ -990,9 +996,9 @@ webpackJsonp([0],[
 	};
 
 	var updateModelValues = function updateModelValues(currentSymbol, clickedCell) {
-	  gameLogic.boardDict[clickedCell] = currentSymbol;
-	  var modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
-	  gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
+	  gameModel.boardDict[clickedCell] = currentSymbol;
+	  var modelGameIndex = gameModel.boardTrans.indexOf(clickedCell);
+	  gameModel.newGame.cells[modelGameIndex] = currentSymbol;
 	  return modelGameIndex;
 	};
 
@@ -1003,14 +1009,14 @@ webpackJsonp([0],[
 	        "index": modelGameIndex,
 	        "value": currentSymbol
 	      },
-	      "over": gameLogic.gameOver
+	      "over": gameModel.gameOver
 	    }
 	  };
 	  console.log('updateGameData: ', updateGameData);
 
 	  // update game in the back end
 	  api.updateGame(updateGameData);
-	  console.log('updated game object: ', gameLogic.newGame);
+	  console.log('updated game object: ', gameModel.newGame);
 	};
 
 	module.exports = {
