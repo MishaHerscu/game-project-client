@@ -776,6 +776,7 @@ webpackJsonp([0],[
 
 	var successJoin = function successJoin(data) {
 	  gameModel.newGame = data.game;
+	  $('#show-this-game-info').submit();
 	};
 
 	var updateGames = function updateGames(data) {

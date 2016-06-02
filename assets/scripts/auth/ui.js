@@ -62,6 +62,7 @@ const hideBoard = function(){
 
 const successJoin = function(data){
   gameModel.newGame = data.game;
+  $('#show-this-game-info').submit();
 };
 
 const updateGames = function(data){
