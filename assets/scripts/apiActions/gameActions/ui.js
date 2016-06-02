@@ -1,8 +1,8 @@
 'use strict';
 
-const app = require('../app.js');
-const gameModel = require('../game/gameModel.js');
-const games = require('../game/games.js');
+const app = require('../../app.js');
+const gameModel = require('../../game/gameModel.js');
+const games = require('../../game/games.js');
 
 const success = function(data){
   if(data){
@@ -12,43 +12,8 @@ const success = function(data){
   }
 };
 
-const signUpSuccess = function(){
-  $('#sign-in-email').val($('#sign-up-email').val());
-  $('#sign-in-pw').val($('#sign-up-pw').val());
-  $('#sign-in').submit();
-  $('#signUpModal').modal('hide');
-
-};
-
 const failure = function(error){
   console.error(error);
-};
-
-const signInSuccess = function(data){
-  app.user = data.user;
-  $('.not-signed-in').hide();
-  $('#auth-token-td').text(app.user.token);
-  $('#any-game-auth').val(app.user.token);
-  $('#game-to-play-auth').val(app.user.token);
-  $('#signInModal').modal('hide');
-  $('#gameUpdateModal').modal('hide');
-
-  console.log('app: ', app);
-};
-
-const changePasswordSuccess = function(){
-  $('#changePWModal').modal('hide');
-};
-
-const signOutSuccess = function(){
-  app.user = null;
-  console.log('app: ', app);
-  $('.not-signed-in').show();
-  $('.table-section').hide();
-  $('.hideable').hide();
-  $('#signInModal').modal('hide');
-  $('#signUpModal').modal('hide');
-  $('#gameUpdateModal').modal('hide');
 };
 
 const showBoard = function(){
@@ -58,11 +23,6 @@ const showBoard = function(){
 const hideBoard = function(){
   $('.table-section').hide();
   $('.hideable').hide();
-};
-
-const successJoin = function(data){
-  gameModel.newGame = data.game;
-  $('#show-this-game-info').submit();
 };
 
 const updateGames = function(data){
@@ -104,6 +64,12 @@ const successShowGameInfo = function(data){
   }else{
     $("#player-o-data").text(gameObject.player_o.email);
   }
+};
+
+const successJoin = function(data){
+  gameModel.newGame = data.game;
+  $('#show-this-game-info').submit();
+  gameModel.activeGame = true;
 };
 
 const successPlayThisGame = function(data){
@@ -149,18 +115,14 @@ const newGame = function(data){
 };
 
 module.exports = {
-  failure,
   success,
-  signInSuccess,
-  changePasswordSuccess,
-  signOutSuccess,
+  failure,
   showBoard,
   hideBoard,
   updateGames,
   updateFinishedGames,
   successShowGameInfo,
-  newGame,
-  successPlayThisGame,
-  signUpSuccess,
   successJoin,
+  successPlayThisGame,
+  newGame,
 };

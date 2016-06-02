@@ -1,7 +1,7 @@
 'use strict';
 
 const gameModel = require('./gameModel');
-const api = require('../auth/api');
+const gameApi = require('../apiActions/gameActions/api');
 
 const checkCellEmpty = function(val){
   if(val !== ""){
@@ -32,7 +32,7 @@ const updateAPI = function(modelGameIndex,currentSymbol){
   console.log('updateGameData: ', updateGameData);
 
   // update game in the back end
-  api.updateGame(updateGameData);
+  gameApi.updateGame(updateGameData);
   console.log('updated game object: ', gameModel.newGame);
 };
 
