@@ -506,19 +506,15 @@ webpackJsonp([0],[
 	// join game
 	var joinGame = function joinGame(gameId, authToken) {
 
-	  var id = Number(gameId);
-
 	  console.log("gameId, authToken: ", gameId, authToken);
-	  console.log(typeof authToken === 'undefined' ? 'undefined' : _typeof(authToken));
-	  console.log(typeof id === 'undefined' ? 'undefined' : _typeof(id));
 
 	  return $.ajax({
-	    url: app.host + '/games/' + id,
+	    url: app.host + '/games/' + gameId,
 	    method: 'PATCH',
 	    headers: {
 	      Authorization: 'Token token=' + authToken
 	    },
-	    data: ''
+	    data: {}
 	  });
 	};
 
