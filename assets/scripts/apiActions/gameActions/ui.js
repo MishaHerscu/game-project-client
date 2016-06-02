@@ -138,6 +138,10 @@ const newGame = function(data){
   $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
   $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
+  // watch for updates
+  $('#game-to-watch').val(gameModel.newGame.id);
+  $('#watch-game').submit();
+
   // update grid
   gameMoves.redrawBoard();
 

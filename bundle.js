@@ -612,6 +612,10 @@ webpackJsonp([0],[
 	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
 	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
+	  // watch for updates
+	  $('#game-to-watch').val(gameModel.newGame.id);
+	  $('#watch-game').submit();
+
 	  // update grid
 	  gameMoves.redrawBoard();
 
@@ -1324,7 +1328,6 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(7);
 	var gameWatcherMaker = __webpack_require__(16);
 	var gameWatcherAttachHandler = __webpack_require__(18);
 

@@ -1,7 +1,6 @@
 'use strict';
 
 const app = require('../../app.js');
-const gameModel = require('../../game/gameModel.js');
 const gameWatcherMaker = require('../make-watcher.js');
 const gameWatcherAttachHandler = require('../watcher-event-handlers.js');
 
