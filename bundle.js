@@ -303,14 +303,6 @@ webpackJsonp([0],[
 	  player_o: null
 	};
 
-	var watchGame = {
-	  id: null,
-	  cells: null,
-	  over: null,
-	  player_x: null,
-	  player_o: null
-	};
-
 	var boardDict = {
 	  'cell-00': '',
 	  'cell-01': '',
@@ -372,7 +364,6 @@ webpackJsonp([0],[
 	  symbols: symbols,
 	  players: players,
 	  newGame: newGame,
-	  watchGame: watchGame,
 	  boardDict: boardDict,
 	  activeGame: activeGame,
 	  gameOver: gameOver,
