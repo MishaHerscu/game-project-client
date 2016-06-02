@@ -36,6 +36,10 @@ const signInSuccess = function(data){
   console.log('app: ', app);
 };
 
+const changePasswordSuccess = function(){
+  $('#changePWModal').modal('hide');
+}
+
 const signOutSuccess = function(){
   app.user = null;
   console.log('app: ', app);
@@ -144,6 +148,7 @@ module.exports = {
   failure,
   success,
   signInSuccess,
+  changePasswordSuccess,
   signOutSuccess,
   showBoard,
   hideBoard,

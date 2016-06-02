@@ -10,7 +10,7 @@
 
     <body class="container-fluid">
 
-      <nav class="navbar" id="top-nav-bar">
+      <nav class="navbar navbar-fixed-top" id="top-nav-bar">
 
         <span class="navbar-brand">
           <a href=".">Tic Tac Toe</a>
@@ -24,34 +24,21 @@
           <input type="submit" class="modal-button btn-lg" data-toggle="modal" data-target="#signInModal" value="Sign In!">
         </span>
 
+        <span class="modal-button-container hideable">
+          <input type="submit" class="modal-button btn-lg" data-toggle="modal" data-target="#changePWModal" value="Change Password">
+        </span>
+
+        <span>
+          <input id="sign-out" class="modal-button btn-lg hideable" type="submit" name="submit" value="Sign out!">
+        </span>
+
       </nav>
-
-
 
       <div>
         <h1 id="page-title" class="not-signed-in">Tic Tac Toe</h1>
       </div>
 
-      <div id="user-options">
-
-        <form id="sign-out" class="hideable">
-          <fieldset>
-            <legend>Sign out!</legend>
-            <input type="submit" name="submit" value="Sign out!">
-          </fieldset>
-        </form>
-
-        <form id="change-password" class="hideable">
-          <fieldset>
-            <legend>Change Password</legend>
-            <input type="text" name="passwords[old]" placeholder="old password">
-            <input type="text" name="passwords[new]" placeholder="new password">
-            <input type="submit" name="submit" value="Change Password">
-          </fieldset>
-        </form>
-      </div>
-
-      <br><br>
+      <br>
 
       <div class="hideable">
         <h2>Player Stats</h2>
@@ -282,6 +269,37 @@
                       <input type="password" name="credentials[password]" placeholder="password" id="sign-in-pw">
                       <br>
                       <input type="submit" name="submit" value="Sign in!">
+                  </form>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Change Password Modal -->
+          <div id="changePWModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Change Password</h4>
+                </div>
+
+                <div class="modal-body">
+
+                  <form id="change-password">
+                      <input type="text" name="passwords[old]" placeholder="old password">
+                      <input type="text" name="passwords[new]" placeholder="new password">
+                      <input type="submit" name="submit" value="Change Password">
                   </form>
 
                 </div>

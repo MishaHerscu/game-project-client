@@ -50,6 +50,7 @@ const onChangePassword = function(event){
 
   api.changePassword(data)
   .done(ui.changePasswordSuccess)
+  .then(ui.success)
   .then(ui.showBoard)
   .fail(ui.failure);
 
@@ -256,7 +257,6 @@ const addHandlers = () => {
 
   $('#sign-up').on('submit', onSignUp);
   $('#sign-in').on('submit', onSignIn);
-  $('#sign-out').on('submit', onSignOut);
   $('#change-password').on('submit', onChangePassword);
   $('#new-game').on('submit', onNewGame);
   $('#get-games').on('submit', onGetGames);
@@ -265,6 +265,9 @@ const addHandlers = () => {
   $('#show-this-game-info').on('submit', onShowGameInfo);
   $('#show-any-game-info').on('submit', onShowAnyGameInfo);
   $('#play-this-game').on('submit', onPlayThisGame);
+
+  // note click since not in a form
+  $('#sign-out').on('click', onSignOut);
 
   //
   // table cells

@@ -143,8 +143,13 @@ a {
   color: $paper-white;
   margin-left: 0%;
   margin-right: 0%;
+  opacity: 0%;
   text-align: center;
   width: 33.333%;
+}
+
+.navbar-fixed-top {
+  opacity: 0%;
 }
 
 .modal-button-container {
