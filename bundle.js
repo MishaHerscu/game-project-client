@@ -489,6 +489,9 @@ webpackJsonp([0],[
 	  } else {
 	    console.log('GREAT SUCCESS!!!!!');
 	  }
+
+	  // redraw Board
+	  gameMoves.redrawBoard();
 	};
 
 	var failure = function failure(error) {
@@ -547,6 +550,9 @@ webpackJsonp([0],[
 	  } else {
 	    $("#player-o-data").text(gameObject.player_o.email);
 	  }
+
+	  // redraw Board
+	  gameMoves.redrawBoard();
 	};
 
 	var successJoin = function successJoin(data) {
@@ -557,6 +563,9 @@ webpackJsonp([0],[
 
 	  var newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
 	  gameWatcherAttachHandler.addHandlers(newWatcher);
+
+	  // redraw Board
+	  gameMoves.redrawBoard();
 	};
 
 	var successPlayThisGame = function successPlayThisGame(data) {

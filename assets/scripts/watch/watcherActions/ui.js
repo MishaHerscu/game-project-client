@@ -4,6 +4,7 @@ const app = require('../../app.js');
 const gameModel = require('../../../game/gameModel.js');
 const gameWatcherMaker = require('../make-watcher.js');
 const gameWatcherAttachHandler = require('../watcher-event-handlers.js');
+const gameMoves = require('../../game/gameMoves.js');
 
 const success = function(data){
   if(data){
@@ -11,6 +12,10 @@ const success = function(data){
   }else{
     console.log('GREAT SUCCESS!!!!!');
   }
+
+  // redraw Board
+  gameMoves.redrawBoard();
+
 };
 
 const failure = function(error){

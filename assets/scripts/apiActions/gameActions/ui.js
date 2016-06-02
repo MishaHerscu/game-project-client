@@ -13,6 +13,10 @@ const success = function(data){
   }else{
     console.log('GREAT SUCCESS!!!!!');
   }
+
+  // redraw Board
+  gameMoves.redrawBoard();
+
 };
 
 const failure = function(error){
@@ -71,6 +75,10 @@ const successShowGameInfo = function(data){
   }else{
     $("#player-o-data").text(gameObject.player_o.email);
   }
+
+  // redraw Board
+  gameMoves.redrawBoard();
+
 };
 
 const successJoin = function(data){
@@ -81,6 +89,10 @@ const successJoin = function(data){
 
   let newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
   gameWatcherAttachHandler.addHandlers(newWatcher);
+
+  // redraw Board
+  gameMoves.redrawBoard();
+
 };
 
 const successPlayThisGame = function(data){

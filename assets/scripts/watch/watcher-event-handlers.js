@@ -1,6 +1,6 @@
 'use strict';
 
-const gameMoves = require('../game/gameMoves');
+const gameMoves = require('../game/gameMoves.js');
 
 const onChange = function(data){
   if (data.timeout) { //not an error
