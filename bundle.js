@@ -512,6 +512,10 @@ webpackJsonp([0],[
 	  $('.hideable').hide();
 	};
 
+	var successMove = function successMove() {
+	  $('#show-this-game-info').submit();
+	};
+
 	var updateGames = function updateGames(data) {
 
 	  // set objects
@@ -556,6 +560,7 @@ webpackJsonp([0],[
 	var successJoin = function successJoin(data) {
 	  gameModel.newGame = data.game;
 	  $('#show-this-game-info').submit();
+
 	  gameModel.activeGame = true;
 
 	  var newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
@@ -608,6 +613,7 @@ webpackJsonp([0],[
 	  failure: failure,
 	  showBoard: showBoard,
 	  hideBoard: hideBoard,
+	  successMove: successMove,
 	  updateGames: updateGames,
 	  updateFinishedGames: updateFinishedGames,
 	  successShowGameInfo: successShowGameInfo,
@@ -1010,11 +1016,11 @@ webpackJsonp([0],[
 	      // update model
 	      gameModel.updateGameInfo();
 
-	      // update object for API
-	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
-
 	      // check if the game is over
 	      gameModel.gameOver = gameChecks.checkGame();
+
+	      // update object for API
+	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
 
 	      if (gameModel.gameOver === false) {
 
@@ -1194,6 +1200,7 @@ webpackJsonp([0],[
 
 	var gameModel = __webpack_require__(7);
 	var gameApi = __webpack_require__(16);
+	var gameUi = __webpack_require__(10);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
@@ -1224,7 +1231,8 @@ webpackJsonp([0],[
 	  console.log('updateGameData: ', updateGameData);
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).fail(gameUi.failure);
+
 	  console.log('updated game object: ', gameModel.newGame);
 	};
 
