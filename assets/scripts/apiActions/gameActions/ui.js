@@ -3,6 +3,8 @@
 const app = require('../../app.js');
 const gameModel = require('../../game/gameModel.js');
 const games = require('../../game/games.js');
+const gameWatcherMaker = require('../../watch/make-watcher.js');
+const gameWatcherAttachHandler = require('../../watch/watcher-event-handlers.js');
 
 const success = function(data){
   if(data){
@@ -70,6 +72,9 @@ const successJoin = function(data){
   gameModel.newGame = data.game;
   $('#show-this-game-info').submit();
   gameModel.activeGame = true;
+
+  let newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
+  gameWatcherAttachHandler.addHandlers(newWatcher);
 };
 
 const successPlayThisGame = function(data){
