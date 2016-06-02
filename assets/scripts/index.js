@@ -16,9 +16,11 @@ app.finished_games = [];
 
 const authEvents = require('./apiActions/userActions/events.js');
 const gameEvents = require('./apiActions/gameActions/events.js');
+const gameMoves = require('./game/gameMoves.js');
 
 // On document ready
 $(() => {
   authEvents.addHandlers();
   gameEvents.addHandlers();
+  gameMoves.addHandlers();
 });
