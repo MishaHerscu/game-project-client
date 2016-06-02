@@ -299,6 +299,7 @@ webpackJsonp([0],[
 	  $('#show-this-game-info').on('submit', onShowGameInfo);
 	  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
 	  $('#play-this-game').on('submit', onPlayThisGame);
+	  $('#start-another-game').on('submit', onNewGame);
 
 	  // note click since not in a form
 	  $('#sign-out').on('click', onSignOut);
@@ -835,6 +836,7 @@ webpackJsonp([0],[
 	  $('.table-section').hide();
 	  $('.hideable').hide();
 	  $('.game-over-section').hide();
+	  $('#gameUpdateModal').modal('hide');
 
 	  // instantiate new game
 	  gameModel.newGame = new games.game(gameData);
