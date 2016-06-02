@@ -1262,8 +1262,8 @@ webpackJsonp([0],[
 	  // make watcher
 	  var watcher = gameWatcherMaker.gameWatcher(gameId, app.user.token);
 
-	  // set up model version of watched game
-	  gameModel.watchGame = watcher.game;
+	  // // set up model version of watched game
+	  // gameModel.watchGame = watcher.game;
 
 	  // attach handlers to watcher
 	  gameWatcherAttachHandler.addHandlers(watcher);
