@@ -34,6 +34,14 @@ let newGame = {
   player_o: null,
 };
 
+let watchGame = {
+  id: null,
+  cells: null,
+  over: null,
+  player_x: null,
+  player_o: null,
+};
+
 let boardDict = {
   'cell-00': '',
   'cell-01': '',
@@ -107,6 +115,7 @@ module.exports = {
   symbols,
   players,
   newGame,
+  watchGame,
   boardDict,
   activeGame,
   gameOver,

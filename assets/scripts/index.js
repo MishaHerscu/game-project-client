@@ -17,10 +17,12 @@ app.finished_games = [];
 const authEvents = require('./apiActions/userActions/events.js');
 const gameEvents = require('./apiActions/gameActions/events.js');
 const gameMoves = require('./game/gameMoves.js');
+const watchEvents = require('./watch/watcherActions/events');
 
 // On document ready
 $(() => {
   authEvents.addHandlers();
   gameEvents.addHandlers();
   gameMoves.addHandlers();
+  watchEvents.addHandlers();
 });
