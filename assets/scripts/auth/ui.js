@@ -118,6 +118,7 @@ const newGame = function(data){
   $('.table-section').hide();
   $('.hideable').hide();
   $('.game-over-section').hide();
+  $('#gameUpdateModal').modal('hide');
 
   // instantiate new game
   gameModel.newGame = new games.game(gameData);

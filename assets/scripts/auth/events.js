@@ -265,6 +265,7 @@ const addHandlers = () => {
   $('#show-this-game-info').on('submit', onShowGameInfo);
   $('#show-any-game-info').on('submit', onShowAnyGameInfo);
   $('#play-this-game').on('submit', onPlayThisGame);
+  $('#start-another-game').on('submit', onNewGame);
 
   // note click since not in a form
   $('#sign-out').on('click', onSignOut);
