@@ -27,6 +27,10 @@ const hideBoard = function(){
   $('.hideable').hide();
 };
 
+const successMove = function(){
+  $('#show-this-game-info').submit();
+};
+
 const updateGames = function(data){
 
   // set objects
@@ -71,6 +75,7 @@ const successShowGameInfo = function(data){
 const successJoin = function(data){
   gameModel.newGame = data.game;
   $('#show-this-game-info').submit();
+
   gameModel.activeGame = true;
 
   let newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
@@ -124,6 +129,7 @@ module.exports = {
   failure,
   showBoard,
   hideBoard,
+  successMove,
   updateGames,
   updateFinishedGames,
   successShowGameInfo,

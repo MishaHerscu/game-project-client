@@ -2,6 +2,8 @@
 
 const gameModel = require('./gameModel');
 const gameApi = require('../apiActions/gameActions/api');
+const gameUi = require('../apiActions/gameActions/ui');
+
 
 const checkCellEmpty = function(val){
   if(val !== ""){
@@ -32,7 +34,10 @@ const updateAPI = function(modelGameIndex,currentSymbol){
   console.log('updateGameData: ', updateGameData);
 
   // update game in the back end
-  gameApi.updateGame(updateGameData);
+  gameApi.updateGame(updateGameData)
+  .done(gameUi.successMove)
+  .fail(gameUi.failure);
+
   console.log('updated game object: ', gameModel.newGame);
 };
 

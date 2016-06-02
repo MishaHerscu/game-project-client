@@ -34,11 +34,11 @@ const onSetCellValue = function(){
       // update model
       gameModel.updateGameInfo();
 
-      // update object for API
-      turnEffects.updateAPI(modelGameIndex, currentSymbol);
-
       // check if the game is over
       gameModel.gameOver = gameChecks.checkGame();
+
+      // update object for API
+      turnEffects.updateAPI(modelGameIndex, currentSymbol);
 
       if(gameModel.gameOver === false){
 
