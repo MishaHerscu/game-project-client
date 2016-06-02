@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../app.js');
-const gameLogic = require('../game/gameLogic');
+const gameModel = require('../game/gameModel');
 
 // create new user
 const signUp = function(data){
@@ -73,7 +73,7 @@ const play = function(gameId, authToken){
 
 const showGameInfo = function(){
   return $.ajax({
-    url: app.host + '/games/' + gameLogic.newGame.id,
+    url: app.host + '/games/' + gameModel.newGame.id,
     method: 'GET',
     headers: {
       Authorization: 'Token token=' + app.user.token,
@@ -132,11 +132,11 @@ const joinGame = function(gameId, authToken){
 
 // update game on the back end with each move
 const updateGame = function(data){
-  let id = gameLogic.newGame.id;
+  let id = gameModel.newGame.id;
 
   console.log("data, id: ", data, id);
   console.log(typeof app.user.token);
-  console.log(typeof gameLogic.newGame.id);
+  console.log(typeof gameModel.newGame.id);
 
   return $.ajax({
     url: app.host + '/games/' + id,
@@ -150,7 +150,7 @@ const updateGame = function(data){
 
 // watch a game (streaming, requires wrapper)
 const watchGame = function(gameId, authToken){
-  let id = gameLogic.newGame.id;
+  let id = gameModel.newGame.id;
 
   console.log("watched id: ", id);
 

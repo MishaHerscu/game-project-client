@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../app.js');
-const gameLogic = require('../game/gameLogic.js');
+const gameModel = require('../game/gameModel.js');
 const games = require('../game/games.js');
 
 const success = function(data){
@@ -38,7 +38,7 @@ const signInSuccess = function(data){
 
 const changePasswordSuccess = function(){
   $('#changePWModal').modal('hide');
-}
+};
 
 const signOutSuccess = function(){
   app.user = null;
@@ -104,39 +104,39 @@ const successShowGameInfo = function(data){
 const successPlayThisGame = function(data){
   let gameObject = data.game;
   console.log(gameObject);
-  gameLogic.newGame = gameObject;
+  gameModel.newGame = gameObject;
 };
 
 const newGame = function(data){
 
   // data about new game
   let gameData = data.game;
-  gameLogic.turnCount = 0;
-  gameLogic.winner = null;
-  gameLogic.winnerString = '';
+  gameModel.turnCount = 0;
+  gameModel.winner = null;
+  gameModel.winnerString = '';
 
   $('.table-section').hide();
   $('.hideable').hide();
   $('.game-over-section').hide();
 
   // instantiate new game
-  gameLogic.newGame = new games.game(gameData);
+  gameModel.newGame = new games.game(gameData);
 
-  gameLogic.gameOver = gameLogic.newGame.over;
-  gameLogic.activeGame = true;
-  // gameLogic.currentPlayer = gameLogic.newGame.player_x;
-  // gameLogic.otherPlayer = gameLogic.newGame.player_o;
-  gameLogic.currentPlayer = gameLogic.players[0];
-  gameLogic.otherPlayer = gameLogic.players[1];
-  gameLogic.currentSymbol = gameLogic.symbols[gameLogic.currentPlayer];
-  gameLogic.otherSymbol = gameLogic.symbols[gameLogic.otherPlayer];
+  gameModel.gameOver = gameModel.newGame.over;
+  gameModel.activeGame = true;
+  // gameModel.currentPlayer = gameModel.newGame.player_x;
+  // gameModel.otherPlayer = gameModel.newGame.player_o;
+  gameModel.currentPlayer = gameModel.players[0];
+  gameModel.otherPlayer = gameModel.players[1];
+  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
+  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 
-  $('#player-turn').text(gameLogic.currentPlayer + "'s Turn!");
-  $('#game-update-modal').text(gameLogic.currentPlayer + "'s Turn!");
+  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
   $('.cell').text('');
 
-  gameLogic.updateGameInfo();
+  gameModel.updateGameInfo();
 
   $('.table-section').show();
   $('.hideable').show();

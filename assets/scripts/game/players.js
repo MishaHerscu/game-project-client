@@ -11,7 +11,13 @@ let symbols = {
   Player_O: "O",
 };
 
+let altSymbols = {
+  Player_X: "X",
+  Player_O: "O",
+};
+
 module.exports = {
   symbols,
   players,
+  altSymbols
 };

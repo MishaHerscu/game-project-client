@@ -3,18 +3,18 @@
 const getFormFields = require('../../../lib/get-form-fields');
 const api = require('./api');
 const ui = require('./ui');
-const gameLogic = require('../game/gameLogic');
+const gameModel = require('../game/gameModel');
 const gameChecks = require('../game/gameChecks');
 const turnEffects = require('../game/turnEffects');
 
-let currentPlayer = gameLogic.currentPlayer;
-let currentSymbol = gameLogic.currentSymbol;
-let otherPlayer = gameLogic.otherPlayer;
-let otherSymbol = gameLogic.otherPlayer;
+let currentPlayer = gameModel.currentPlayer;
+let currentSymbol = gameModel.currentSymbol;
+let otherPlayer = gameModel.otherPlayer;
+let otherSymbol = gameModel.otherPlayer;
 
 const onSignUp = function(event){
   event.preventDefault();
-  gameLogic.activeGame = false;
+  gameModel.activeGame = false;
 
   let data = getFormFields(event.target);
   api.signUp(data)
@@ -25,7 +25,7 @@ const onSignUp = function(event){
 
 const onSignIn = function(event){
   event.preventDefault();
-  gameLogic.activeGame = false;
+  gameModel.activeGame = false;
 
   let data = getFormFields(event.target);
   api.signIn(data)
@@ -36,7 +36,7 @@ const onSignIn = function(event){
 
 const onSignOut = function(event){
   event.preventDefault();
-  gameLogic.activeGame = false;
+  gameModel.activeGame = false;
 
   api.signOut()
   .done(ui.success)
@@ -131,7 +131,7 @@ const onSetCellValue = function(){
 
   // you can only go if there is an active, non-over game
   // eventually maybe these variables should be combined into one
-  if(gameLogic.gameOver === false && gameLogic.activeGame === true){
+  if(gameModel.gameOver === false && gameModel.activeGame === true){
 
     // the clicked cell and the value of that cell
     let currentVal = $(this).text();
@@ -149,58 +149,58 @@ const onSetCellValue = function(){
       let modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
 
       // update model
-      gameLogic.updateGameInfo();
+      gameModel.updateGameInfo();
 
       // update object for API
       turnEffects.updateAPI(modelGameIndex, currentSymbol);
 
       // check if the game is over
-      gameLogic.gameOver = gameChecks.checkGame();
+      gameModel.gameOver = gameChecks.checkGame();
 
-      if(gameLogic.gameOver === false){
+      if(gameModel.gameOver === false){
 
         // swap players
-        let NewPlayersSymbols = gameLogic.swapPlayers();
+        let NewPlayersSymbols = gameModel.swapPlayers();
 
         currentPlayer = NewPlayersSymbols[0];
         otherPlayer = NewPlayersSymbols[1];
         currentSymbol = NewPlayersSymbols[2];
         otherSymbol  = NewPlayersSymbols[3];
 
-        gameLogic.currentPlayer = NewPlayersSymbols[0];
-        gameLogic.otherPlayer = NewPlayersSymbols[1];
-        gameLogic.currentSymbol = NewPlayersSymbols[2];
-        gameLogic.otherSymbol  = NewPlayersSymbols[3];
+        gameModel.currentPlayer = NewPlayersSymbols[0];
+        gameModel.otherPlayer = NewPlayersSymbols[1];
+        gameModel.currentSymbol = NewPlayersSymbols[2];
+        gameModel.otherSymbol  = NewPlayersSymbols[3];
 
         // count turn number
-        gameLogic.turnCount += 1;
+        gameModel.turnCount += 1;
 
         // check if game over now
-        gameLogic.gameOver = gameChecks.checkGame();
+        gameModel.gameOver = gameChecks.checkGame();
 
-        if(gameLogic.gameOver !== true){
+        if(gameModel.gameOver !== true){
           $('#player-turn').text(currentPlayer + "'s Turn!");
           $('#game-update-modal').text(currentPlayer + "'s Turn!");
 
-        } else if (gameLogic.winner === null){
-          gameLogic.winner = 'Tie';
-          gameLogic.winnerString = "Game over! It's a tie!";
-          gameLogic.newGame.over = true;
+        } else if (gameModel.winner === null){
+          gameModel.winner = 'Tie';
+          gameModel.winnerString = "Game over! It's a tie!";
+          gameModel.newGame.over = true;
 
-          $('#player-turn').text(gameLogic.winnerString);
-          $('#game-update-modal').text(gameLogic.winnerString);
+          $('#player-turn').text(gameModel.winnerString);
+          $('#game-update-modal').text(gameModel.winnerString);
           $('#gameUpdateModal').modal('show');
 
           $('.table-section').hide();
           $('.game-over-section').show();
 
         } else {
-          gameLogic.winner = otherPlayer;
-          gameLogic.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
-          gameLogic.newGame.over = true;
+          gameModel.winner = otherPlayer;
+          gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+          gameModel.newGame.over = true;
 
-          $('#player-turn').text(gameLogic.winnerString);
-          $('#game-update-modal').text(gameLogic.winnerString);
+          $('#player-turn').text(gameModel.winnerString);
+          $('#game-update-modal').text(gameModel.winnerString);
           $('#gameUpdateModal').modal('show');
 
           $('.table-section').hide();
@@ -209,19 +209,19 @@ const onSetCellValue = function(){
         }
 
       } else{
-        if(gameLogic.turnCount < gameLogic.maxTurnCount){
-          gameLogic.winner = currentPlayer;
-          gameLogic.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
-          gameLogic.newGame.over = true;
+        if(gameModel.turnCount < gameModel.maxTurnCount){
+          gameModel.winner = currentPlayer;
+          gameModel.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+          gameModel.newGame.over = true;
         } else {
-          gameLogic.winner = null;
-          gameLogic.winnerString = "Game over! It's a tie!";
-          gameLogic.newGame.over = true;
+          gameModel.winner = null;
+          gameModel.winnerString = "Game over! It's a tie!";
+          gameModel.newGame.over = true;
         }
 
         console.log('The game is over! Start a new game!');
-        $('#player-turn').text(gameLogic.winnerString);
-        $('#game-update-modal').text(gameLogic.winnerString);
+        $('#player-turn').text(gameModel.winnerString);
+        $('#game-update-modal').text(gameModel.winnerString);
         $('#gameUpdateModal').modal('show');
 
         $('.table-section').hide();
@@ -229,7 +229,7 @@ const onSetCellValue = function(){
 
       }
     }
-  } else if (gameLogic.gameOver === true){
+  } else if (gameModel.gameOver === true){
 
     console.log('The game is over! Start a new game!');
     $('.table-section').hide();
@@ -239,7 +239,7 @@ const onSetCellValue = function(){
 
     $('.game-over-section').show();
 
-  } else if(gameLogic.activeGame === false){
+  } else if(gameModel.activeGame === false){
     console.log('You need to activate or start a game!');
 
   } else {

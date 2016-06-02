@@ -1,7 +1,7 @@
 'use strict';
 
 // imports
-const gameLogic = require('./gameLogic.js');
+const gameModel = require('./gameModel.js');
 
 // check whether dict values are the same
 // the keys have to be 0, 1, 2 etc.
@@ -15,13 +15,13 @@ const checkSame = function(dict){
 
   }else{
 
-    for(let i = 0, max = gameLogic.gameSize; i < max; i++){
+    for(let i = 0, max = gameModel.gameSize; i < max; i++){
       if($(dict[i]).text() !== checkVal){
         return false;
       }
     }
   }
-  gameLogic.winner = gameLogic.currentPlayer;
+  gameModel.winner = gameModel.currentPlayer;
   return true;
 };
 
@@ -29,22 +29,22 @@ const checkSame = function(dict){
 const checkDiags = function(){
 
   // define vars
-  let topLeft = gameLogic.newGame.cells[0];
-  let topRight = gameLogic.newGame.cells[2];
-  let center = gameLogic.newGame.cells[4];
-  let bottomLeft = gameLogic.newGame.cells[6];
-  let bottomRight = gameLogic.newGame.cells[8];
+  let topLeft = gameModel.newGame.cells[0];
+  let topRight = gameModel.newGame.cells[2];
+  let center = gameModel.newGame.cells[4];
+  let bottomLeft = gameModel.newGame.cells[6];
+  let bottomRight = gameModel.newGame.cells[8];
 
   if(topLeft === 'X' || topLeft === 'O'){
     if(topLeft === center && center === bottomRight){
-      gameLogic.winner = gameLogic.currentPlayer;
+      gameModel.winner = gameModel.currentPlayer;
       return true;
     }
   }
 
   if(topRight === 'X' || topRight === 'O'){
     if(topRight === center && center === bottomLeft){
-      gameLogic.winner = gameLogic.currentPlayer;
+      gameModel.winner = gameModel.currentPlayer;
       return true;
     }
   }
@@ -64,7 +64,7 @@ const checkGame = function(){
     checkSame($(".row-2")) === true ||
     checkSame($(".col-2")) === true ||
     checkDiags() === true ||
-    gameLogic.turnCount === gameLogic.maxTurnCount
+    gameModel.turnCount === gameModel.maxTurnCount
   ){
     gameOver = true;
   }

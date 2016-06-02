@@ -1,6 +1,6 @@
 'use strict';
 
-const gameLogic = require('./gameLogic');
+const gameModel = require('./gameModel');
 const api = require('../auth/api');
 
 const checkCellEmpty = function(val){
@@ -13,9 +13,9 @@ const checkCellEmpty = function(val){
 };
 
 const updateModelValues = function(currentSymbol, clickedCell){
-  gameLogic.boardDict[clickedCell] = currentSymbol;
-  let modelGameIndex = gameLogic.boardTrans.indexOf(clickedCell);
-  gameLogic.newGame.cells[modelGameIndex] = currentSymbol;
+  gameModel.boardDict[clickedCell] = currentSymbol;
+  let modelGameIndex = gameModel.boardTrans.indexOf(clickedCell);
+  gameModel.newGame.cells[modelGameIndex] = currentSymbol;
   return modelGameIndex;
 };
 
@@ -26,14 +26,14 @@ const updateAPI = function(modelGameIndex,currentSymbol){
         "index": modelGameIndex,
         "value": currentSymbol
       },
-      "over": gameLogic.gameOver
+      "over": gameModel.gameOver
     }
   };
   console.log('updateGameData: ', updateGameData);
 
   // update game in the back end
   api.updateGame(updateGameData);
-  console.log('updated game object: ', gameLogic.newGame);
+  console.log('updated game object: ', gameModel.newGame);
 };
 
 module.exports = {
