@@ -3,6 +3,7 @@
 const getFormFields = require('../../../../lib/get-form-fields');
 const api = require('./api');
 const ui = require('./ui');
+const gameUi = require('../gameActions/ui');
 const gameModel = require('../../game/gameModel');
 
 const onSignUp = function(event){
@@ -23,7 +24,7 @@ const onSignIn = function(event){
   let data = getFormFields(event.target);
   api.signIn(data)
   .done(ui.signInSuccess)
-  .then(ui.showBoard)
+  .then(gameUi.showBoard)
   .fail(ui.failure);
 };
 
@@ -44,7 +45,7 @@ const onChangePassword = function(event){
   api.changePassword(data)
   .done(ui.changePasswordSuccess)
   .then(ui.success)
-  .then(ui.showBoard)
+  .then(gameUi.showBoard)
   .fail(ui.failure);
 
 };

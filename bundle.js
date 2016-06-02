@@ -44,7 +44,7 @@ webpackJsonp([0],[
 	app.finished_games = [];
 
 	var authEvents = __webpack_require__(4);
-	var gameEvents = __webpack_require__(10);
+	var gameEvents = __webpack_require__(12);
 
 	// On document ready
 	$(function () {
@@ -83,6 +83,7 @@ webpackJsonp([0],[
 	var getFormFields = __webpack_require__(5);
 	var api = __webpack_require__(6);
 	var ui = __webpack_require__(9);
+	var gameUi = __webpack_require__(10);
 	var gameModel = __webpack_require__(7);
 
 	var onSignUp = function onSignUp(event) {
@@ -98,7 +99,7 @@ webpackJsonp([0],[
 	  gameModel.activeGame = false;
 
 	  var data = getFormFields(event.target);
-	  api.signIn(data).done(ui.signInSuccess).then(ui.showBoard).fail(ui.failure);
+	  api.signIn(data).done(ui.signInSuccess).then(gameUi.showBoard).fail(ui.failure);
 	};
 
 	var onSignOut = function onSignOut(event) {
@@ -112,7 +113,7 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  var data = getFormFields(event.target);
 
-	  api.changePassword(data).done(ui.changePasswordSuccess).then(ui.success).then(ui.showBoard).fail(ui.failure);
+	  api.changePassword(data).done(ui.changePasswordSuccess).then(ui.success).then(gameUi.showBoard).fail(ui.failure);
 	};
 
 	var addHandlers = function addHandlers() {
@@ -477,8 +478,165 @@ webpackJsonp([0],[
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	var api = __webpack_require__(11);
-	var ui = __webpack_require__(12);
+	var app = __webpack_require__(3);
+	var gameModel = __webpack_require__(7);
+	var games = __webpack_require__(11);
+
+	var success = function success(data) {
+	  if (data) {
+	    console.log(data);
+	  } else {
+	    console.log('GREAT SUCCESS!!!!!');
+	  }
+	};
+
+	var failure = function failure(error) {
+	  console.error(error);
+	};
+
+	var showBoard = function showBoard() {
+	  $('.hideable').show();
+	};
+
+	var hideBoard = function hideBoard() {
+	  $('.table-section').hide();
+	  $('.hideable').hide();
+	};
+
+	var updateGames = function updateGames(data) {
+
+	  // set objects
+	  if (data !== undefined && data.games !== undefined) {
+	    app.games = data.games;
+	    $('#stats-player-id').text(app.user.id);
+	    $('#stats-games').text(app.games.length);
+	    $('#stats-finished-games').text(app.finished_games.length);
+	  }
+	};
+
+	var updateFinishedGames = function updateFinishedGames(data) {
+
+	  // set objects
+	  if (data !== undefined && data.games !== undefined) {
+	    app.finished_games = data.games;
+	    $('#stats-player-id').text(app.user.id);
+	    $('#stats-games').text(app.games.length);
+	    $('#stats-finished-games').text(app.finished_games.length);
+	  }
+	};
+
+	var successShowGameInfo = function successShowGameInfo(data) {
+	  var gameObject = data.game;
+	  console.log(gameObject);
+	  $("#game-id-data").text(gameObject.id);
+	  $("#game-cells-data").text(gameObject.cells);
+	  $("#game-over-data").text(gameObject.over);
+
+	  if (gameObject.player_x === null) {
+	    $("#player-x-data").text("N/A");
+	  } else {
+	    $("#player-x-data").text(gameObject.player_x.email);
+	  }
+	  if (gameObject.player_o === null) {
+	    $("#player-o-data").text("N/A");
+	  } else {
+	    $("#player-o-data").text(gameObject.player_o.email);
+	  }
+	};
+
+	var successJoin = function successJoin(data) {
+	  gameModel.newGame = data.game;
+	  $('#show-this-game-info').submit();
+	  gameModel.activeGame = true;
+	};
+
+	var successPlayThisGame = function successPlayThisGame(data) {
+	  gameModel.newGame = data.game;
+	};
+
+	var newGame = function newGame(data) {
+
+	  // data about new game
+	  var gameData = data.game;
+	  gameModel.turnCount = 0;
+	  gameModel.winner = null;
+	  gameModel.winnerString = '';
+
+	  $('.table-section').hide();
+	  $('.hideable').hide();
+	  $('.game-over-section').hide();
+	  $('#gameUpdateModal').modal('hide');
+
+	  // instantiate new game
+	  gameModel.newGame = new games.game(gameData);
+
+	  gameModel.gameOver = gameModel.newGame.over;
+	  gameModel.activeGame = true;
+	  // gameModel.currentPlayer = gameModel.newGame.player_x;
+	  // gameModel.otherPlayer = gameModel.newGame.player_o;
+	  gameModel.currentPlayer = gameModel.players[0];
+	  gameModel.otherPlayer = gameModel.players[1];
+	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
+	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+
+	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+
+	  $('.cell').text('');
+
+	  gameModel.updateGameInfo();
+
+	  $('.table-section').show();
+	  $('.hideable').show();
+	  $('.not-signed-in').hide();
+	};
+
+	module.exports = {
+	  success: success,
+	  failure: failure,
+	  showBoard: showBoard,
+	  hideBoard: hideBoard,
+	  updateGames: updateGames,
+	  updateFinishedGames: updateFinishedGames,
+	  successShowGameInfo: successShowGameInfo,
+	  successJoin: successJoin,
+	  successPlayThisGame: successPlayThisGame,
+	  newGame: newGame
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	//
+	// define games objects
+	//
+
+	// create new game
+
+	var game = function game(gameData) {
+	  this.id = gameData.id;
+	  this.cells = gameData.cells;
+	  this.over = gameData.over;
+	  this.player_x = gameData.player_x;
+	  this.player_o = gameData.player_o;
+	};
+
+	module.exports = {
+	  game: game
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+
+	var api = __webpack_require__(13);
+	var ui = __webpack_require__(10);
 	var gameModel = __webpack_require__(7);
 	var gameChecks = __webpack_require__(14);
 	var turnEffects = __webpack_require__(15);
@@ -678,7 +836,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -812,163 +970,6 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
-
-	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(7);
-	var games = __webpack_require__(13);
-
-	var success = function success(data) {
-	  if (data) {
-	    console.log(data);
-	  } else {
-	    console.log('GREAT SUCCESS!!!!!');
-	  }
-	};
-
-	var failure = function failure(error) {
-	  console.error(error);
-	};
-
-	var showBoard = function showBoard() {
-	  $('.hideable').show();
-	};
-
-	var hideBoard = function hideBoard() {
-	  $('.table-section').hide();
-	  $('.hideable').hide();
-	};
-
-	var updateGames = function updateGames(data) {
-
-	  // set objects
-	  if (data !== undefined && data.games !== undefined) {
-	    app.games = data.games;
-	    $('#stats-player-id').text(app.user.id);
-	    $('#stats-games').text(app.games.length);
-	    $('#stats-finished-games').text(app.finished_games.length);
-	  }
-	};
-
-	var updateFinishedGames = function updateFinishedGames(data) {
-
-	  // set objects
-	  if (data !== undefined && data.games !== undefined) {
-	    app.finished_games = data.games;
-	    $('#stats-player-id').text(app.user.id);
-	    $('#stats-games').text(app.games.length);
-	    $('#stats-finished-games').text(app.finished_games.length);
-	  }
-	};
-
-	var successShowGameInfo = function successShowGameInfo(data) {
-	  var gameObject = data.game;
-	  console.log(gameObject);
-	  $("#game-id-data").text(gameObject.id);
-	  $("#game-cells-data").text(gameObject.cells);
-	  $("#game-over-data").text(gameObject.over);
-
-	  if (gameObject.player_x === null) {
-	    $("#player-x-data").text("N/A");
-	  } else {
-	    $("#player-x-data").text(gameObject.player_x.email);
-	  }
-	  if (gameObject.player_o === null) {
-	    $("#player-o-data").text("N/A");
-	  } else {
-	    $("#player-o-data").text(gameObject.player_o.email);
-	  }
-	};
-
-	var successJoin = function successJoin(data) {
-	  gameModel.newGame = data.game;
-	  $('#show-this-game-info').submit();
-	  gameModel.activeGame = true;
-	};
-
-	var successPlayThisGame = function successPlayThisGame(data) {
-	  gameModel.newGame = data.game;
-	};
-
-	var newGame = function newGame(data) {
-
-	  // data about new game
-	  var gameData = data.game;
-	  gameModel.turnCount = 0;
-	  gameModel.winner = null;
-	  gameModel.winnerString = '';
-
-	  $('.table-section').hide();
-	  $('.hideable').hide();
-	  $('.game-over-section').hide();
-	  $('#gameUpdateModal').modal('hide');
-
-	  // instantiate new game
-	  gameModel.newGame = new games.game(gameData);
-
-	  gameModel.gameOver = gameModel.newGame.over;
-	  gameModel.activeGame = true;
-	  // gameModel.currentPlayer = gameModel.newGame.player_x;
-	  // gameModel.otherPlayer = gameModel.newGame.player_o;
-	  gameModel.currentPlayer = gameModel.players[0];
-	  gameModel.otherPlayer = gameModel.players[1];
-	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
-	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
-
-	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
-
-	  $('.cell').text('');
-
-	  gameModel.updateGameInfo();
-
-	  $('.table-section').show();
-	  $('.hideable').show();
-	  $('.not-signed-in').hide();
-	};
-
-	module.exports = {
-	  success: success,
-	  failure: failure,
-	  showBoard: showBoard,
-	  hideBoard: hideBoard,
-	  updateGames: updateGames,
-	  updateFinishedGames: updateFinishedGames,
-	  successShowGameInfo: successShowGameInfo,
-	  successJoin: successJoin,
-	  successPlayThisGame: successPlayThisGame,
-	  newGame: newGame
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	//
-	// define games objects
-	//
-
-	// create new game
-
-	var game = function game(gameData) {
-	  this.id = gameData.id;
-	  this.cells = gameData.cells;
-	  this.over = gameData.over;
-	  this.player_x = gameData.player_x;
-	  this.player_o = gameData.player_o;
-	};
-
-	module.exports = {
-	  game: game
-	};
-
-/***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1051,7 +1052,7 @@ webpackJsonp([0],[
 	'use strict';
 
 	var gameModel = __webpack_require__(7);
-	var gameApi = __webpack_require__(11);
+	var gameApi = __webpack_require__(13);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
