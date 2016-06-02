@@ -2,6 +2,7 @@
 
 const api = require('./api.js');
 const ui = require('./ui.js');
+const gameModel = require('../../game/gameModel.js');
 
 const onNewGame = function(event){
   event.preventDefault();
@@ -49,9 +50,13 @@ const onJoinGame = function(event){
 const onShowGameInfo = function(event){
   event.preventDefault();
 
-  api.showGameInfo()
-  .done(ui.successShowGameInfo)
-  .fail(ui.failure);
+  if(gameModel.newGame.id === null){
+    return false;
+  }else{
+    api.showGameInfo()
+    .done(ui.successShowGameInfo)
+    .fail(ui.failure);
+  }
 };
 
 const onShowAnyGameInfo = function(event){

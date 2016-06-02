@@ -33,7 +33,11 @@ const hideBoard = function(){
 };
 
 const successMove = function(){
-  $('#show-this-game-info').submit();
+
+  // show game info
+  if(gameModel.newGame.id !== null){
+    gameMoves.refreshGameInfoTable(gameModel.newGame);
+  }
 };
 
 const updateGames = function(data){
@@ -61,29 +65,14 @@ const updateFinishedGames = function(data){
 const successShowGameInfo = function(data){
   let gameObject = data.game;
   console.log(gameObject);
-  $("#game-id-data").text(gameObject.id);
-  $("#game-cells-data").text(gameObject.cells);
-  $("#game-over-data").text(gameObject.over);
-
-  if(gameObject.player_x === null){
-    $("#player-x-data").text("N/A");
-  }else{
-    $("#player-x-data").text(gameObject.player_x.email);
-  }
-  if(gameObject.player_o === null){
-    $("#player-o-data").text("N/A");
-  }else{
-    $("#player-o-data").text(gameObject.player_o.email);
-  }
+  gameMoves.refreshGameInfoTable(gameObject);
 
   // redraw Board
   gameMoves.redrawBoard();
-
 };
 
 const successJoin = function(data){
   gameModel.newGame = data.game;
-  $('#show-this-game-info').submit();
 
   gameModel.activeGame = true;
 
@@ -93,10 +82,20 @@ const successJoin = function(data){
   // redraw Board
   gameMoves.redrawBoard();
 
+  // show game info
+  if(gameModel.newGame.id !== null){
+    gameMoves.refreshGameInfoTable(gameModel.newGame);
+  }
+
 };
 
 const successPlayThisGame = function(data){
   gameModel.newGame = data.game;
+
+  // show game info
+  if(gameModel.newGame.id !== null){
+    gameMoves.refreshGameInfoTable(gameModel.newGame);
+  }
 };
 
 const newGame = function(data){

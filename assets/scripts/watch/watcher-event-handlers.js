@@ -18,6 +18,11 @@ const onChange = function(data){
     // redraw Board
     gameMoves.redrawBoard();
 
+    // show game info
+    if(gameModel.newGame.id !== null){
+      gameMoves.refreshGameInfoTable(gameModel.newGame);
+    }
+
   } else {
     console.log(data);
   }

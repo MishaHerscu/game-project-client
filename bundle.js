@@ -508,7 +508,11 @@ webpackJsonp([0],[
 	};
 
 	var successMove = function successMove() {
-	  $('#show-this-game-info').submit();
+
+	  // show game info
+	  if (gameModel.newGame.id !== null) {
+	    gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  }
 	};
 
 	var updateGames = function updateGames(data) {
@@ -536,20 +540,7 @@ webpackJsonp([0],[
 	var successShowGameInfo = function successShowGameInfo(data) {
 	  var gameObject = data.game;
 	  console.log(gameObject);
-	  $("#game-id-data").text(gameObject.id);
-	  $("#game-cells-data").text(gameObject.cells);
-	  $("#game-over-data").text(gameObject.over);
-
-	  if (gameObject.player_x === null) {
-	    $("#player-x-data").text("N/A");
-	  } else {
-	    $("#player-x-data").text(gameObject.player_x.email);
-	  }
-	  if (gameObject.player_o === null) {
-	    $("#player-o-data").text("N/A");
-	  } else {
-	    $("#player-o-data").text(gameObject.player_o.email);
-	  }
+	  gameMoves.refreshGameInfoTable(gameObject);
 
 	  // redraw Board
 	  gameMoves.redrawBoard();
@@ -557,7 +548,6 @@ webpackJsonp([0],[
 
 	var successJoin = function successJoin(data) {
 	  gameModel.newGame = data.game;
-	  $('#show-this-game-info').submit();
 
 	  gameModel.activeGame = true;
 
@@ -566,10 +556,20 @@ webpackJsonp([0],[
 
 	  // redraw Board
 	  gameMoves.redrawBoard();
+
+	  // show game info
+	  if (gameModel.newGame.id !== null) {
+	    gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  }
 	};
 
 	var successPlayThisGame = function successPlayThisGame(data) {
 	  gameModel.newGame = data.game;
+
+	  // show game info
+	  if (gameModel.newGame.id !== null) {
+	    gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  }
 	};
 
 	var newGame = function newGame(data) {
@@ -661,23 +661,37 @@ webpackJsonp([0],[
 	    return false;
 	  }
 
-	  console.log('redraw function, after check, so newGame.cells isn\t null');
-
 	  // set variables
 	  var max = gameModel.newGame.cells.length;
-
-	  console.log('redraw function, max: ', max);
-
-	  console.log('redraw function, newGame: ', gameModel.newGame);
 
 	  // update board
 	  for (var i = 0; i < max; i++) {
 	    $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
 	  }
 
-	  console.log('redraw function, board should have updated by now');
-
 	  return true;
+	};
+
+	var refreshGameInfoTable = function refreshGameInfoTable(gameObject) {
+
+	  if (gameObject === null) {
+	    return false;
+	  } else {
+	    $("#game-id-data").text(gameObject.id);
+	    $("#game-cells-data").text(gameObject.cells);
+	    $("#game-over-data").text(gameObject.over);
+
+	    if (gameObject.player_x === null) {
+	      $("#player-x-data").text("N/A");
+	    } else {
+	      $("#player-x-data").text(gameObject.player_x.email);
+	    }
+	    if (gameObject.player_o === null) {
+	      $("#player-o-data").text("N/A");
+	    } else {
+	      $("#player-o-data").text(gameObject.player_o.email);
+	    }
+	  }
 	};
 
 	var onSetCellValue = function onSetCellValue() {
@@ -801,6 +815,7 @@ webpackJsonp([0],[
 
 	module.exports = {
 	  redrawBoard: redrawBoard,
+	  refreshGameInfoTable: refreshGameInfoTable,
 	  addHandlers: addHandlers
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
@@ -1196,6 +1211,11 @@ webpackJsonp([0],[
 
 	    // redraw Board
 	    gameMoves.redrawBoard();
+
+	    // show game info
+	    if (gameModel.newGame.id !== null) {
+	      gameMoves.refreshGameInfoTable(gameModel.newGame);
+	    }
 	  } else {
 	    console.log(data);
 	  }
@@ -1223,6 +1243,7 @@ webpackJsonp([0],[
 
 	var api = __webpack_require__(14);
 	var ui = __webpack_require__(10);
+	var gameModel = __webpack_require__(7);
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
@@ -1252,7 +1273,11 @@ webpackJsonp([0],[
 	var onShowGameInfo = function onShowGameInfo(event) {
 	  event.preventDefault();
 
-	  api.showGameInfo().done(ui.successShowGameInfo).fail(ui.failure);
+	  if (gameModel.newGame.id === null) {
+	    return false;
+	  } else {
+	    api.showGameInfo().done(ui.successShowGameInfo).fail(ui.failure);
+	  }
 	};
 
 	var onShowAnyGameInfo = function onShowAnyGameInfo(event) {

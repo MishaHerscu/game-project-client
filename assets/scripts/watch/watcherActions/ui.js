@@ -24,7 +24,12 @@ const failure = function(error){
 
 const successWatch = function(data){
   gameModel.newGame = data.game;
-  $('#show-this-game-info').submit();
+
+  // show game info
+  if(gameModel.newGame.id !== null){
+    gameModel.refreshGameInfoTable(gameModel.newGame);
+  }
+
   gameModel.activeGame = true;
   gameModel.gameOver = gameModel.newGame.over;
 
@@ -33,7 +38,12 @@ const successWatch = function(data){
 
   // redraw Board
   gameMoves.redrawBoard();
-  
+
+  // show game info
+  if(gameModel.newGame.id !== null){
+    gameMoves.refreshGameInfoTable(gameModel.newGame);
+  }
+
 };
 
 module.exports = {

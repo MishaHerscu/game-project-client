@@ -17,23 +17,37 @@ const redrawBoard = function(){
     return false;
   }
 
-  console.log('redraw function, after check, so newGame.cells isn\t null');
-
   // set variables
   let max = gameModel.newGame.cells.length;
-
-  console.log('redraw function, max: ', max);
-
-  console.log('redraw function, newGame: ', gameModel.newGame);
 
   // update board
   for(let i = 0; i < max; i++){
     $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
   }
 
-  console.log('redraw function, board should have updated by now');
-
   return true;
+};
+
+const refreshGameInfoTable = function(gameObject){
+
+  if(gameObject === null){
+    return false;
+  }else{
+    $("#game-id-data").text(gameObject.id);
+    $("#game-cells-data").text(gameObject.cells);
+    $("#game-over-data").text(gameObject.over);
+
+    if(gameObject.player_x === null){
+      $("#player-x-data").text("N/A");
+    }else{
+      $("#player-x-data").text(gameObject.player_x.email);
+    }
+    if(gameObject.player_o === null){
+      $("#player-o-data").text("N/A");
+    }else{
+      $("#player-o-data").text(gameObject.player_o.email);
+    }
+  }
 };
 
 const onSetCellValue = function(){
@@ -165,5 +179,6 @@ const addHandlers = () => {
 
 module.exports = {
   redrawBoard,
+  refreshGameInfoTable,
   addHandlers,
 };
