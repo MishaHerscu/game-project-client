@@ -7,11 +7,19 @@ const gameWatcherAttachHandler = require('../watcher-event-handlers.js');
 
 const onWatchGame = function(event){
   event.preventDefault();
+
+  // game to watch
   let gameId = $('#game-to-watch').val();
+
+  // make watcher
   let watcher = gameWatcherMaker.gameWatcher(gameId, app.user.token);
+
+  // set up model version of watched game
   gameModel.watchGame = watcher.game;
+
+  // attach handlers to watcher
   gameWatcherAttachHandler.addHandlers(watcher);
-  return watcher;
+
 };
 
 const addHandlers = () => {

@@ -1247,11 +1247,18 @@ webpackJsonp([0],[
 
 	var onWatchGame = function onWatchGame(event) {
 	  event.preventDefault();
+
+	  // game to watch
 	  var gameId = $('#game-to-watch').val();
+
+	  // make watcher
 	  var watcher = gameWatcherMaker.gameWatcher(gameId, app.user.token);
+
+	  // set up model version of watched game
 	  gameModel.watchGame = watcher.game;
+
+	  // attach handlers to watcher
 	  gameWatcherAttachHandler.addHandlers(watcher);
-	  return watcher;
 	};
 
 	var addHandlers = function addHandlers() {
