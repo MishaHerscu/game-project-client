@@ -92,9 +92,8 @@ const onGetDoneGames = function(event){
 const onJoinGame = function(event){
   event.preventDefault();
   let gameId = $('#game-to-join').val();
-  let authToken = $('#auth-token-to-join').val();
 
-  api.joinGame(gameId, authToken)
+  api.joinGame(gameId)
   .done(ui.success)
   .fail(ui.failure);
 };

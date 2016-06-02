@@ -141,9 +141,8 @@ webpackJsonp([0],[
 	var onJoinGame = function onJoinGame(event) {
 	  event.preventDefault();
 	  var gameId = $('#game-to-join').val();
-	  var authToken = $('#auth-token-to-join').val();
 
-	  api.joinGame(gameId, authToken).done(ui.success).fail(ui.failure);
+	  api.joinGame(gameId).done(ui.success).fail(ui.failure);
 	};
 
 	var onShowGameInfo = function onShowGameInfo() {
@@ -505,17 +504,14 @@ webpackJsonp([0],[
 	};
 
 	// join game
-	var joinGame = function joinGame(gameId, authToken) {
-
-	  console.log("gameId, authToken: ", gameId, authToken);
+	var joinGame = function joinGame(gameId) {
 
 	  return $.ajax({
 	    url: app.host + '/games/' + gameId,
 	    method: 'PATCH',
 	    headers: {
-	      Authorization: 'Token token=' + authToken
-	    },
-	    data: {}
+	      Authorization: 'Token token=' + app.user.token
+	    }
 	  });
 	};
 

@@ -116,9 +116,7 @@ const showOverGames = function(){
 };
 
 // join game
-const joinGame = function(gameId, authToken){
-
-  console.log("gameId, authToken: ", gameId, authToken);
+const joinGame = function(gameId){
 
   return $.ajax({
     url: app.host + '/games/' + gameId,
@@ -126,7 +124,6 @@ const joinGame = function(gameId, authToken){
     headers: {
       Authorization: 'Token token=' + app.user.token,
     },
-    data: {},
   });
 };
 
