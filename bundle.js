@@ -35,6 +35,9 @@ webpackJsonp([0],[
 	$('.hideable').hide();
 	$('.game-over-section').hide();
 	$('.not-signed-in').show();
+	$('#signInModal').modal('hide');
+	$('#signUpModal').modal('hide');
+	$('#gameUpdateModal').modal('hide');
 
 	app.user = null;
 	app.games = [];
@@ -218,12 +221,16 @@ webpackJsonp([0],[
 
 	        if (gameLogic.gameOver !== true) {
 	          $('#player-turn').text(currentPlayer + "'s Turn!");
+	          $('#game-update-modal').text(currentPlayer + "'s Turn!");
 	        } else if (gameLogic.winner === null) {
 	          gameLogic.winner = 'Tie';
 	          gameLogic.winnerString = "Game over! It's a tie!";
 	          gameLogic.newGame.over = true;
 
 	          $('#player-turn').text(gameLogic.winnerString);
+	          $('#game-update-modal').text(gameLogic.winnerString);
+	          $('#gameUpdateModal').modal('show');
+
 	          $('.table-section').hide();
 	          $('.game-over-section').show();
 	        } else {
@@ -232,6 +239,9 @@ webpackJsonp([0],[
 	          gameLogic.newGame.over = true;
 
 	          $('#player-turn').text(gameLogic.winnerString);
+	          $('#game-update-modal').text(gameLogic.winnerString);
+	          $('#gameUpdateModal').modal('show');
+
 	          $('.table-section').hide();
 	          $('.game-over-section').show();
 	        }
@@ -248,6 +258,9 @@ webpackJsonp([0],[
 
 	        console.log('The game is over! Start a new game!');
 	        $('#player-turn').text(gameLogic.winnerString);
+	        $('#game-update-modal').text(gameLogic.winnerString);
+	        $('#gameUpdateModal').modal('show');
+
 	        $('.table-section').hide();
 	        $('.game-over-section').show();
 	      }
@@ -256,7 +269,10 @@ webpackJsonp([0],[
 
 	    console.log('The game is over! Start a new game!');
 	    $('.table-section').hide();
+
 	    $('#player-turn').text('Game over! Start a new Game!');
+	    $('#game-update-modal').text('Game over! Start a new Game!');
+
 	    $('.game-over-section').show();
 	  } else if (gameLogic.activeGame === false) {
 	    console.log('You need to activate or start a game!');
@@ -728,6 +744,8 @@ webpackJsonp([0],[
 	  $('#any-game-auth').val(app.user.token);
 	  $('#game-to-play-auth').val(app.user.token);
 	  $('#signInModal').modal('hide');
+	  $('#gameUpdateModal').modal('hide');
+
 	  console.log('app: ', app);
 	};
 
@@ -737,6 +755,9 @@ webpackJsonp([0],[
 	  $('.not-signed-in').show();
 	  $('.table-section').hide();
 	  $('.hideable').hide();
+	  $('#signInModal').modal('hide');
+	  $('#signUpModal').modal('hide');
+	  $('#gameUpdateModal').modal('hide');
 	};
 
 	var showBoard = function showBoard() {
@@ -820,6 +841,8 @@ webpackJsonp([0],[
 	  gameLogic.otherSymbol = gameLogic.symbols[gameLogic.otherPlayer];
 
 	  $('#player-turn').text(gameLogic.currentPlayer + "'s Turn!");
+	  $('#game-update-modal').text(gameLogic.currentPlayer + "'s Turn!");
+
 	  $('.cell').text('');
 
 	  gameLogic.updateGameInfo();

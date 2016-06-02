@@ -31,6 +31,8 @@ const signInSuccess = function(data){
   $('#any-game-auth').val(app.user.token);
   $('#game-to-play-auth').val(app.user.token);
   $('#signInModal').modal('hide');
+  $('#gameUpdateModal').modal('hide');
+
   console.log('app: ', app);
 };
 
@@ -40,6 +42,9 @@ const signOutSuccess = function(){
   $('.not-signed-in').show();
   $('.table-section').hide();
   $('.hideable').hide();
+  $('#signInModal').modal('hide');
+  $('#signUpModal').modal('hide');
+  $('#gameUpdateModal').modal('hide');
 };
 
 const showBoard = function(){
@@ -123,6 +128,8 @@ const newGame = function(data){
   gameLogic.otherSymbol = gameLogic.symbols[gameLogic.otherPlayer];
 
   $('#player-turn').text(gameLogic.currentPlayer + "'s Turn!");
+  $('#game-update-modal').text(gameLogic.currentPlayer + "'s Turn!");
+
   $('.cell').text('');
 
   gameLogic.updateGameInfo();

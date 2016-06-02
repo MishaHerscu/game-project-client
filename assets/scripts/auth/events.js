@@ -179,12 +179,17 @@ const onSetCellValue = function(){
 
         if(gameLogic.gameOver !== true){
           $('#player-turn').text(currentPlayer + "'s Turn!");
+          $('#game-update-modal').text(currentPlayer + "'s Turn!");
+
         } else if (gameLogic.winner === null){
           gameLogic.winner = 'Tie';
           gameLogic.winnerString = "Game over! It's a tie!";
           gameLogic.newGame.over = true;
 
           $('#player-turn').text(gameLogic.winnerString);
+          $('#game-update-modal').text(gameLogic.winnerString);
+          $('#gameUpdateModal').modal('show');
+
           $('.table-section').hide();
           $('.game-over-section').show();
 
@@ -194,6 +199,9 @@ const onSetCellValue = function(){
           gameLogic.newGame.over = true;
 
           $('#player-turn').text(gameLogic.winnerString);
+          $('#game-update-modal').text(gameLogic.winnerString);
+          $('#gameUpdateModal').modal('show');
+
           $('.table-section').hide();
           $('.game-over-section').show();
 
@@ -212,6 +220,9 @@ const onSetCellValue = function(){
 
         console.log('The game is over! Start a new game!');
         $('#player-turn').text(gameLogic.winnerString);
+        $('#game-update-modal').text(gameLogic.winnerString);
+        $('#gameUpdateModal').modal('show');
+
         $('.table-section').hide();
         $('.game-over-section').show();
 
@@ -221,7 +232,10 @@ const onSetCellValue = function(){
 
     console.log('The game is over! Start a new game!');
     $('.table-section').hide();
+
     $('#player-turn').text('Game over! Start a new Game!');
+    $('#game-update-modal').text('Game over! Start a new Game!');
+
     $('.game-over-section').show();
 
   } else if(gameLogic.activeGame === false){
