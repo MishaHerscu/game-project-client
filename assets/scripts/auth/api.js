@@ -118,19 +118,15 @@ const showOverGames = function(){
 // join game
 const joinGame = function(gameId, authToken){
 
-  let id = Number(gameId);
-
   console.log("gameId, authToken: ", gameId, authToken);
-  console.log(typeof authToken);
-  console.log(typeof id);
 
   return $.ajax({
-    url: app.host + '/games/' + id,
+    url: app.host + '/games/' + gameId,
     method: 'PATCH',
     headers: {
       Authorization: 'Token token=' + authToken,
     },
-    data: '',
+    data: {},
   });
 };
 
