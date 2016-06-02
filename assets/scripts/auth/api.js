@@ -124,7 +124,7 @@ const joinGame = function(gameId, authToken){
     url: app.host + '/games/' + gameId,
     method: 'PATCH',
     headers: {
-      Authorization: 'Token token=' + authToken,
+      Authorization: 'Token token=' + app.user.token,
     },
     data: {},
   });
