@@ -101,12 +101,12 @@ const successJoin = function(data){
   gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
 
   // set yourself as player_o
-  gameModel.currentPlayer = gameModel.players[1];
-  gameModel.otherPlayer = gameModel.players[0];
-  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
-  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+  gameModel.currentPlayer = gameModel.players.players[1];
+  gameModel.otherPlayer = gameModel.players.players[0];
+  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
+  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
   gameMoves.onGameCheck(gameModel.newGame);
-
+  
   // redraw Board
   gameMoves.redrawBoard();
 
@@ -156,18 +156,8 @@ const newGame = function(data){
   gameModel.activeGame = true;
 
   // set initial params
-  if(gameModel.newGame.player_x !== null && gameModel.newGame.player_x !== undefined){
-    gameModel.currentPlayer = gameModel.newGame.player_x;
-  }else{
-    gameModel.currentPlayer = gameModel.players[0];
-  }
-
-  if(gameModel.newGame.player_o !== null && gameModel.newGame.player_o !== undefined){
-    gameModel.currentPlayer = gameModel.newGame.player_0;
-  }else{
-    gameModel.currentPlayer = gameModel.players[1];
-  }
-
+  gameModel.currentPlayer = gameModel.players[0];
+  gameModel.otherPlayer = gameModel.players[1];
   gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
   gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 

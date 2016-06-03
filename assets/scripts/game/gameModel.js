@@ -5,22 +5,20 @@
 //
 
 // const games = require('./games');
-const playersFile = require('./players.js');
+const players = require('./players.js');
 const games = require('./games.js');
 const app = require('../app.js');
 
-let symbols = playersFile.symbols;
-let players = playersFile.players;
 let gameTypes = games.gameTypes;
 
 //
 // game vars
 //
 
-let currentPlayer = players[0];
-let otherPlayer = players[1];
-let currentSymbol = symbols[currentPlayer];
-let otherSymbol = symbols[otherPlayer];
+let currentPlayer = players.players[0];
+let otherPlayer = players.players[1];
+let currentSymbol = players.symbols[currentPlayer];
+let otherSymbol = players.symbols[otherPlayer];
 
 let activeGame = false;
 let gameOver = false;
@@ -90,15 +88,15 @@ const swapPlayers = function(gameObject){
     case gameTypes[1]:
 
       if(gameObject.player_x.email === app.user.email){
-        currentPlayer = players[0];
-        currentSymbol = symbols[currentPlayer];
-        otherPlayer = players[1];
-        otherSymbol = symbols[otherPlayer];
+        currentPlayer = players.players[0];
+        currentSymbol = players.symbols[currentPlayer];
+        otherPlayer = players.players[1];
+        otherSymbol = players.symbols[otherPlayer];
       }else{
-        currentPlayer = players[1];
-        currentSymbol = symbols[currentPlayer];
-        otherPlayer = players[0];
-        otherSymbol = symbols[otherSymbol];
+        currentPlayer = players.players[1];
+        currentSymbol = players.symbols[currentPlayer];
+        otherPlayer = players.players[0];
+        otherSymbol = players.symbols[otherSymbol];
       }
 
       NewPlayersSymbols = [
@@ -123,23 +121,23 @@ const swapPlayers = function(gameObject){
 
     default:
 
-      if(currentPlayer === players[0]){
+      if(currentPlayer === players.players[0]){
 
-        currentPlayer = players[1];
-        currentSymbol = symbols[players[1]];
-        otherPlayer = players[0];
-        otherSymbol = symbols[players[0]];
+        currentPlayer = players.players[1];
+        currentSymbol = players.symbols[players.players[1]];
+        otherPlayer = players.players[0];
+        otherSymbol = players.symbols[players.players[0]];
 
-        NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
+        NewPlayersSymbols = [players.players[1], players.players[0], players.symbols[players.players[1]], players.symbols[players.players[0]]];
 
-      }else if (currentPlayer === players[1]){
+      }else if (currentPlayer === players.players[1]){
 
-        currentPlayer = players[0];
-        currentSymbol = symbols[players[0]];
-        otherPlayer = players[1];
-        otherSymbol = symbols[players[1]];
+        currentPlayer = players.players[0];
+        currentSymbol = players.symbols[players.players[0]];
+        otherPlayer = players.players[1];
+        otherSymbol = players.symbols[players.players[1]];
 
-        NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
+        NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
 
       }else{
         console.log('There is an error with toggling currentPlayer!');
@@ -156,7 +154,6 @@ module.exports = {
   currentSymbol,
   otherPlayer,
   otherSymbol,
-  symbols,
   players,
   newGame,
   boardDict,

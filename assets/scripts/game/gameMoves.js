@@ -4,11 +4,6 @@ const gameModel = require('./gameModel.js');
 const gameChecks = require('./gameChecks.js');
 const turnEffects = require('./turnEffects.js');
 
-let currentPlayer = gameModel.currentPlayer;
-let currentSymbol = gameModel.currentSymbol;
-let otherPlayer = gameModel.otherPlayer;
-let otherSymbol = gameModel.otherPlayer;
-
 const refreshCounts = function(){
 
   gameModel.turnCount = 0;
@@ -28,7 +23,6 @@ const refreshCounts = function(){
       gameModel.oCount += 1;
     }
   }
-
 };
 
 const redrawBoard = function(){
@@ -80,8 +74,8 @@ const refreshGameInfoTable = function(gameObject){
 const onGameCheck = function(gameObject){
 
   if(gameObject.over === false){
-    $('#player-turn').text(currentPlayer + "'s Turn!");
-    $('#game-update-modal').text(currentPlayer + "'s Turn!");
+    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
   } else if (gameModel.winner === null){
     gameModel.winner = 'Tie';
@@ -96,8 +90,8 @@ const onGameCheck = function(gameObject){
     $('.game-over-section').show();
 
   } else {
-    gameModel.winner = otherPlayer;
-    gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+    gameModel.winner = gameModel.otherPlayer;
+    gameModel.winnerString = 'Game over! ' + gameModel.otherPlayer + ' Wins!';
     gameModel.newGame.over = true;
 
     $('#player-turn').text(gameModel.winnerString);
@@ -113,8 +107,8 @@ const onSetCellValue = function(){
 
   // make sure it is your turn before you go
   if(
-    (currentPlayer === gameModel.players[0] && gameModel.xCount > gameModel.oCount) ||
-    (currentPlayer === gameModel.players[1] && gameModel.xCount === gameModel.oCount)
+    (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||
+    (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
     ){
     console.log("Waiting for other player...");
     return false;
@@ -124,7 +118,7 @@ const onSetCellValue = function(){
   // eventually maybe these variables should be combined into one
   if(gameModel.gameOver === false && gameModel.activeGame === true){
 
-    // update gameType
+    // update gameType (single vs double player)
     gameModel.updateGameType(gameModel.newGame);
 
     // the clicked cell and the value of that cell
@@ -137,13 +131,13 @@ const onSetCellValue = function(){
     } else {
 
       // set the new value using the currentSymbol
-      $(this).text(currentSymbol);
+      $(this).text(gameModel.currentSymbol);
 
       // refresh counts
       refreshCounts();
 
       // update model
-      let modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
+      let modelGameIndex = turnEffects.updateModelValues(gameModel.currentSymbol, clickedCell);
 
       // update game info view
       refreshGameInfoTable(gameModel.newGame);
@@ -152,7 +146,7 @@ const onSetCellValue = function(){
       gameModel.gameOver = gameChecks.checkGame();
 
       // update object for API
-      turnEffects.updateAPI(modelGameIndex, currentSymbol);
+      turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
 
       if(gameModel.gameOver === false){
 
@@ -161,11 +155,6 @@ const onSetCellValue = function(){
 
         // swap players
         let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-        currentPlayer = NewPlayersSymbols[0];
-        otherPlayer = NewPlayersSymbols[1];
-        currentSymbol = NewPlayersSymbols[2];
-        otherSymbol  = NewPlayersSymbols[3];
 
         gameModel.currentPlayer = NewPlayersSymbols[0];
         gameModel.otherPlayer = NewPlayersSymbols[1];
@@ -183,8 +172,8 @@ const onSetCellValue = function(){
 
       } else{
         if(gameModel.turnCount < gameModel.maxTurnCount){
-          gameModel.winner = currentPlayer;
-          gameModel.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+          gameModel.winner = gameModel.currentPlayer;
+          gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
           gameModel.newGame.over = true;
         } else {
           gameModel.winner = null;

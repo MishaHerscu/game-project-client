@@ -426,10 +426,10 @@ webpackJsonp([0],[
 	  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
 
 	  // set yourself as player_o
-	  gameModel.currentPlayer = gameModel.players[1];
-	  gameModel.otherPlayer = gameModel.players[0];
-	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
-	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+	  gameModel.currentPlayer = gameModel.players.players[1];
+	  gameModel.otherPlayer = gameModel.players.players[0];
+	  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
+	  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
 	  gameMoves.onGameCheck(gameModel.newGame);
 
 	  // redraw Board
@@ -480,18 +480,8 @@ webpackJsonp([0],[
 	  gameModel.activeGame = true;
 
 	  // set initial params
-	  if (gameModel.newGame.player_x !== null && gameModel.newGame.player_x !== undefined) {
-	    gameModel.currentPlayer = gameModel.newGame.player_x;
-	  } else {
-	    gameModel.currentPlayer = gameModel.players[0];
-	  }
-
-	  if (gameModel.newGame.player_o !== null && gameModel.newGame.player_o !== undefined) {
-	    gameModel.currentPlayer = gameModel.newGame.player_0;
-	  } else {
-	    gameModel.currentPlayer = gameModel.players[1];
-	  }
-
+	  gameModel.currentPlayer = gameModel.players[0];
+	  gameModel.otherPlayer = gameModel.players[1];
 	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
 	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 
@@ -540,22 +530,20 @@ webpackJsonp([0],[
 
 	// const games = require('./games');
 
-	var playersFile = __webpack_require__(10);
+	var players = __webpack_require__(10);
 	var games = __webpack_require__(11);
 	var app = __webpack_require__(3);
 
-	var symbols = playersFile.symbols;
-	var players = playersFile.players;
 	var gameTypes = games.gameTypes;
 
 	//
 	// game vars
 	//
 
-	var currentPlayer = players[0];
-	var otherPlayer = players[1];
-	var currentSymbol = symbols[currentPlayer];
-	var otherSymbol = symbols[otherPlayer];
+	var currentPlayer = players.players[0];
+	var otherPlayer = players.players[1];
+	var currentSymbol = players.symbols[currentPlayer];
+	var otherSymbol = players.symbols[otherPlayer];
 
 	var activeGame = false;
 	var gameOver = false;
@@ -615,15 +603,15 @@ webpackJsonp([0],[
 	    case gameTypes[1]:
 
 	      if (gameObject.player_x.email === app.user.email) {
-	        currentPlayer = players[0];
-	        currentSymbol = symbols[currentPlayer];
-	        otherPlayer = players[1];
-	        otherSymbol = symbols[otherPlayer];
+	        currentPlayer = players.players[0];
+	        currentSymbol = players.symbols[currentPlayer];
+	        otherPlayer = players.players[1];
+	        otherSymbol = players.symbols[otherPlayer];
 	      } else {
-	        currentPlayer = players[1];
-	        currentSymbol = symbols[currentPlayer];
-	        otherPlayer = players[0];
-	        otherSymbol = symbols[otherSymbol];
+	        currentPlayer = players.players[1];
+	        currentSymbol = players.symbols[currentPlayer];
+	        otherPlayer = players.players[0];
+	        otherSymbol = players.symbols[otherSymbol];
 	      }
 
 	      NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
@@ -638,22 +626,22 @@ webpackJsonp([0],[
 
 	    default:
 
-	      if (currentPlayer === players[0]) {
+	      if (currentPlayer === players.players[0]) {
 
-	        currentPlayer = players[1];
-	        currentSymbol = symbols[players[1]];
-	        otherPlayer = players[0];
-	        otherSymbol = symbols[players[0]];
+	        currentPlayer = players.players[1];
+	        currentSymbol = players.symbols[players.players[1]];
+	        otherPlayer = players.players[0];
+	        otherSymbol = players.symbols[players.players[0]];
 
-	        NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
-	      } else if (currentPlayer === players[1]) {
+	        NewPlayersSymbols = [players.players[1], players.players[0], players.symbols[players.players[1]], players.symbols[players.players[0]]];
+	      } else if (currentPlayer === players.players[1]) {
 
-	        currentPlayer = players[0];
-	        currentSymbol = symbols[players[0]];
-	        otherPlayer = players[1];
-	        otherSymbol = symbols[players[1]];
+	        currentPlayer = players.players[0];
+	        currentSymbol = players.symbols[players.players[0]];
+	        otherPlayer = players.players[1];
+	        otherSymbol = players.symbols[players.players[1]];
 
-	        NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
+	        NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
 	      } else {
 	        console.log('There is an error with toggling currentPlayer!');
 	        return false;
@@ -669,7 +657,6 @@ webpackJsonp([0],[
 	  currentSymbol: currentSymbol,
 	  otherPlayer: otherPlayer,
 	  otherSymbol: otherSymbol,
-	  symbols: symbols,
 	  players: players,
 	  newGame: newGame,
 	  boardDict: boardDict,
@@ -755,11 +742,6 @@ webpackJsonp([0],[
 	var gameChecks = __webpack_require__(13);
 	var turnEffects = __webpack_require__(14);
 
-	var currentPlayer = gameModel.currentPlayer;
-	var currentSymbol = gameModel.currentSymbol;
-	var otherPlayer = gameModel.otherPlayer;
-	var otherSymbol = gameModel.otherPlayer;
-
 	var refreshCounts = function refreshCounts() {
 
 	  gameModel.turnCount = 0;
@@ -828,8 +810,8 @@ webpackJsonp([0],[
 	var onGameCheck = function onGameCheck(gameObject) {
 
 	  if (gameObject.over === false) {
-	    $('#player-turn').text(currentPlayer + "'s Turn!");
-	    $('#game-update-modal').text(currentPlayer + "'s Turn!");
+	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 	  } else if (gameModel.winner === null) {
 	    gameModel.winner = 'Tie';
 	    gameModel.winnerString = "Game over! It's a tie!";
@@ -842,8 +824,8 @@ webpackJsonp([0],[
 	    $('.table-section').hide();
 	    $('.game-over-section').show();
 	  } else {
-	    gameModel.winner = otherPlayer;
-	    gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+	    gameModel.winner = gameModel.otherPlayer;
+	    gameModel.winnerString = 'Game over! ' + gameModel.otherPlayer + ' Wins!';
 	    gameModel.newGame.over = true;
 
 	    $('#player-turn').text(gameModel.winnerString);
@@ -858,7 +840,7 @@ webpackJsonp([0],[
 	var onSetCellValue = function onSetCellValue() {
 
 	  // make sure it is your turn before you go
-	  if (currentPlayer === gameModel.players[0] && gameModel.xCount > gameModel.oCount || currentPlayer === gameModel.players[1] && gameModel.xCount === gameModel.oCount) {
+	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
 	    console.log("Waiting for other player...");
 	    return false;
 	  }
@@ -867,7 +849,7 @@ webpackJsonp([0],[
 	  // eventually maybe these variables should be combined into one
 	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
 
-	    // update gameType
+	    // update gameType (single vs double player)
 	    gameModel.updateGameType(gameModel.newGame);
 
 	    // the clicked cell and the value of that cell
@@ -880,13 +862,13 @@ webpackJsonp([0],[
 	    } else {
 
 	      // set the new value using the currentSymbol
-	      $(this).text(currentSymbol);
+	      $(this).text(gameModel.currentSymbol);
 
 	      // refresh counts
 	      refreshCounts();
 
 	      // update model
-	      var modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
+	      var modelGameIndex = turnEffects.updateModelValues(gameModel.currentSymbol, clickedCell);
 
 	      // update game info view
 	      refreshGameInfoTable(gameModel.newGame);
@@ -895,7 +877,7 @@ webpackJsonp([0],[
 	      gameModel.gameOver = gameChecks.checkGame();
 
 	      // update object for API
-	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
+	      turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
 
 	      if (gameModel.gameOver === false) {
 
@@ -904,11 +886,6 @@ webpackJsonp([0],[
 
 	        // swap players
 	        var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-	        currentPlayer = NewPlayersSymbols[0];
-	        otherPlayer = NewPlayersSymbols[1];
-	        currentSymbol = NewPlayersSymbols[2];
-	        otherSymbol = NewPlayersSymbols[3];
 
 	        gameModel.currentPlayer = NewPlayersSymbols[0];
 	        gameModel.otherPlayer = NewPlayersSymbols[1];
@@ -925,8 +902,8 @@ webpackJsonp([0],[
 	        onGameCheck(gameModel.newGame);
 	      } else {
 	        if (gameModel.turnCount < gameModel.maxTurnCount) {
-	          gameModel.winner = currentPlayer;
-	          gameModel.winnerString = 'Game over! ' + currentPlayer + ' Wins!';
+	          gameModel.winner = gameModel.currentPlayer;
+	          gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
 	          gameModel.newGame.over = true;
 	        } else {
 	          gameModel.winner = null;
