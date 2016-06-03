@@ -820,15 +820,30 @@ webpackJsonp([0],[
 	      $("#player-o-data").text(gameObject.player_o.email);
 	    }
 	  }
-
 	  return true;
+	};
+
+	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
+
+	  if (gameModel.gameType === gameModel.gameTypes[0]) {
+	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+	  } else if (gameModel.gameType === gameModel.gameTypes[1]) {
+	    $('#player-turn').text(gameModel.currentPlayer);
+	    $('#game-update-modal').text(gameModel.currentPlayer);
+	  } else if (gameModel.gameType === gameModel.gameTypes[2]) {
+	    $('#player-turn').text(gameModel.currentPlayer);
+	    $('#game-update-modal').text(gameModel.currentPlayer);
+	  } else {
+	    console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
+	  }
 	};
 
 	var onGameCheck = function onGameCheck(gameObject) {
 
 	  if (gameObject.over === false) {
-	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+
+	    updatePlayerTurnAnnouncement();
 	  } else if (gameModel.winner === null) {
 	    gameModel.winner = 'Tie';
 	    gameModel.winnerString = "Game over! It's a tie!";
@@ -975,7 +990,8 @@ webpackJsonp([0],[
 	  redrawBoard: redrawBoard,
 	  refreshGameInfoTable: refreshGameInfoTable,
 	  addHandlers: addHandlers,
-	  onGameCheck: onGameCheck
+	  onGameCheck: onGameCheck,
+	  updatePlayerTurnAnnouncement: updatePlayerTurnAnnouncement
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 

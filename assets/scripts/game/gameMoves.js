@@ -78,15 +78,30 @@ const refreshGameInfoTable = function(gameObject){
     }
 
   }
-
   return true;
+};
+
+const updatePlayerTurnAnnouncement = function(){
+
+  if(gameModel.gameType === gameModel.gameTypes[0]){
+    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+  } else if(gameModel.gameType === gameModel.gameTypes[1]){
+    $('#player-turn').text(gameModel.currentPlayer);
+    $('#game-update-modal').text(gameModel.currentPlayer);
+  } else if(gameModel.gameType === gameModel.gameTypes[2]){
+    $('#player-turn').text(gameModel.currentPlayer);
+    $('#game-update-modal').text(gameModel.currentPlayer);
+  } else {
+    console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
+  }
 };
 
 const onGameCheck = function(gameObject){
 
   if(gameObject.over === false){
-    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+
+    updatePlayerTurnAnnouncement();
 
   } else if (gameModel.winner === null){
     gameModel.winner = 'Tie';
@@ -243,4 +258,5 @@ module.exports = {
   refreshGameInfoTable,
   addHandlers,
   onGameCheck,
+  updatePlayerTurnAnnouncement,
 };
