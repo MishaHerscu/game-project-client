@@ -7,6 +7,7 @@
 // const games = require('./games');
 const playersFile = require('./players.js');
 const games = require('./games.js');
+const app = require('../app.js');
 
 let symbols = playersFile.symbols;
 let players = playersFile.players;
@@ -20,14 +21,20 @@ let currentPlayer = players[0];
 let otherPlayer = players[1];
 let currentSymbol = symbols[currentPlayer];
 let otherSymbol = symbols[otherPlayer];
+
 let activeGame = false;
 let gameOver = false;
+
 let gameSize = 3;
 let maxTurnCount = Math.pow(gameSize,2);
+
 let turnCount = 0;
+
 let winner = null;
 let winnerString = '';
+
 let newWatcher = null;
+
 let gameType = gameTypes[0];
 
 let newGame = {
@@ -66,31 +73,70 @@ const swapPlayers = function(){
 
   let NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
 
-  if(currentPlayer === players[0]){
+  switch(gameType){
+    case gameTypes[1]:
 
-    currentPlayer = players[1];
-    currentSymbol = symbols[players[1]];
-    otherPlayer = players[0];
-    otherSymbol = symbols[players[0]];
+      if(newGame.player_x.email === app.user.email){
+        currentPlayer = players[0];
+        currentSymbol = symbols[currentPlayer];
+        otherPlayer = players[1];
+        otherSymbol = symbols[otherPlayer];
+      }else{
+        currentPlayer = players[1];
+        currentSymbol = symbols[currentPlayer];
+        otherPlayer = players[0];
+        otherSymbol = symbols[otherSymbol];
+      }
 
-    NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
+      NewPlayersSymbols = [
+        currentPlayer,
+        otherPlayer,
+        currentSymbol,
+        otherSymbol
+      ];
 
-  }else if (currentPlayer === players[1]){
+      break;
 
-    currentPlayer = players[0];
-    currentSymbol = symbols[players[0]];
-    otherPlayer = players[1];
-    otherSymbol = symbols[players[1]];
+    case gameTypes[2]:
 
-    NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
+      NewPlayersSymbols = [
+        currentPlayer,
+        otherPlayer,
+        currentSymbol,
+        otherSymbol
+      ];
 
-  }else{
-    console.log('There is an error with toggling currentPlayer!');
-    return false;
+      break;
+
+    default:
+
+      if(currentPlayer === players[0]){
+
+        currentPlayer = players[1];
+        currentSymbol = symbols[players[1]];
+        otherPlayer = players[0];
+        otherSymbol = symbols[players[0]];
+
+        NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
+
+      }else if (currentPlayer === players[1]){
+
+        currentPlayer = players[0];
+        currentSymbol = symbols[players[0]];
+        otherPlayer = players[1];
+        otherSymbol = symbols[players[1]];
+
+        NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
+
+      }else{
+        console.log('There is an error with toggling currentPlayer!');
+        return false;
+      }
+      break;
   }
 
   return NewPlayersSymbols;
-};
+  };
 
 module.exports = {
   currentPlayer,

@@ -46,7 +46,7 @@ webpackJsonp([0],[
 
 	var authEvents = __webpack_require__(4);
 	var gameEvents = __webpack_require__(20);
-	var gameMoves = __webpack_require__(11);
+	var gameMoves = __webpack_require__(12);
 	var watchEvents = __webpack_require__(21);
 
 	// On document ready
@@ -329,8 +329,8 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var gameModel = __webpack_require__(9);
-	var gameMoves = __webpack_require__(11);
-	var games = __webpack_require__(15);
+	var gameMoves = __webpack_require__(12);
+	var games = __webpack_require__(11);
 	var gameWatcherMaker = __webpack_require__(16);
 	var gameWatcherAttachHandler = __webpack_require__(18);
 
@@ -509,9 +509,12 @@ webpackJsonp([0],[
 	// const games = require('./games');
 
 	var playersFile = __webpack_require__(10);
+	var games = __webpack_require__(11);
+	var app = __webpack_require__(3);
 
 	var symbols = playersFile.symbols;
 	var players = playersFile.players;
+	var gameTypes = games.gameTypes;
 
 	//
 	// game vars
@@ -521,14 +524,21 @@ webpackJsonp([0],[
 	var otherPlayer = players[1];
 	var currentSymbol = symbols[currentPlayer];
 	var otherSymbol = symbols[otherPlayer];
+
 	var activeGame = false;
 	var gameOver = false;
+
 	var gameSize = 3;
 	var maxTurnCount = Math.pow(gameSize, 2);
+
 	var turnCount = 0;
+
 	var winner = null;
 	var winnerString = '';
+
 	var newWatcher = null;
+
+	var gameType = gameTypes[0];
 
 	var newGame = {
 	  id: null,
@@ -556,25 +566,54 @@ webpackJsonp([0],[
 
 	  var NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
 
-	  if (currentPlayer === players[0]) {
+	  switch (gameType) {
+	    case gameTypes[1]:
 
-	    currentPlayer = players[1];
-	    currentSymbol = symbols[players[1]];
-	    otherPlayer = players[0];
-	    otherSymbol = symbols[players[0]];
+	      if (newGame.player_x.email === app.user.email) {
+	        currentPlayer = players[0];
+	        currentSymbol = symbols[currentPlayer];
+	        otherPlayer = players[1];
+	        otherSymbol = symbols[otherPlayer];
+	      } else {
+	        currentPlayer = players[1];
+	        currentSymbol = symbols[currentPlayer];
+	        otherPlayer = players[0];
+	        otherSymbol = symbols[otherSymbol];
+	      }
 
-	    NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
-	  } else if (currentPlayer === players[1]) {
+	      NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
 
-	    currentPlayer = players[0];
-	    currentSymbol = symbols[players[0]];
-	    otherPlayer = players[1];
-	    otherSymbol = symbols[players[1]];
+	      break;
 
-	    NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
-	  } else {
-	    console.log('There is an error with toggling currentPlayer!');
-	    return false;
+	    case gameTypes[2]:
+
+	      NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
+
+	      break;
+
+	    default:
+
+	      if (currentPlayer === players[0]) {
+
+	        currentPlayer = players[1];
+	        currentSymbol = symbols[players[1]];
+	        otherPlayer = players[0];
+	        otherSymbol = symbols[players[0]];
+
+	        NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
+	      } else if (currentPlayer === players[1]) {
+
+	        currentPlayer = players[0];
+	        currentSymbol = symbols[players[0]];
+	        otherPlayer = players[1];
+	        otherSymbol = symbols[players[1]];
+
+	        NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
+	      } else {
+	        console.log('There is an error with toggling currentPlayer!');
+	        return false;
+	      }
+	      break;
 	  }
 
 	  return NewPlayersSymbols;
@@ -598,7 +637,8 @@ webpackJsonp([0],[
 	  turnCount: turnCount,
 	  winner: winner,
 	  winnerString: winnerString,
-	  newWatcher: newWatcher
+	  newWatcher: newWatcher,
+	  gameType: gameType
 	};
 
 /***/ },
@@ -611,11 +651,11 @@ webpackJsonp([0],[
 	// player variables
 	//
 
-	var players = ['Player_X', 'Player_O'];
+	var players = ['player_x', 'player_o'];
 
 	var symbols = {
-	  Player_X: "X",
-	  Player_O: "O"
+	  player_x: "X",
+	  player_o: "O"
 	};
 
 	var altSymbols = {
@@ -631,13 +671,41 @@ webpackJsonp([0],[
 
 /***/ },
 /* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	//
+	// define games objects
+	//
+
+	// create new game
+
+	var game = function game(gameData) {
+	  this.id = gameData.id;
+	  this.cells = gameData.cells;
+	  this.over = gameData.over;
+	  this.player_x = gameData.player_x;
+	  this.player_o = gameData.player_o;
+	};
+
+	// game types
+	var gameTypes = ['singleDevice', 'twoDevice', 'bot'];
+
+	module.exports = {
+	  game: game,
+	  gameTypes: gameTypes
+	};
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var gameModel = __webpack_require__(9);
-	var gameChecks = __webpack_require__(12);
-	var turnEffects = __webpack_require__(13);
+	var gameChecks = __webpack_require__(13);
+	var turnEffects = __webpack_require__(14);
 
 	var currentPlayer = gameModel.currentPlayer;
 	var currentSymbol = gameModel.currentSymbol;
@@ -815,7 +883,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -896,13 +964,13 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var gameModel = __webpack_require__(9);
-	var gameApi = __webpack_require__(14);
+	var gameApi = __webpack_require__(15);
 	var gameUi = __webpack_require__(8);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
@@ -943,7 +1011,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -1070,30 +1138,6 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	//
-	// define games objects
-	//
-
-	// create new game
-
-	var game = function game(gameData) {
-	  this.id = gameData.id;
-	  this.cells = gameData.cells;
-	  this.over = gameData.over;
-	  this.player_x = gameData.player_x;
-	  this.player_o = gameData.player_o;
-	};
-
-	module.exports = {
-	  game: game
-	};
-
-/***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1184,17 +1228,17 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var ui = __webpack_require__(19);
-	var gameMoves = __webpack_require__(11);
+	var gameMoves = __webpack_require__(12);
 	var gameModel = __webpack_require__(9);
-	var gameApi = __webpack_require__(14);
+	var gameApi = __webpack_require__(15);
 
 	var onChange = function onChange(data) {
 	  if (data.timeout) {
 	    //not an error
-	    if (this !== undefined) {
+	    if (this !== undefined && this !== null) {
 	      this.close();
 	    }
-	    if (gameModel.newWatcher !== undefined) {
+	    if (gameModel.newWatcher !== undefined && gameModel.newWatcher !== null) {
 	      gameModel.newWatcher.close();
 	    }
 	    return console.warn(data.timeout);
@@ -1245,7 +1289,7 @@ webpackJsonp([0],[
 	var gameModel = __webpack_require__(9);
 	var gameWatcherMaker = __webpack_require__(16);
 	var gameWatcherAttachHandler = __webpack_require__(18);
-	var gameMoves = __webpack_require__(11);
+	var gameMoves = __webpack_require__(12);
 
 	var success = function success(data) {
 	  if (data) {
@@ -1280,6 +1324,16 @@ webpackJsonp([0],[
 	};
 
 	var successShow = function successShow(data) {
+
+	  // Update game type
+	  if (gameModel.newGame.player_x !== null && gameModel.newGame.player_x !== undefined && gameModel.newGame.player_o !== null && gameModel.newGame.player_o && gameModel.botGame === false) {
+	    gameModel.gameType = gameModel.gameTypes[1];
+	  } else if (gameModel.botGame === true) {
+	    gameModel.gameType = gameModel.gameTypes[2];
+	  } else {
+	    gameModel.gameType = gameModel.gameTypes[0];
+	  }
+
 	  var gameObject = data.game;
 	  gameModel.newGame = data.game;
 	  gameMoves.refreshGameInfoTable(gameObject);
@@ -1299,7 +1353,7 @@ webpackJsonp([0],[
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	var api = __webpack_require__(14);
+	var api = __webpack_require__(15);
 	var ui = __webpack_require__(8);
 	var gameModel = __webpack_require__(9);
 

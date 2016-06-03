@@ -40,6 +40,16 @@ const successWatch = function(data){
 };
 
 const successShow = function(data){
+
+  // Update game type
+  if(gameModel.newGame.player_x !== null && gameModel.newGame.player_x !== undefined && gameModel.newGame.player_o !== null && gameModel.newGame.player_o && gameModel.botGame === false){
+    gameModel.gameType = gameModel.gameTypes[1];
+  }else if(gameModel.botGame === true){
+    gameModel.gameType = gameModel.gameTypes[2];
+  }else{
+    gameModel.gameType = gameModel.gameTypes[0];
+  }
+
   let gameObject = data.game;
   gameModel.newGame = data.game;
   gameMoves.refreshGameInfoTable(gameObject);

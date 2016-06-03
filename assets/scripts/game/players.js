@@ -4,11 +4,11 @@
 // player variables
 //
 
-let players = ['Player_X','Player_O'];
+let players = ['player_x','player_o'];
 
 let symbols = {
-  Player_X: "X",
-  Player_O: "O",
+  player_x: "X",
+  player_o: "O",
 };
 
 let altSymbols = {
