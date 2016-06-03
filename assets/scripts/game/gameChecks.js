@@ -76,6 +76,11 @@ const checkGame = function(){
   ){
     gameOver = true;
   }
+
+  // make sure everything is updated in the model after each check
+  gameModel.newGame.over = gameOver;
+  gameModel.gameOver = gameOver;
+
   return gameOver;
 };
 

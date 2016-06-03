@@ -218,30 +218,34 @@ const togglePlayer = function(){
     // update gameType (single vs double player)
     gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
-  } else{
-    if(gameModel.turnCount < gameModel.maxTurnCount){
-      gameModel.winner = gameModel.currentPlayer;
-      gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-      gameModel.newGame.over = true;
-
-
-    } else {
-      gameModel.winner = null;
-      gameModel.winnerString = "Game over! It's a tie!";
-      gameModel.newGame.over = true;
-    }
-
-    console.log('The game is over! Start a new game!');
-    $('#player-turn').text(gameModel.winnerString);
-    $('#game-update-modal').text(gameModel.winnerString);
-    $('#gameUpdateModal').modal('show');
-
-    $('.table-section').hide();
-    $('.game-over-section').show();
   }
 
+  return true;
+};
 
+const checkGame = function (){
 
+  if(gameModel.newGame.over === false){
+    return false;
+  } else if(gameModel.turnCount < gameModel.maxTurnCount){
+    gameModel.winner = gameModel.currentPlayer;
+    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+    gameModel.newGame.over = true;
+  } else {
+    gameModel.winner = null;
+    gameModel.winnerString = "Game over! It's a tie!";
+    gameModel.newGame.over = true;
+  }
+
+  console.log('The game is over! Start a new game!');
+  $('#player-turn').text(gameModel.winnerString);
+  $('#game-update-modal').text(gameModel.winnerString);
+  $('#gameUpdateModal').modal('show');
+
+  $('.table-section').hide();
+  $('.game-over-section').show();
+
+  return true;
 };
 
 module.exports = {
@@ -258,4 +262,5 @@ module.exports = {
   successPlayThisGame,
   newGame,
   togglePlayer,
+  checkGame,
 };

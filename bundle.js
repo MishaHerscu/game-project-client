@@ -541,25 +541,34 @@ webpackJsonp([0],[
 
 	    // update gameType (single vs double player)
 	    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-	  } else {
-	    if (gameModel.turnCount < gameModel.maxTurnCount) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-	      gameModel.newGame.over = true;
-	    } else {
-	      gameModel.winner = null;
-	      gameModel.winnerString = "Game over! It's a tie!";
-	      gameModel.newGame.over = true;
-	    }
-
-	    console.log('The game is over! Start a new game!');
-	    $('#player-turn').text(gameModel.winnerString);
-	    $('#game-update-modal').text(gameModel.winnerString);
-	    $('#gameUpdateModal').modal('show');
-
-	    $('.table-section').hide();
-	    $('.game-over-section').show();
 	  }
+
+	  return true;
+	};
+
+	var checkGame = function checkGame() {
+
+	  if (gameModel.newGame.over === false) {
+	    return false;
+	  } else if (gameModel.turnCount < gameModel.maxTurnCount) {
+	    gameModel.winner = gameModel.currentPlayer;
+	    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+	    gameModel.newGame.over = true;
+	  } else {
+	    gameModel.winner = null;
+	    gameModel.winnerString = "Game over! It's a tie!";
+	    gameModel.newGame.over = true;
+	  }
+
+	  console.log('The game is over! Start a new game!');
+	  $('#player-turn').text(gameModel.winnerString);
+	  $('#game-update-modal').text(gameModel.winnerString);
+	  $('#gameUpdateModal').modal('show');
+
+	  $('.table-section').hide();
+	  $('.game-over-section').show();
+
+	  return true;
 	};
 
 	module.exports = {
@@ -575,7 +584,8 @@ webpackJsonp([0],[
 	  successJoin: successJoin,
 	  successPlayThisGame: successPlayThisGame,
 	  newGame: newGame,
-	  togglePlayer: togglePlayer
+	  togglePlayer: togglePlayer,
+	  checkGame: checkGame
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -651,6 +661,11 @@ webpackJsonp([0],[
 	  if (checkSame(row0) === true || checkSame(row1) === true || checkSame(row2) === true || checkSame(col0) === true || checkSame(col1) === true || checkSame(col2) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
 	    gameOver = true;
 	  }
+
+	  // make sure everything is updated in the model after each check
+	  gameModel.newGame.over = gameOver;
+	  gameModel.gameOver = gameOver;
+
 	  return gameOver;
 	};
 
@@ -1021,28 +1036,6 @@ webpackJsonp([0],[
 	  // update gameType (single vs double player)
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
-	  // // manually change gameType if necessary
-	  // let playerXCheck = true;
-	  // let playerOCheck = false;
-	  //
-	  // if(gameModel.newGame.player_x !== undefined && gameModel.newGame.player_x !== null){
-	  //   playerXCheck = true;
-	  // } else {
-	  //   playerXCheck = false;
-	  // }
-	  //
-	  // if(gameModel.newGame.player_o !== undefined && gameModel.newGame.player_o !== null){
-	  //   playerOCheck = true;
-	  // } else {
-	  //   playerOCheck = false;
-	  // }
-	  //
-	  // if(playerXCheck === true && playerOCheck === true){
-	  //   gameModel.gameType = games.gameTypes[1];
-	  // } else if(playerXCheck === true){
-	  //   gameModel.gameType = games.gameTypes[0];
-	  // }
-
 	  // make sure it is your turn before you go
 	  if (gameModel.gameType === games.gameTypes[1]) {
 	    if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
@@ -1157,7 +1150,7 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameUi.togglePlayer).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameUi.checkGame).fail(gameUi.failure);
 	};
 
 	module.exports = {

@@ -156,28 +156,6 @@ const onSetCellValue = function(){
   // update gameType (single vs double player)
   gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
-  // // manually change gameType if necessary
-  // let playerXCheck = true;
-  // let playerOCheck = false;
-  //
-  // if(gameModel.newGame.player_x !== undefined && gameModel.newGame.player_x !== null){
-  //   playerXCheck = true;
-  // } else {
-  //   playerXCheck = false;
-  // }
-  //
-  // if(gameModel.newGame.player_o !== undefined && gameModel.newGame.player_o !== null){
-  //   playerOCheck = true;
-  // } else {
-  //   playerOCheck = false;
-  // }
-  //
-  // if(playerXCheck === true && playerOCheck === true){
-  //   gameModel.gameType = games.gameTypes[1];
-  // } else if(playerXCheck === true){
-  //   gameModel.gameType = games.gameTypes[0];
-  // }
-
   // make sure it is your turn before you go
   if(gameModel.gameType === games.gameTypes[1]){
     if(
