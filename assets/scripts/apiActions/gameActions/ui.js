@@ -84,7 +84,7 @@ const successJoin = function(data){
 
   gameModel.newGame = data.game;
 
-  gameModel.updateGameType();
+  gameModel.updateGameType(gameModel.newGame);
 
   gameModel.activeGame = true;
 
@@ -147,7 +147,7 @@ const newGame = function(data){
   gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 
   // check game type
-  gameModel.updateGameType();
+  gameModel.updateGameType(gameModel.newGame);
 
   // display status
   $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");

@@ -409,7 +409,7 @@ webpackJsonp([0],[
 
 	  gameModel.newGame = data.game;
 
-	  gameModel.updateGameType();
+	  gameModel.updateGameType(gameModel.newGame);
 
 	  gameModel.activeGame = true;
 
@@ -471,7 +471,7 @@ webpackJsonp([0],[
 	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
 
 	  // check game type
-	  gameModel.updateGameType();
+	  gameModel.updateGameType(gameModel.newGame);
 
 	  // display status
 	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
