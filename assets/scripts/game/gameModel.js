@@ -119,4 +119,5 @@ module.exports = {
   turnCount,
   winner,
   winnerString,
+  newWatcher,
 };
