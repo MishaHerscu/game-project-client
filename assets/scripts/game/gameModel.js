@@ -78,18 +78,16 @@ const updateGameType = function(gameObject){
   }else{
     gameType = gameTypes[0];
   }
-  console.log(gameType);
-
 };
 
-const swapPlayers = function(){
+const swapPlayers = function(gameObject){
 
   let NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
 
   switch(gameType){
     case gameTypes[1]:
 
-      if(newGame.player_x.email === app.user.email){
+      if(gameObject.player_x.email === app.user.email){
         currentPlayer = players[0];
         currentSymbol = symbols[currentPlayer];
         otherPlayer = players[1];

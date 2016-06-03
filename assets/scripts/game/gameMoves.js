@@ -93,7 +93,7 @@ const onSetCellValue = function(){
       if(gameModel.gameOver === false){
 
         // swap players
-        let NewPlayersSymbols = gameModel.swapPlayers();
+        let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
         currentPlayer = NewPlayersSymbols[0];
         otherPlayer = NewPlayersSymbols[1];

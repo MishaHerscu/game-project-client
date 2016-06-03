@@ -572,17 +572,16 @@ webpackJsonp([0],[
 	  } else {
 	    gameType = gameTypes[0];
 	  }
-	  console.log(gameType);
 	};
 
-	var swapPlayers = function swapPlayers() {
+	var swapPlayers = function swapPlayers(gameObject) {
 
 	  var NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
 
 	  switch (gameType) {
 	    case gameTypes[1]:
 
-	      if (newGame.player_x.email === app.user.email) {
+	      if (gameObject.player_x.email === app.user.email) {
 	        currentPlayer = players[0];
 	        currentSymbol = symbols[currentPlayer];
 	        otherPlayer = players[1];
@@ -806,7 +805,7 @@ webpackJsonp([0],[
 	      if (gameModel.gameOver === false) {
 
 	        // swap players
-	        var NewPlayersSymbols = gameModel.swapPlayers();
+	        var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
 	        currentPlayer = NewPlayersSymbols[0];
 	        otherPlayer = NewPlayersSymbols[1];
