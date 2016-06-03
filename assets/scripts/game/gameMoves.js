@@ -39,6 +39,8 @@ const refreshCounts = function(){
 
 const redrawBoard = function(){
 
+  console.log('redrawing board');
+
   // check that game exists
   if(gameModel.newGame.cells === null){
     return false;
@@ -52,6 +54,7 @@ const redrawBoard = function(){
     $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
   }
 
+  // refresh counts
   refreshCounts();
 
   return true;

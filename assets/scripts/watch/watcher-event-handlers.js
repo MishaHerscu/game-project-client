@@ -15,6 +15,7 @@ const onChange = function(data){
     }
     return console.warn(data.timeout);
   } else if (data.game && data.game.cell) {
+    console.log("onChange data: ", data);
     let game = data.game;
     let cell = game.cell;
     // $('#watch-index').val(cell.index);

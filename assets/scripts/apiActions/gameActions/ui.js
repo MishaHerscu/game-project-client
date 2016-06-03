@@ -142,22 +142,24 @@ const successPlayThisGame = function(data){
 
 const newGame = function(data){
 
-  // data about new game
-  let gameObject = data.game;
+  // instantiate new game
+  gameModel.newGame = new games.game(data.game);
+
+  // check game type
+  gameModel.updateGameType(gameModel.newGame);
+
+  // should be zero
+  gameMoves.refreshCounts();
+
+  // reset some game vars
   gameModel.turnCount = 0;
   gameModel.winner = null;
   gameModel.winnerString = '';
-
-  // counts should be zero
-  gameMoves.refreshCounts();
 
   $('.table-section').hide();
   $('.hideable').hide();
   $('.game-over-section').hide();
   $('#gameUpdateModal').modal('hide');
-
-  // instantiate new game
-  gameModel.newGame = new games.game(gameObject);
 
   // reset gameOver and activeGame
   gameModel.gameOver = gameModel.newGame.over;
@@ -168,9 +170,6 @@ const newGame = function(data){
   gameModel.otherPlayer = gameModel.players.players[1];
   gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
   gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
-
-  // check game type
-  gameModel.updateGameType(gameModel.newGame);
 
   // display status
   $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
