@@ -7,13 +7,13 @@
 let players = ['player_x','player_o'];
 
 let symbols = {
-  player_x: "x",
-  player_o: "o",
+  player_x: "X",
+  player_o: "O",
 };
 
 let altSymbols = {
-  Player_X: "x",
-  Player_O: "o",
+  Player_X: "X",
+  Player_O: "O",
 };
 
 module.exports = {

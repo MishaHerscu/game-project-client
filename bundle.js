@@ -689,13 +689,13 @@ webpackJsonp([0],[
 	var players = ['player_x', 'player_o'];
 
 	var symbols = {
-	  player_x: "x",
-	  player_o: "o"
+	  player_x: "X",
+	  player_o: "O"
 	};
 
 	var altSymbols = {
-	  Player_X: "x",
-	  Player_O: "o"
+	  Player_X: "X",
+	  Player_O: "O"
 	};
 
 	module.exports = {
@@ -756,11 +756,11 @@ webpackJsonp([0],[
 	      gameModel.turnCount += 1;
 	    }
 
-	    if (gameModel.newGame.cells[i] === gameModel.players.symbols[0]) {
+	    if (gameModel.newGame.cells[i] === gameModel.players.symbols[gameModel.players.players[0]]) {
 	      gameModel.xCount += 1;
 	    }
 
-	    if (gameModel.newGame.cells[i] === gameModel.players.symbols[1]) {
+	    if (gameModel.newGame.cells[i] === gameModel.players.symbols[gameModel.players.players[1]]) {
 	      gameModel.oCount += 1;
 	    }
 	  }

@@ -18,11 +18,11 @@ const refreshCounts = function(){
       gameModel.turnCount += 1;
     }
 
-    if(gameModel.newGame.cells[i] === gameModel.players.symbols[0]){
+    if(gameModel.newGame.cells[i] === gameModel.players.symbols[gameModel.players.players[0]]){
       gameModel.xCount += 1;
     }
 
-    if(gameModel.newGame.cells[i] === gameModel.players.symbols[1]){
+    if(gameModel.newGame.cells[i] === gameModel.players.symbols[gameModel.players.players[1]]){
       gameModel.oCount += 1;
     }
   }
