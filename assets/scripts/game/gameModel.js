@@ -70,15 +70,15 @@ let boardTrans = [
   'cell-22'
 ];
 
-const updateGameType = function(){
-
-  if(newGame.player_x !== null && newGame.player_x !== undefined && newGame.player_o !== null && newGame.player_o !== undefined && botGame === false){
+const updateGameType = function(gameObject){
+  if(gameObject.player_x !== null && gameObject.player_x !== undefined && gameObject.player_o !== null && gameObject.player_o !== undefined && botGame === false){
     gameType = gameTypes[1];
   }else if(botGame === true){
-    gameType =gameTypes[2];
+    gameType = gameTypes[2];
   }else{
     gameType = gameTypes[0];
   }
+  console.log(gameType);
 
 };
 

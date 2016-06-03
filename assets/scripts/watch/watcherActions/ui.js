@@ -42,7 +42,7 @@ const successWatch = function(data){
 const successShow = function(data){
 
   // Update game type
-  gameModel.updateGameType();
+  gameModel.updateGameType(gameModel.newGame);
 
   let gameObject = data.game;
   gameModel.newGame = data.game;

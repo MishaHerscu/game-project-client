@@ -64,7 +64,7 @@ const onSetCellValue = function(){
   if(gameModel.gameOver === false && gameModel.activeGame === true){
 
     // update gameType
-    gameModel.updateGameType();
+    gameModel.updateGameType(gameModel.newGame);
 
     // the clicked cell and the value of that cell
     let currentVal = $(this).text();

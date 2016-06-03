@@ -121,6 +121,7 @@ const newGame = function(data){
 
   // instantiate new game
   gameModel.newGame = new games.game(gameObject);
+  console.log(gameModel.newGame);
 
   // reset gameOver and activeGame
   gameModel.gameOver = gameModel.newGame.over;
