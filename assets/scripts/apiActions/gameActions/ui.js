@@ -97,7 +97,7 @@ const successJoin = function(data){
   $('.game-over-section').hide();
   $('#gameUpdateModal').modal('hide');
 
-  gameModel.updateGameType(gameModel.newGame);
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   gameModel.activeGame = true;
 
@@ -146,7 +146,7 @@ const newGame = function(data){
   gameModel.newGame = new games.game(data.game);
 
   // check game type
-  gameModel.updateGameType(gameModel.newGame);
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   // should be zero
   gameMoves.refreshCounts();

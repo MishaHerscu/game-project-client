@@ -45,7 +45,7 @@ const updateModel = function(data){
 };
 
 const updateView = function(){
-  gameModel.updateGameType(gameModel.newGame);
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
   gameMoves.refreshCounts();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();

@@ -78,6 +78,7 @@ const updateGameType = function(gameObject){
   }else{
     gameType = gameTypes[0];
   }
+  return gameType;
 };
 
 const swapPlayers = function(gameObject){

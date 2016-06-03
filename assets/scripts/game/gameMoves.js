@@ -153,7 +153,7 @@ const onSetCellValue = function(){
   refreshCounts();
 
   // update gameType (single vs double player)
-  gameModel.updateGameType(gameModel.newGame);
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   // make sure it is your turn before you go
   if(
@@ -174,7 +174,7 @@ const onSetCellValue = function(){
   if(gameModel.gameOver === false && gameModel.activeGame === true){
 
     // update gameType (single vs double player)
-    gameModel.updateGameType(gameModel.newGame);
+    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
     // the clicked cell and the value of that cell
     let currentVal = $(this).text();
@@ -206,7 +206,7 @@ const onSetCellValue = function(){
       if(gameModel.gameOver === false){
 
         // update gameType
-        gameModel.updateGameType(gameModel.newGame);
+        gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
         // swap players
         let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);

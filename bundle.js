@@ -423,7 +423,7 @@ webpackJsonp([0],[
 	  $('.game-over-section').hide();
 	  $('#gameUpdateModal').modal('hide');
 
-	  gameModel.updateGameType(gameModel.newGame);
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	  gameModel.activeGame = true;
 
@@ -471,7 +471,7 @@ webpackJsonp([0],[
 	  gameModel.newGame = new games.game(data.game);
 
 	  // check game type
-	  gameModel.updateGameType(gameModel.newGame);
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	  // should be zero
 	  gameMoves.refreshCounts();
@@ -601,6 +601,7 @@ webpackJsonp([0],[
 	  } else {
 	    gameType = gameTypes[0];
 	  }
+	  return gameType;
 	};
 
 	var swapPlayers = function swapPlayers(gameObject) {
@@ -883,7 +884,7 @@ webpackJsonp([0],[
 	  refreshCounts();
 
 	  // update gameType (single vs double player)
-	  gameModel.updateGameType(gameModel.newGame);
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	  // make sure it is your turn before you go
 	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
@@ -901,7 +902,7 @@ webpackJsonp([0],[
 	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
 
 	    // update gameType (single vs double player)
-	    gameModel.updateGameType(gameModel.newGame);
+	    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	    // the clicked cell and the value of that cell
 	    var currentVal = $(this).text();
@@ -933,7 +934,7 @@ webpackJsonp([0],[
 	      if (gameModel.gameOver === false) {
 
 	        // update gameType
-	        gameModel.updateGameType(gameModel.newGame);
+	        gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	        // swap players
 	        var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
@@ -1442,7 +1443,7 @@ webpackJsonp([0],[
 	};
 
 	var updateView = function updateView() {
-	  gameModel.updateGameType(gameModel.newGame);
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
