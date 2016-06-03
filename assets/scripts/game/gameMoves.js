@@ -30,24 +30,31 @@ const redrawBoard = function(){
 
 const refreshGameInfoTable = function(gameObject){
 
-  if(gameObject === null){
+  if(gameObject === null || gameObject.id === null || gameObject === undefined || gameObject.id === undefined){
+
     return false;
+
   }else{
+
     $("#game-id-data").text(gameObject.id);
     $("#game-cells-data").text(gameObject.cells);
     $("#game-over-data").text(gameObject.over);
 
-    if(gameObject.player_x === null){
+    if(gameObject.player_x === null || gameObject.player_x === undefined){
       $("#player-x-data").text("N/A");
     }else{
       $("#player-x-data").text(gameObject.player_x.email);
     }
-    if(gameObject.player_o === null){
+    if(gameObject.player_o === null || gameObject.player_o === undefined){
       $("#player-o-data").text("N/A");
     }else{
       $("#player-o-data").text(gameObject.player_o.email);
     }
+
   }
+
+  return true;
+
 };
 
 const onSetCellValue = function(){
@@ -71,8 +78,8 @@ const onSetCellValue = function(){
       // update model
       let modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
 
-      // update model
-      gameModel.updateGameInfo();
+      // update game info view
+      refreshGameInfoTable(gameModel.newGame);
 
       // check if the game is over
       gameModel.gameOver = gameChecks.checkGame();

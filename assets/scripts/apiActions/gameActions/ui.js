@@ -32,10 +32,20 @@ const hideBoard = function(){
   $('.hideable').hide();
 };
 
+const updateView = function(){
+
+  // update grid
+  gameMoves.redrawBoard();
+
+  // update game info
+  gameMoves.refreshGameInfoTable(gameModel.newGame);
+
+};
+
 const successMove = function(){
 
   // show game info
-  if(gameModel.newGame.id !== null){
+  if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
 };
@@ -83,7 +93,7 @@ const successJoin = function(data){
   gameMoves.redrawBoard();
 
   // show game info
-  if(gameModel.newGame.id !== null){
+  if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
 
@@ -101,7 +111,7 @@ const successPlayThisGame = function(data){
 const newGame = function(data){
 
   // data about new game
-  let gameData = data.game;
+  let gameObject = data.game;
   gameModel.turnCount = 0;
   gameModel.winner = null;
   gameModel.winnerString = '';
@@ -112,7 +122,7 @@ const newGame = function(data){
   $('#gameUpdateModal').modal('hide');
 
   // instantiate new game
-  gameModel.newGame = new games.game(gameData);
+  gameModel.newGame = new games.game(gameObject);
 
   // reset gameOver and activeGame
   gameModel.gameOver = gameModel.newGame.over;
@@ -142,12 +152,6 @@ const newGame = function(data){
   $('#game-to-watch').val(gameModel.newGame.id);
   $('#watch-game').submit();
 
-  // update grid
-  gameMoves.redrawBoard();
-
-  // update game info
-  gameModel.updateGameInfo();
-
   // reset view
   $('.table-section').show();
   $('.hideable').show();
@@ -160,6 +164,7 @@ module.exports = {
   failure,
   showBoard,
   hideBoard,
+  updateView,
   successMove,
   updateGames,
   updateFinishedGames,

@@ -89,17 +89,6 @@ const swapPlayers = function(){
   return NewPlayersSymbols;
 };
 
-const updateGameInfo = function(){
-
-  $("#game-id-data").text(newGame.id);
-  $("#game-cells-data").text(newGame.cells);
-  $("#game-over-data").text(newGame.over);
-  $("#player-x-data").text(newGame.player_x);
-  $("#player-o-data").text(newGame.player_o);
-
-  return true;
-};
-
 module.exports = {
   currentPlayer,
   currentSymbol,
@@ -113,7 +102,6 @@ module.exports = {
   gameOver,
   gameSize,
   swapPlayers,
-  updateGameInfo,
   boardTrans,
   maxTurnCount,
   turnCount,

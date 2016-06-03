@@ -28,17 +28,14 @@ const updateAPI = function(modelGameIndex,currentSymbol){
         "index": modelGameIndex,
         "value": currentSymbol
       },
-      "over": gameModel.gameOver
+      "over": gameModel.newGame.over
     }
   };
-  console.log('updateGameData: ', updateGameData);
 
   // update game in the back end
   gameApi.updateGame(updateGameData)
   .done(gameUi.successMove)
   .fail(gameUi.failure);
-
-  console.log('updated game object: ', gameModel.newGame);
 };
 
 module.exports = {

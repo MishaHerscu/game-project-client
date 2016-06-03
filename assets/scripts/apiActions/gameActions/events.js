@@ -11,8 +11,7 @@ const onNewGame = function(event){
   .done(ui.success)
   .then(ui.newGame)
   .then(ui.showBoard)
-  .then(ui.updateGames)
-  .then(ui.updateFinishedGames)
+  .then(ui.updateView)
   .fail(ui.failure);
 
 };
