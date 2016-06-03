@@ -7,6 +7,9 @@ const turnEffects = require('./turnEffects.js');
 const refreshCounts = function(){
 
   gameModel.turnCount = 0;
+  gameModel.xCount = 0;
+  gameModel.oCount = 0;
+
   let max = gameModel.maxTurnCount;
 
   for(let i = 0; i < max; i++){
@@ -113,7 +116,12 @@ const onSetCellValue = function(){
     (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||
     (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
     ){
-    console.log("Waiting for other player...");
+
+    console.log(gameModel.xCount);
+    console.log(gameModel.oCount);
+    console.log(gameModel.currentPlayer);
+    console.log('waiting for other player...');
+
     return false;
   }
 

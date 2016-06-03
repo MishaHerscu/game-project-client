@@ -689,13 +689,13 @@ webpackJsonp([0],[
 	var players = ['player_x', 'player_o'];
 
 	var symbols = {
-	  player_x: "X",
-	  player_o: "O"
+	  player_x: "x",
+	  player_o: "o"
 	};
 
 	var altSymbols = {
-	  Player_X: "X",
-	  Player_O: "O"
+	  Player_X: "x",
+	  Player_O: "o"
 	};
 
 	module.exports = {
@@ -745,6 +745,9 @@ webpackJsonp([0],[
 	var refreshCounts = function refreshCounts() {
 
 	  gameModel.turnCount = 0;
+	  gameModel.xCount = 0;
+	  gameModel.oCount = 0;
+
 	  var max = gameModel.maxTurnCount;
 
 	  for (var i = 0; i < max; i++) {
@@ -844,7 +847,12 @@ webpackJsonp([0],[
 
 	  // make sure it is your turn before you go
 	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
-	    console.log("Waiting for other player...");
+
+	    console.log(gameModel.xCount);
+	    console.log(gameModel.oCount);
+	    console.log(gameModel.currentPlayer);
+	    console.log('waiting for other player...');
+
 	    return false;
 	  }
 
