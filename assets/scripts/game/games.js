@@ -13,6 +13,11 @@ const game = function(gameData){
   this.player_o = gameData.player_o;
 };
 
+// game types
+let gameTypes = ['singleDevice','twoDevice','bot'];
+
+
 module.exports = {
   game,
+  gameTypes,
 };

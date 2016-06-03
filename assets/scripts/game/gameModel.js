@@ -6,9 +6,11 @@
 
 // const games = require('./games');
 const playersFile = require('./players.js');
+const games = require('./games.js');
 
 let symbols = playersFile.symbols;
 let players = playersFile.players;
+let gameTypes = games.gameTypes;
 
 //
 // game vars
@@ -26,6 +28,7 @@ let turnCount = 0;
 let winner = null;
 let winnerString = '';
 let newWatcher = null;
+let gameType = gameTypes[0];
 
 let newGame = {
   id: null,
@@ -108,4 +111,5 @@ module.exports = {
   winner,
   winnerString,
   newWatcher,
+  gameType,
 };
