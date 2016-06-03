@@ -480,10 +480,10 @@ webpackJsonp([0],[
 	  gameModel.activeGame = true;
 
 	  // set initial params
-	  gameModel.currentPlayer = gameModel.players[0];
-	  gameModel.otherPlayer = gameModel.players[1];
-	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
-	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+	  gameModel.currentPlayer = gameModel.players.players[0];
+	  gameModel.otherPlayer = gameModel.players.players[1];
+	  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
+	  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
 
 	  // check game type
 	  gameModel.updateGameType(gameModel.newGame);
@@ -753,11 +753,11 @@ webpackJsonp([0],[
 	      gameModel.turnCount += 1;
 	    }
 
-	    if (gameModel.newGame.cells[i] === gameModel.symbols[0]) {
+	    if (gameModel.newGame.cells[i] === gameModel.players.symbols[0]) {
 	      gameModel.xCount += 1;
 	    }
 
-	    if (gameModel.newGame.cells[i] === gameModel.symbols[1]) {
+	    if (gameModel.newGame.cells[i] === gameModel.players.symbols[1]) {
 	      gameModel.oCount += 1;
 	    }
 	  }
