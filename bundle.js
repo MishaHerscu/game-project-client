@@ -33,6 +33,7 @@ webpackJsonp([0],[
 
 	$('.table-section').hide();
 	$('.hideable').hide();
+	$('.hidden').hide();
 	$('.game-over-section').hide();
 	$('.not-signed-in').show();
 	$('#signInModal').modal('hide');
