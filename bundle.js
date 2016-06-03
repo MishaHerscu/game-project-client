@@ -80,9 +80,9 @@ webpackJsonp([0],[
 
 	var getFormFields = __webpack_require__(5);
 	var api = __webpack_require__(6);
-	var ui = __webpack_require__(9);
-	var gameUi = __webpack_require__(10);
-	var gameModel = __webpack_require__(7);
+	var ui = __webpack_require__(7);
+	var gameUi = __webpack_require__(8);
+	var gameModel = __webpack_require__(9);
 
 	var onSignUp = function onSignUp(event) {
 	  event.preventDefault();
@@ -205,7 +205,6 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(7);
 
 	// create new user
 	var signUp = function signUp(data) {
@@ -264,150 +263,6 @@ webpackJsonp([0],[
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
-
-	//
-	// imports
-	//
-
-	// const games = require('./games');
-
-	var players_file = __webpack_require__(8);
-
-	var symbols = players_file.symbols;
-	var players = players_file.players;
-
-	//
-	// game flow
-	//
-
-	var currentPlayer = players[0];
-	var otherPlayer = players[1];
-	var currentSymbol = symbols[currentPlayer];
-	var otherSymbol = symbols[otherPlayer];
-	var activeGame = false;
-	var gameOver = false;
-	var gameSize = 3;
-	var maxTurnCount = Math.pow(gameSize, 2);
-	var turnCount = 0;
-	var winner = null;
-	var winnerString = '';
-
-	var newGame = {
-	  id: null,
-	  cells: null,
-	  over: null,
-	  player_x: null,
-	  player_o: null
-	};
-
-	var boardDict = {
-	  'cell-00': '',
-	  'cell-01': '',
-	  'cell-02': '',
-	  'cell-10': '',
-	  'cell-11': '',
-	  'cell-12': '',
-	  'cell-20': '',
-	  'cell-21': '',
-	  'cell-22': ''
-	};
-
-	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
-
-	var swapPlayers = function swapPlayers() {
-
-	  var NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
-
-	  if (currentPlayer === players[0]) {
-
-	    currentPlayer = players[1];
-	    currentSymbol = symbols[players[1]];
-	    otherPlayer = players[0];
-	    otherSymbol = symbols[players[0]];
-
-	    NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
-	  } else if (currentPlayer === players[1]) {
-
-	    currentPlayer = players[0];
-	    currentSymbol = symbols[players[0]];
-	    otherPlayer = players[1];
-	    otherSymbol = symbols[players[1]];
-
-	    NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
-	  } else {
-	    console.log('There is an error with toggling currentPlayer!');
-	    return false;
-	  }
-
-	  return NewPlayersSymbols;
-	};
-
-	var updateGameInfo = function updateGameInfo() {
-
-	  $("#game-id-data").text(newGame.id);
-	  $("#game-cells-data").text(newGame.cells);
-	  $("#game-over-data").text(newGame.over);
-	  $("#player-x-data").text(newGame.player_x);
-	  $("#player-o-data").text(newGame.player_o);
-
-	  return true;
-	};
-
-	module.exports = {
-	  currentPlayer: currentPlayer,
-	  currentSymbol: currentSymbol,
-	  otherPlayer: otherPlayer,
-	  otherSymbol: otherSymbol,
-	  symbols: symbols,
-	  players: players,
-	  newGame: newGame,
-	  boardDict: boardDict,
-	  activeGame: activeGame,
-	  gameOver: gameOver,
-	  gameSize: gameSize,
-	  swapPlayers: swapPlayers,
-	  updateGameInfo: updateGameInfo,
-	  boardTrans: boardTrans,
-	  maxTurnCount: maxTurnCount,
-	  turnCount: turnCount,
-	  winner: winner,
-	  winnerString: winnerString
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	//
-	// player variables
-	//
-
-	var players = ['Player_X', 'Player_O'];
-
-	var symbols = {
-	  Player_X: "X",
-	  Player_O: "O"
-	};
-
-	var altSymbols = {
-	  Player_X: "X",
-	  Player_O: "O"
-	};
-
-	module.exports = {
-	  symbols: symbols,
-	  players: players,
-	  altSymbols: altSymbols
-	};
-
-/***/ },
-/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
@@ -471,13 +326,13 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 10 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(7);
+	var gameModel = __webpack_require__(9);
 	var gameMoves = __webpack_require__(11);
 	var games = __webpack_require__(15);
 	var gameWatcherMaker = __webpack_require__(16);
@@ -644,12 +499,156 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+
+	//
+	// imports
+	//
+
+	// const games = require('./games');
+
+	var playersFile = __webpack_require__(10);
+
+	var symbols = playersFile.symbols;
+	var players = playersFile.players;
+
+	//
+	// game vars
+	//
+
+	var currentPlayer = players[0];
+	var otherPlayer = players[1];
+	var currentSymbol = symbols[currentPlayer];
+	var otherSymbol = symbols[otherPlayer];
+	var activeGame = false;
+	var gameOver = false;
+	var gameSize = 3;
+	var maxTurnCount = Math.pow(gameSize, 2);
+	var turnCount = 0;
+	var winner = null;
+	var winnerString = '';
+
+	var newGame = {
+	  id: null,
+	  cells: null,
+	  over: null,
+	  player_x: null,
+	  player_o: null
+	};
+
+	var boardDict = {
+	  'cell-00': '',
+	  'cell-01': '',
+	  'cell-02': '',
+	  'cell-10': '',
+	  'cell-11': '',
+	  'cell-12': '',
+	  'cell-20': '',
+	  'cell-21': '',
+	  'cell-22': ''
+	};
+
+	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
+
+	var swapPlayers = function swapPlayers() {
+
+	  var NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
+
+	  if (currentPlayer === players[0]) {
+
+	    currentPlayer = players[1];
+	    currentSymbol = symbols[players[1]];
+	    otherPlayer = players[0];
+	    otherSymbol = symbols[players[0]];
+
+	    NewPlayersSymbols = [players[1], players[0], symbols[players[1]], symbols[players[0]]];
+	  } else if (currentPlayer === players[1]) {
+
+	    currentPlayer = players[0];
+	    currentSymbol = symbols[players[0]];
+	    otherPlayer = players[1];
+	    otherSymbol = symbols[players[1]];
+
+	    NewPlayersSymbols = [players[0], players[1], symbols[players[0]], symbols[players[1]]];
+	  } else {
+	    console.log('There is an error with toggling currentPlayer!');
+	    return false;
+	  }
+
+	  return NewPlayersSymbols;
+	};
+
+	var updateGameInfo = function updateGameInfo() {
+
+	  $("#game-id-data").text(newGame.id);
+	  $("#game-cells-data").text(newGame.cells);
+	  $("#game-over-data").text(newGame.over);
+	  $("#player-x-data").text(newGame.player_x);
+	  $("#player-o-data").text(newGame.player_o);
+
+	  return true;
+	};
+
+	module.exports = {
+	  currentPlayer: currentPlayer,
+	  currentSymbol: currentSymbol,
+	  otherPlayer: otherPlayer,
+	  otherSymbol: otherSymbol,
+	  symbols: symbols,
+	  players: players,
+	  newGame: newGame,
+	  boardDict: boardDict,
+	  activeGame: activeGame,
+	  gameOver: gameOver,
+	  gameSize: gameSize,
+	  swapPlayers: swapPlayers,
+	  updateGameInfo: updateGameInfo,
+	  boardTrans: boardTrans,
+	  maxTurnCount: maxTurnCount,
+	  turnCount: turnCount,
+	  winner: winner,
+	  winnerString: winnerString
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	//
+	// player variables
+	//
+
+	var players = ['Player_X', 'Player_O'];
+
+	var symbols = {
+	  Player_X: "X",
+	  Player_O: "O"
+	};
+
+	var altSymbols = {
+	  Player_X: "X",
+	  Player_O: "O"
+	};
+
+	module.exports = {
+	  symbols: symbols,
+	  players: players,
+	  altSymbols: altSymbols
+	};
+
+/***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	var gameModel = __webpack_require__(7);
+	var gameModel = __webpack_require__(9);
 	var gameChecks = __webpack_require__(12);
 	var turnEffects = __webpack_require__(13);
 
@@ -828,17 +827,17 @@ webpackJsonp([0],[
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	// imports
 
-	var gameModel = __webpack_require__(7);
+	var gameModel = __webpack_require__(9);
 
 	// check whether dict values are the same
 	// the keys have to be 0, 1, 2 etc.
 	// this is based on matching the format we get from jQuery
-	var checkSame = function checkSame(dict) {
-	  var checkVal = $(dict[0]).text();
+	var checkSame = function checkSame(list) {
+	  var checkVal = gameModel.newGame.cells[list[0]];
 
 	  if (checkVal === "") {
 
@@ -846,7 +845,7 @@ webpackJsonp([0],[
 	  } else {
 
 	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
-	      if ($(dict[i]).text() !== checkVal) {
+	      if (gameModel.newGame.cells[list[i]] !== checkVal) {
 	        return false;
 	      }
 	    }
@@ -885,7 +884,15 @@ webpackJsonp([0],[
 	// check the game
 	var checkGame = function checkGame() {
 	  var gameOver = false;
-	  if (checkSame($(".row-0")) === true || checkSame($(".col-0")) === true || checkSame($(".row-1")) === true || checkSame($(".col-1")) === true || checkSame($(".row-2")) === true || checkSame($(".col-2")) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
+
+	  var row0 = [0, 1, 2];
+	  var row1 = [3, 4, 5];
+	  var row2 = [6, 7, 8];
+	  var col0 = [0, 3, 6];
+	  var col1 = [1, 4, 7];
+	  var col2 = [2, 5, 8];
+
+	  if (checkSame(row0) === true || checkSame(row1) === true || checkSame(row2) === true || checkSame(col0) === true || checkSame(col1) === true || checkSame(col2) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
 	    gameOver = true;
 	  }
 
@@ -898,7 +905,6 @@ webpackJsonp([0],[
 	  checkDiags: checkDiags,
 	  checkGame: checkGame
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 13 */
@@ -906,9 +912,9 @@ webpackJsonp([0],[
 
 	'use strict';
 
-	var gameModel = __webpack_require__(7);
+	var gameModel = __webpack_require__(9);
 	var gameApi = __webpack_require__(14);
-	var gameUi = __webpack_require__(10);
+	var gameUi = __webpack_require__(8);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
@@ -959,7 +965,7 @@ webpackJsonp([0],[
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(7);
+	var gameModel = __webpack_require__(9);
 
 	// show game status
 	var show = function show(gameId, authToken) {
@@ -1198,7 +1204,7 @@ webpackJsonp([0],[
 	'use strict';
 
 	var gameMoves = __webpack_require__(11);
-	var gameModel = __webpack_require__(7);
+	var gameModel = __webpack_require__(9);
 
 	var onChange = function onChange(data) {
 	  if (data.timeout) {
@@ -1246,8 +1252,8 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var api = __webpack_require__(14);
-	var ui = __webpack_require__(10);
-	var gameModel = __webpack_require__(7);
+	var ui = __webpack_require__(8);
+	var gameModel = __webpack_require__(9);
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
