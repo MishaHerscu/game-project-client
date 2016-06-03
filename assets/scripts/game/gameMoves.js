@@ -105,6 +105,9 @@ const onGameCheck = function(gameObject){
 
 const onSetCellValue = function(){
 
+  // refresh counts
+  refreshCounts();
+
   // make sure it is your turn before you go
   if(
     (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||

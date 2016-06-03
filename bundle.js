@@ -839,6 +839,9 @@ webpackJsonp([0],[
 
 	var onSetCellValue = function onSetCellValue() {
 
+	  // refresh counts
+	  refreshCounts();
+
 	  // make sure it is your turn before you go
 	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
 	    console.log("Waiting for other player...");
