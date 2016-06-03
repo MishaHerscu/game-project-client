@@ -76,8 +76,6 @@ const checkGame = function(){
   ){
     gameOver = true;
   }
-
-  console.log('gameOver: ', gameOver);
   return gameOver;
 };
 

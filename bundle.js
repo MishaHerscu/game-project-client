@@ -368,8 +368,6 @@ webpackJsonp([0],[
 	};
 
 	var successMove = function successMove() {
-
-	  // show game info
 	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  }
@@ -888,8 +886,6 @@ webpackJsonp([0],[
 	  if (checkSame(row0) === true || checkSame(row1) === true || checkSame(row2) === true || checkSame(col0) === true || checkSame(col1) === true || checkSame(col2) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
 	    gameOver = true;
 	  }
-
-	  console.log('gameOver: ', gameOver);
 	  return gameOver;
 	};
 
@@ -1211,7 +1207,7 @@ webpackJsonp([0],[
 	    gameModel.newGame.cells[cell.index] = cell.value;
 
 	    // refresh all data, to get user info
-	    gameApi.show(data.game.id, app.user.token).done(ui.successShow).fail(ui.failure);
+	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.successShow).fail(ui.failure);
 
 	    // redraw Board
 	    gameMoves.redrawBoard();
@@ -1359,10 +1355,6 @@ webpackJsonp([0],[
 	};
 
 	var addHandlers = function addHandlers() {
-
-	  //
-	  //buttons
-	  //
 
 	  $('#new-game').on('submit', onNewGame);
 	  $('#get-games').on('submit', onGetGames);

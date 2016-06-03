@@ -24,7 +24,7 @@ const onChange = function(data){
     gameModel.newGame.cells[cell.index] = cell.value;
 
     // refresh all data, to get user info
-    gameApi.show(data.game.id, app.user.token)
+    gameApi.show(gameModel.newGame.id, app.user.token)
     .done(ui.successShow)
     .fail(ui.failure);
 

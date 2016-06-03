@@ -43,8 +43,6 @@ const updateView = function(){
 };
 
 const successMove = function(){
-
-  // show game info
   if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }

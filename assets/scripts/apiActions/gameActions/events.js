@@ -81,10 +81,6 @@ const onPlayThisGame = function(event){
 
 const addHandlers = () => {
 
-  //
-  //buttons
-  //
-
   $('#new-game').on('submit', onNewGame);
   $('#get-games').on('submit', onGetGames);
   $('#get-done-games').on('submit', onGetDoneGames);

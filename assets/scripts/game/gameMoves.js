@@ -135,7 +135,6 @@ const onSetCellValue = function(){
 
           $('.table-section').hide();
           $('.game-over-section').show();
-
         }
 
       } else{
