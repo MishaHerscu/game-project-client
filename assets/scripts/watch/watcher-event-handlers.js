@@ -8,10 +8,10 @@ const gameApi = require('../apiActions/gameActions/api.js');
 
 const onChange = function(data){
   if (data.timeout) { //not an error
-    if(this !== undefined){
+    if(this !== undefined && this !== null){
       this.close();
     }
-    if(gameModel.newWatcher !== undefined){
+    if(gameModel.newWatcher !== undefined && gameModel.newWatcher !== null){
       gameModel.newWatcher.close();
     }
     return console.warn(data.timeout);
