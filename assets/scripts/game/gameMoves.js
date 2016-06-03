@@ -93,17 +93,20 @@ const refreshGameInfoTable = function(gameObject){
 
 const updatePlayerTurnAnnouncement = function(){
 
+  // update gameType (single vs double player)
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
   if(gameModel.gameType === games.gameTypes[0]){
 
     $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
     $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
-  } else if(gameModel.gameType === gameModel.gameTypes[1]){
+  } else if(gameModel.gameType === games.gameTypes[1]){
 
     $('#player-turn').text(gameModel.currentPlayer);
     $('#game-update-modal').text(gameModel.currentPlayer);
 
-  } else if(gameModel.gameType === gameModel.gameTypes[2]){
+  } else if(gameModel.gameType === games.gameTypes[2]){
 
     $('#player-turn').text(gameModel.currentPlayer);
     $('#game-update-modal').text(gameModel.currentPlayer);
@@ -153,18 +156,39 @@ const onSetCellValue = function(){
   // update gameType (single vs double player)
   gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
+  // // manually change gameType if necessary
+  // let playerXCheck = true;
+  // let playerOCheck = false;
+  //
+  // if(gameModel.newGame.player_x !== undefined && gameModel.newGame.player_x !== null){
+  //   playerXCheck = true;
+  // } else {
+  //   playerXCheck = false;
+  // }
+  //
+  // if(gameModel.newGame.player_o !== undefined && gameModel.newGame.player_o !== null){
+  //   playerOCheck = true;
+  // } else {
+  //   playerOCheck = false;
+  // }
+  //
+  // if(playerXCheck === true && playerOCheck === true){
+  //   gameModel.gameType = games.gameTypes[1];
+  // } else if(playerXCheck === true){
+  //   gameModel.gameType = games.gameTypes[0];
+  // }
+
   // make sure it is your turn before you go
-  if(
-    (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||
-    (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
-    ){
+  if(gameModel.gameType === games.gameTypes[1]){
+    if(
+      (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||
+      (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
+      ){
 
-    console.log('xCount: ', gameModel.xCount);
-    console.log('oCount: ',gameModel.oCount);
-    console.log('currentPlayer: ',gameModel.currentPlayer);
-    console.log('waiting for other player...');
+      console.log('waiting for other player...');
 
-    return false;
+      return false;
+    }
   }
 
   // you can only go if there is an active, non-over game
@@ -201,6 +225,9 @@ const onSetCellValue = function(){
       // update object for API
       turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
 
+      // update gameType (single vs double player)
+      gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
       if(gameModel.gameOver === false){
 
         // update gameType
@@ -222,6 +249,9 @@ const onSetCellValue = function(){
 
         // check game and show responses
         onGameCheck(gameModel.newGame);
+
+        // update gameType (single vs double player)
+        gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
       } else{
         if(gameModel.turnCount < gameModel.maxTurnCount){

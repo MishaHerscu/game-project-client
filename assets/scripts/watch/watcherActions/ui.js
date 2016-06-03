@@ -42,6 +42,7 @@ const successWatch = function(data){
 
 const updateModel = function(data){
   gameModel.newGame = data.game;
+
 };
 
 const updateView = function(){
@@ -50,6 +51,7 @@ const updateView = function(){
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
   gameChecks.checkGame();
+  gameMoves.updatePlayerTurnAnnouncement();
 };
 
 module.exports = {
