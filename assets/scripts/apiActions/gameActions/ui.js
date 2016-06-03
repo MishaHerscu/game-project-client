@@ -1,6 +1,7 @@
 'use strict';
 
 const app = require('../../app.js');
+const gameChecks = require('../../game/gameChecks.js');
 const gameModel = require('../../game/gameModel.js');
 const gameMoves = require('../../game/gameMoves.js');
 const games = require('../../game/games.js');
@@ -187,6 +188,62 @@ const newGame = function(data){
 
 };
 
+const togglePlayer = function(){
+
+  // update gameType (single vs double player)
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+  if(gameModel.gameOver === false){
+
+    // update gameType
+    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+    // swap players
+    let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+
+    gameModel.currentPlayer = NewPlayersSymbols[0];
+    gameModel.otherPlayer = NewPlayersSymbols[1];
+    gameModel.currentSymbol = NewPlayersSymbols[2];
+    gameModel.otherSymbol  = NewPlayersSymbols[3];
+
+    // count turn number
+    gameModel.turnCount += 1;
+
+    // check if game over now
+    gameModel.gameOver = gameChecks.checkGame();
+
+    // check game and show responses
+    gameMoves.onGameCheck(gameModel.newGame);
+
+    // update gameType (single vs double player)
+    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+  } else{
+    if(gameModel.turnCount < gameModel.maxTurnCount){
+      gameModel.winner = gameModel.currentPlayer;
+      gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+      gameModel.newGame.over = true;
+
+
+    } else {
+      gameModel.winner = null;
+      gameModel.winnerString = "Game over! It's a tie!";
+      gameModel.newGame.over = true;
+    }
+
+    console.log('The game is over! Start a new game!');
+    $('#player-turn').text(gameModel.winnerString);
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+
+    $('.table-section').hide();
+    $('.game-over-section').show();
+  }
+
+
+
+};
+
 module.exports = {
   success,
   failure,
@@ -200,4 +257,5 @@ module.exports = {
   successJoin,
   successPlayThisGame,
   newGame,
+  togglePlayer,
 };

@@ -224,54 +224,6 @@ const onSetCellValue = function(){
 
       // update object for API
       turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
-
-      // update gameType (single vs double player)
-      gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-      if(gameModel.gameOver === false){
-
-        // update gameType
-        gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-        // swap players
-        let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-        gameModel.currentPlayer = NewPlayersSymbols[0];
-        gameModel.otherPlayer = NewPlayersSymbols[1];
-        gameModel.currentSymbol = NewPlayersSymbols[2];
-        gameModel.otherSymbol  = NewPlayersSymbols[3];
-
-        // count turn number
-        gameModel.turnCount += 1;
-
-        // check if game over now
-        gameModel.gameOver = gameChecks.checkGame();
-
-        // check game and show responses
-        onGameCheck(gameModel.newGame);
-
-        // update gameType (single vs double player)
-        gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-      } else{
-        if(gameModel.turnCount < gameModel.maxTurnCount){
-          gameModel.winner = gameModel.currentPlayer;
-          gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-          gameModel.newGame.over = true;
-        } else {
-          gameModel.winner = null;
-          gameModel.winnerString = "Game over! It's a tie!";
-          gameModel.newGame.over = true;
-        }
-
-        console.log('The game is over! Start a new game!');
-        $('#player-turn').text(gameModel.winnerString);
-        $('#game-update-modal').text(gameModel.winnerString);
-        $('#gameUpdateModal').modal('show');
-
-        $('.table-section').hide();
-        $('.game-over-section').show();
-      }
     }
   } else if (gameModel.gameOver === true){
 
@@ -287,7 +239,7 @@ const onSetCellValue = function(){
     console.log('You need to activate or start a game!');
 
   } else {
-    console.log('There is a weird error with gameOver');
+    console.log('There is an unexpected error with gameOver');
   }
 
   return true;
