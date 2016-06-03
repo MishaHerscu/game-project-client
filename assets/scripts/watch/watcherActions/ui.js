@@ -1,7 +1,7 @@
 'use strict';
 
 const app = require('../../app.js');
-const gameModel = require('../../../game/gameModel.js');
+const gameModel = require('../../game/gameModel.js');
 const gameWatcherMaker = require('../make-watcher.js');
 const gameWatcherAttachHandler = require('../watcher-event-handlers.js');
 const gameMoves = require('../../game/gameMoves.js');
@@ -46,8 +46,16 @@ const successWatch = function(data){
 
 };
 
+const successShow = function(data){
+  let gameObject = data.game;
+  gameModel.newGame = data.game;
+  gameMoves.refreshGameInfoTable(gameObject);
+  gameMoves.redrawBoard();
+};
+
 module.exports = {
   success,
   failure,
   successWatch,
+  successShow,
 };

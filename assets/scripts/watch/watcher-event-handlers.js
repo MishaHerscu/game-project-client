@@ -1,7 +1,10 @@
 'use strict';
 
+const app = require('../app.js');
+const ui = require('./watcherActions/ui.js');
 const gameMoves = require('../game/gameMoves.js');
 const gameModel = require('../game/gameModel.js');
+const gameApi = require('../apiActions/gameActions/api.js');
 
 const onChange = function(data){
   if (data.timeout) { //not an error
@@ -14,6 +17,11 @@ const onChange = function(data){
     // $('#watch-value').val(cell.value);
 
     gameModel.newGame.cells[cell.index] = cell.value;
+
+    // refresh all data, to get user info
+    gameApi.show(data.game.id, app.user.token)
+    .done(ui.successShow)
+    .fail(ui.failure);
 
     // redraw Board
     gameMoves.redrawBoard();
