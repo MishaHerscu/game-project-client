@@ -42,7 +42,10 @@ const redrawBoard = function(){
   console.log('redrawing board');
 
   // check that game exists
-  if(gameModel.newGame.cells === null){
+  if(gameModel.newGame === undefined ||
+    gameModel.newGame === null ||
+    gameModel.newGame.cells === undefined ||
+    gameModel.newGame.cells === null){
     return false;
   }
 
@@ -62,7 +65,10 @@ const redrawBoard = function(){
 
 const refreshGameInfoTable = function(gameObject){
 
-  if(gameObject === null || gameObject.id === null || gameObject === undefined || gameObject.id === undefined){
+  if(gameObject === null ||
+    gameObject.id === null ||
+    gameObject === undefined ||
+    gameObject.id === undefined){
 
     return false;
 

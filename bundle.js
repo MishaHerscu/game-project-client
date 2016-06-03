@@ -785,7 +785,7 @@ webpackJsonp([0],[
 	  console.log('redrawing board');
 
 	  // check that game exists
-	  if (gameModel.newGame.cells === null) {
+	  if (gameModel.newGame === undefined || gameModel.newGame === null || gameModel.newGame.cells === undefined || gameModel.newGame.cells === null) {
 	    return false;
 	  }
 
@@ -1142,6 +1142,7 @@ webpackJsonp([0],[
 
 	// show game status
 	var show = function show(gameId, authToken) {
+	  console.log('show happening');
 	  return $.ajax({
 	    url: app.host + '/games/' + gameId,
 	    method: 'GET',
@@ -1363,7 +1364,6 @@ webpackJsonp([0],[
 	    }
 	    return console.warn(data.timeout);
 	  } else if (data.game && data.game.cell) {
-	    console.log("onChange data: ", data);
 	    var game = data.game;
 	    var cell = game.cell;
 	    // $('#watch-index').val(cell.index);
@@ -1372,7 +1372,7 @@ webpackJsonp([0],[
 	    gameModel.newGame.cells[cell.index] = cell.value;
 
 	    // refresh all data, to get new user info
-	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.successShow).fail(ui.failure);
+	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.updateModel).then(ui.updateView).fail(ui.failure);
 	  } else {
 	    console.log(data);
 	  }
@@ -1437,8 +1437,11 @@ webpackJsonp([0],[
 	  gameMoves.redrawBoard();
 	};
 
-	var successShow = function successShow(data) {
+	var updateModel = function updateModel(data) {
 	  gameModel.newGame = data.game;
+	};
+
+	var updateView = function updateView() {
 	  gameModel.updateGameType(gameModel.newGame);
 	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
@@ -1450,7 +1453,8 @@ webpackJsonp([0],[
 	  success: success,
 	  failure: failure,
 	  successWatch: successWatch,
-	  successShow: successShow
+	  updateView: updateView,
+	  updateModel: updateModel
 	};
 
 /***/ },

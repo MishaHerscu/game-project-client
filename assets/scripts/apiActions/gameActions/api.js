@@ -5,6 +5,7 @@ const gameModel = require('../../game/gameModel.js');
 
 // show game status
 const show = function(gameId, authToken){
+  console.log('show happening');
   return $.ajax({
     url: app.host + '/games/' + gameId,
     method: 'GET',

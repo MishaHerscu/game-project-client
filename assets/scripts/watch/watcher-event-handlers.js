@@ -15,7 +15,6 @@ const onChange = function(data){
     }
     return console.warn(data.timeout);
   } else if (data.game && data.game.cell) {
-    console.log("onChange data: ", data);
     let game = data.game;
     let cell = game.cell;
     // $('#watch-index').val(cell.index);
@@ -25,7 +24,8 @@ const onChange = function(data){
 
     // refresh all data, to get new user info
     gameApi.show(gameModel.newGame.id, app.user.token)
-    .done(ui.successShow)
+    .done(ui.updateModel)
+    .then(ui.updateView)
     .fail(ui.failure);
 
   } else {
