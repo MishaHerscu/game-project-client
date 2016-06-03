@@ -46,7 +46,7 @@ webpackJsonp([0],[
 
 	var authEvents = __webpack_require__(4);
 	var gameEvents = __webpack_require__(20);
-	var gameMoves = __webpack_require__(12);
+	var gameMoves = __webpack_require__(13);
 	var watchEvents = __webpack_require__(21);
 
 	// On document ready
@@ -83,7 +83,7 @@ webpackJsonp([0],[
 	var api = __webpack_require__(6);
 	var ui = __webpack_require__(7);
 	var gameUi = __webpack_require__(8);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(10);
 
 	var onSignUp = function onSignUp(event) {
 	  event.preventDefault();
@@ -328,9 +328,10 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(9);
-	var gameMoves = __webpack_require__(12);
-	var games = __webpack_require__(11);
+	var gameChecks = __webpack_require__(9);
+	var gameModel = __webpack_require__(10);
+	var gameMoves = __webpack_require__(13);
+	var games = __webpack_require__(12);
 	var gameWatcherMaker = __webpack_require__(16);
 	var gameWatcherAttachHandler = __webpack_require__(18);
 
@@ -511,6 +512,56 @@ webpackJsonp([0],[
 	  $('.not-signed-in').hide();
 	};
 
+	var togglePlayer = function togglePlayer() {
+
+	  // update gameType (single vs double player)
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+	  if (gameModel.gameOver === false) {
+
+	    // update gameType
+	    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+	    // swap players
+	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+
+	    gameModel.currentPlayer = NewPlayersSymbols[0];
+	    gameModel.otherPlayer = NewPlayersSymbols[1];
+	    gameModel.currentSymbol = NewPlayersSymbols[2];
+	    gameModel.otherSymbol = NewPlayersSymbols[3];
+
+	    // count turn number
+	    gameModel.turnCount += 1;
+
+	    // check if game over now
+	    gameModel.gameOver = gameChecks.checkGame();
+
+	    // check game and show responses
+	    gameMoves.onGameCheck(gameModel.newGame);
+
+	    // update gameType (single vs double player)
+	    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  } else {
+	    if (gameModel.turnCount < gameModel.maxTurnCount) {
+	      gameModel.winner = gameModel.currentPlayer;
+	      gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+	      gameModel.newGame.over = true;
+	    } else {
+	      gameModel.winner = null;
+	      gameModel.winnerString = "Game over! It's a tie!";
+	      gameModel.newGame.over = true;
+	    }
+
+	    console.log('The game is over! Start a new game!');
+	    $('#player-turn').text(gameModel.winnerString);
+	    $('#game-update-modal').text(gameModel.winnerString);
+	    $('#gameUpdateModal').modal('show');
+
+	    $('.table-section').hide();
+	    $('.game-over-section').show();
+	  }
+	};
+
 	module.exports = {
 	  success: success,
 	  failure: failure,
@@ -523,12 +574,94 @@ webpackJsonp([0],[
 	  successShowGameInfo: successShowGameInfo,
 	  successJoin: successJoin,
 	  successPlayThisGame: successPlayThisGame,
-	  newGame: newGame
+	  newGame: newGame,
+	  togglePlayer: togglePlayer
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// imports
+
+	var gameModel = __webpack_require__(10);
+
+	// check whether dict values are the same
+	// the keys have to be 0, 1, 2 etc.
+	// this is based on matching the format we get from jQuery
+	var checkSame = function checkSame(list) {
+	  var checkVal = gameModel.newGame.cells[list[0]];
+
+	  if (checkVal === "") {
+
+	    return false;
+	  } else {
+
+	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
+	      if (gameModel.newGame.cells[list[i]] !== checkVal) {
+	        return false;
+	      }
+	    }
+	  }
+	  gameModel.winner = gameModel.currentPlayer;
+	  return true;
+	};
+
+	// check diagonal win conditions
+	var checkDiags = function checkDiags() {
+
+	  // define vars
+	  var topLeft = gameModel.newGame.cells[0];
+	  var topRight = gameModel.newGame.cells[2];
+	  var center = gameModel.newGame.cells[4];
+	  var bottomLeft = gameModel.newGame.cells[6];
+	  var bottomRight = gameModel.newGame.cells[8];
+
+	  if (topLeft === 'X' || topLeft === 'O') {
+	    if (topLeft === center && center === bottomRight) {
+	      gameModel.winner = gameModel.currentPlayer;
+	      return true;
+	    }
+	  }
+
+	  if (topRight === 'X' || topRight === 'O') {
+	    if (topRight === center && center === bottomLeft) {
+	      gameModel.winner = gameModel.currentPlayer;
+	      return true;
+	    }
+	  }
+
+	  return false;
+	};
+
+	// check the game
+	var checkGame = function checkGame() {
+	  var gameOver = false;
+
+	  var row0 = [0, 1, 2];
+	  var row1 = [3, 4, 5];
+	  var row2 = [6, 7, 8];
+	  var col0 = [0, 3, 6];
+	  var col1 = [1, 4, 7];
+	  var col2 = [2, 5, 8];
+
+	  if (checkSame(row0) === true || checkSame(row1) === true || checkSame(row2) === true || checkSame(col0) === true || checkSame(col1) === true || checkSame(col2) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
+	    gameOver = true;
+	  }
+	  return gameOver;
+	};
+
+	module.exports = {
+	  checkSame: checkSame,
+	  checkDiags: checkDiags,
+	  checkGame: checkGame
+	};
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -539,8 +672,8 @@ webpackJsonp([0],[
 
 	// const games = require('./games');
 
-	var players = __webpack_require__(10);
-	var games = __webpack_require__(11);
+	var players = __webpack_require__(11);
+	var games = __webpack_require__(12);
 	var app = __webpack_require__(3);
 
 	var gameTypes = games.gameTypes;
@@ -687,7 +820,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -715,7 +848,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -743,14 +876,14 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
-	var games = __webpack_require__(11);
-	var gameModel = __webpack_require__(9);
-	var gameChecks = __webpack_require__(13);
+	var games = __webpack_require__(12);
+	var gameModel = __webpack_require__(10);
+	var gameChecks = __webpack_require__(9);
 	var turnEffects = __webpack_require__(14);
 
 	var refreshCounts = function refreshCounts() {
@@ -830,15 +963,18 @@ webpackJsonp([0],[
 
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
+	  // update gameType (single vs double player)
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
 	  if (gameModel.gameType === games.gameTypes[0]) {
 
 	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
 	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
-	  } else if (gameModel.gameType === gameModel.gameTypes[1]) {
+	  } else if (gameModel.gameType === games.gameTypes[1]) {
 
 	    $('#player-turn').text(gameModel.currentPlayer);
 	    $('#game-update-modal').text(gameModel.currentPlayer);
-	  } else if (gameModel.gameType === gameModel.gameTypes[2]) {
+	  } else if (gameModel.gameType === games.gameTypes[2]) {
 
 	    $('#player-turn').text(gameModel.currentPlayer);
 	    $('#game-update-modal').text(gameModel.currentPlayer);
@@ -885,15 +1021,36 @@ webpackJsonp([0],[
 	  // update gameType (single vs double player)
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
+	  // // manually change gameType if necessary
+	  // let playerXCheck = true;
+	  // let playerOCheck = false;
+	  //
+	  // if(gameModel.newGame.player_x !== undefined && gameModel.newGame.player_x !== null){
+	  //   playerXCheck = true;
+	  // } else {
+	  //   playerXCheck = false;
+	  // }
+	  //
+	  // if(gameModel.newGame.player_o !== undefined && gameModel.newGame.player_o !== null){
+	  //   playerOCheck = true;
+	  // } else {
+	  //   playerOCheck = false;
+	  // }
+	  //
+	  // if(playerXCheck === true && playerOCheck === true){
+	  //   gameModel.gameType = games.gameTypes[1];
+	  // } else if(playerXCheck === true){
+	  //   gameModel.gameType = games.gameTypes[0];
+	  // }
+
 	  // make sure it is your turn before you go
-	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
+	  if (gameModel.gameType === games.gameTypes[1]) {
+	    if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
 
-	    console.log('xCount: ', gameModel.xCount);
-	    console.log('oCount: ', gameModel.oCount);
-	    console.log('currentPlayer: ', gameModel.currentPlayer);
-	    console.log('waiting for other player...');
+	      console.log('waiting for other player...');
 
-	    return false;
+	      return false;
+	    }
 	  }
 
 	  // you can only go if there is an active, non-over game
@@ -929,47 +1086,6 @@ webpackJsonp([0],[
 
 	      // update object for API
 	      turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
-
-	      if (gameModel.gameOver === false) {
-
-	        // update gameType
-	        gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-	        // swap players
-	        var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-	        gameModel.currentPlayer = NewPlayersSymbols[0];
-	        gameModel.otherPlayer = NewPlayersSymbols[1];
-	        gameModel.currentSymbol = NewPlayersSymbols[2];
-	        gameModel.otherSymbol = NewPlayersSymbols[3];
-
-	        // count turn number
-	        gameModel.turnCount += 1;
-
-	        // check if game over now
-	        gameModel.gameOver = gameChecks.checkGame();
-
-	        // check game and show responses
-	        onGameCheck(gameModel.newGame);
-	      } else {
-	        if (gameModel.turnCount < gameModel.maxTurnCount) {
-	          gameModel.winner = gameModel.currentPlayer;
-	          gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-	          gameModel.newGame.over = true;
-	        } else {
-	          gameModel.winner = null;
-	          gameModel.winnerString = "Game over! It's a tie!";
-	          gameModel.newGame.over = true;
-	        }
-
-	        console.log('The game is over! Start a new game!');
-	        $('#player-turn').text(gameModel.winnerString);
-	        $('#game-update-modal').text(gameModel.winnerString);
-	        $('#gameUpdateModal').modal('show');
-
-	        $('.table-section').hide();
-	        $('.game-over-section').show();
-	      }
 	    }
 	  } else if (gameModel.gameOver === true) {
 
@@ -983,7 +1099,7 @@ webpackJsonp([0],[
 	  } else if (gameModel.activeGame === false) {
 	    console.log('You need to activate or start a game!');
 	  } else {
-	    console.log('There is a weird error with gameOver');
+	    console.log('There is an unexpected error with gameOver');
 	  }
 
 	  return true;
@@ -1004,93 +1120,12 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	// imports
-
-	var gameModel = __webpack_require__(9);
-
-	// check whether dict values are the same
-	// the keys have to be 0, 1, 2 etc.
-	// this is based on matching the format we get from jQuery
-	var checkSame = function checkSame(list) {
-	  var checkVal = gameModel.newGame.cells[list[0]];
-
-	  if (checkVal === "") {
-
-	    return false;
-	  } else {
-
-	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
-	      if (gameModel.newGame.cells[list[i]] !== checkVal) {
-	        return false;
-	      }
-	    }
-	  }
-	  gameModel.winner = gameModel.currentPlayer;
-	  return true;
-	};
-
-	// check diagonal win conditions
-	var checkDiags = function checkDiags() {
-
-	  // define vars
-	  var topLeft = gameModel.newGame.cells[0];
-	  var topRight = gameModel.newGame.cells[2];
-	  var center = gameModel.newGame.cells[4];
-	  var bottomLeft = gameModel.newGame.cells[6];
-	  var bottomRight = gameModel.newGame.cells[8];
-
-	  if (topLeft === 'X' || topLeft === 'O') {
-	    if (topLeft === center && center === bottomRight) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      return true;
-	    }
-	  }
-
-	  if (topRight === 'X' || topRight === 'O') {
-	    if (topRight === center && center === bottomLeft) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      return true;
-	    }
-	  }
-
-	  return false;
-	};
-
-	// check the game
-	var checkGame = function checkGame() {
-	  var gameOver = false;
-
-	  var row0 = [0, 1, 2];
-	  var row1 = [3, 4, 5];
-	  var row2 = [6, 7, 8];
-	  var col0 = [0, 3, 6];
-	  var col1 = [1, 4, 7];
-	  var col2 = [2, 5, 8];
-
-	  if (checkSame(row0) === true || checkSame(row1) === true || checkSame(row2) === true || checkSame(col0) === true || checkSame(col1) === true || checkSame(col2) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
-	    gameOver = true;
-	  }
-	  return gameOver;
-	};
-
-	module.exports = {
-	  checkSame: checkSame,
-	  checkDiags: checkDiags,
-	  checkGame: checkGame
-	};
-
-/***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(10);
 	var gameApi = __webpack_require__(15);
 	var gameUi = __webpack_require__(8);
 
@@ -1122,7 +1157,7 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameUi.togglePlayer).fail(gameUi.failure);
 	};
 
 	module.exports = {
@@ -1138,11 +1173,10 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(10);
 
 	// show game status
 	var show = function show(gameId, authToken) {
-	  console.log('show happening');
 	  return $.ajax({
 	    url: app.host + '/games/' + gameId,
 	    method: 'GET',
@@ -1350,7 +1384,7 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var ui = __webpack_require__(19);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(10);
 	var gameApi = __webpack_require__(15);
 
 	var onChange = function onChange(data) {
@@ -1399,11 +1433,11 @@ webpackJsonp([0],[
 	'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(9);
-	var gameChecks = __webpack_require__(13);
+	var gameModel = __webpack_require__(10);
+	var gameChecks = __webpack_require__(9);
 	var gameWatcherMaker = __webpack_require__(16);
 	var gameWatcherAttachHandler = __webpack_require__(18);
-	var gameMoves = __webpack_require__(12);
+	var gameMoves = __webpack_require__(13);
 
 	var success = function success(data) {
 	  if (data) {
@@ -1447,6 +1481,7 @@ webpackJsonp([0],[
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
 	  gameChecks.checkGame();
+	  gameMoves.updatePlayerTurnAnnouncement();
 	};
 
 	module.exports = {
@@ -1465,7 +1500,7 @@ webpackJsonp([0],[
 
 	var api = __webpack_require__(15);
 	var ui = __webpack_require__(8);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(10);
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
