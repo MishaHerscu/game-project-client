@@ -23,18 +23,10 @@ const onChange = function(data){
 
     gameModel.newGame.cells[cell.index] = cell.value;
 
-    // refresh all data, to get user info
+    // refresh all data, to get new user info
     gameApi.show(gameModel.newGame.id, app.user.token)
     .done(ui.successShow)
     .fail(ui.failure);
-
-    // redraw Board
-    gameMoves.redrawBoard();
-
-    // show game info
-    if(gameModel.newGame.id !== null){
-      gameMoves.refreshGameInfoTable(gameModel.newGame);
-    }
 
   } else {
     console.log(data);
