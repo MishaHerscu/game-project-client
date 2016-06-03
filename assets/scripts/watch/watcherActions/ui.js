@@ -30,13 +30,13 @@ const successWatch = function(data){
   gameModel.gameOver = gameModel.newGame.over;
   gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
   gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
+  gameMoves.refreshCounts();
 
   // show game info
   if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameModel.refreshGameInfoTable(gameModel.newGame);
   }
 
-  gameMoves.refreshCounts();
   gameMoves.redrawBoard();
 };
 

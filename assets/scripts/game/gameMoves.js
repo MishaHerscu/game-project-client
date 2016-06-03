@@ -52,6 +52,8 @@ const redrawBoard = function(){
     $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
   }
 
+  refreshCounts();
+
   return true;
 };
 

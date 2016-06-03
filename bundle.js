@@ -796,6 +796,8 @@ webpackJsonp([0],[
 	    $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
 	  }
 
+	  refreshCounts();
+
 	  return true;
 	};
 
@@ -1422,19 +1424,20 @@ webpackJsonp([0],[
 	  gameModel.gameOver = gameModel.newGame.over;
 	  gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
 	  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
+	  gameMoves.refreshCounts();
 
 	  // show game info
 	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
 	    gameModel.refreshGameInfoTable(gameModel.newGame);
 	  }
 
-	  // redraw Board
 	  gameMoves.redrawBoard();
 	};
 
 	var successShow = function successShow(data) {
 	  gameModel.newGame = data.game;
 	  gameModel.updateGameType(gameModel.newGame);
+	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
 	  gameChecks.checkGame();
