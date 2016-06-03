@@ -41,13 +41,9 @@ const successWatch = function(data){
 };
 
 const successShow = function(data){
-
-  // Update game type
-  gameModel.updateGameType(gameModel.newGame);
-
-  let gameObject = data.game;
   gameModel.newGame = data.game;
-  gameMoves.refreshGameInfoTable(gameObject);
+  gameModel.updateGameType(gameModel.newGame);
+  gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
   gameChecks.checkGame();
 };

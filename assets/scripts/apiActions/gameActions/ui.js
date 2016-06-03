@@ -73,10 +73,7 @@ const updateFinishedGames = function(data){
 
 const successShowGameInfo = function(data){
   let gameObject = data.game;
-  console.log(gameObject);
   gameMoves.refreshGameInfoTable(gameObject);
-
-  // redraw Board
   gameMoves.redrawBoard();
 };
 

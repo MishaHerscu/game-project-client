@@ -398,10 +398,7 @@ webpackJsonp([0],[
 
 	var successShowGameInfo = function successShowGameInfo(data) {
 	  var gameObject = data.game;
-	  console.log(gameObject);
 	  gameMoves.refreshGameInfoTable(gameObject);
-
-	  // redraw Board
 	  gameMoves.redrawBoard();
 	};
 
@@ -839,6 +836,9 @@ webpackJsonp([0],[
 	      turnEffects.updateAPI(modelGameIndex, currentSymbol);
 
 	      if (gameModel.gameOver === false) {
+
+	        // update gameType
+	        gameModel.updateGameType(gameModel.newGame);
 
 	        // swap players
 	        var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
@@ -1354,13 +1354,9 @@ webpackJsonp([0],[
 	};
 
 	var successShow = function successShow(data) {
-
-	  // Update game type
-	  gameModel.updateGameType(gameModel.newGame);
-
-	  var gameObject = data.game;
 	  gameModel.newGame = data.game;
-	  gameMoves.refreshGameInfoTable(gameObject);
+	  gameModel.updateGameType(gameModel.newGame);
+	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
 	  gameChecks.checkGame();
 	};

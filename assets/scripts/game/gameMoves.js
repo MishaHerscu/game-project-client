@@ -123,6 +123,9 @@ const onSetCellValue = function(){
 
       if(gameModel.gameOver === false){
 
+        // update gameType
+        gameModel.updateGameType(gameModel.newGame);
+
         // swap players
         let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
