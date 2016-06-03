@@ -76,8 +76,8 @@ const successJoin = function(data){
 
   gameModel.activeGame = true;
 
-  let newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
-  gameWatcherAttachHandler.addHandlers(newWatcher);
+  gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
+  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
 
   // redraw Board
   gameMoves.redrawBoard();

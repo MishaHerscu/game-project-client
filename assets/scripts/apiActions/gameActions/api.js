@@ -25,6 +25,9 @@ const play = function(gameId, authToken){
 };
 
 const showGameInfo = function(){
+
+  console.log('inside showGameInfo');
+
   return $.ajax({
     url: app.host + '/games/' + gameModel.newGame.id,
     method: 'GET',
@@ -83,11 +86,6 @@ const joinGame = function(gameId){
 // update game on the back end with each move
 const updateGame = function(data){
   let id = gameModel.newGame.id;
-
-  console.log("data, id: ", data, id);
-  console.log(typeof app.user.token);
-  console.log(typeof gameModel.newGame.id);
-
   return $.ajax({
     url: app.host + '/games/' + id,
     method: 'PATCH',
@@ -101,9 +99,6 @@ const updateGame = function(data){
 // watch a game (streaming, requires wrapper)
 const watchGame = function(gameId, authToken){
   let id = gameModel.newGame.id;
-
-  console.log("watched id: ", id);
-
   return $.ajax({
     url: app.host + '/games/' + id + '/watch',
     method: 'GET',

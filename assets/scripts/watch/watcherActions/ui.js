@@ -23,27 +23,20 @@ const failure = function(error){
 };
 
 const successWatch = function(data){
+
   gameModel.newGame = data.game;
+  gameModel.activeGame = true;
+  gameModel.gameOver = gameModel.newGame.over;
+  gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
+  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
 
   // show game info
-  if(gameModel.newGame.id !== null){
+  if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameModel.refreshGameInfoTable(gameModel.newGame);
   }
 
-  gameModel.activeGame = true;
-  gameModel.gameOver = gameModel.newGame.over;
-
-  let newWatcher = gameWatcherMaker.gameWatcher(gameModel.watchGame.id, app.user.token);
-  gameWatcherAttachHandler.addHandlers(newWatcher);
-
   // redraw Board
   gameMoves.redrawBoard();
-
-  // show game info
-  if(gameModel.newGame.id !== null){
-    gameMoves.refreshGameInfoTable(gameModel.newGame);
-  }
-
 };
 
 const successShow = function(data){

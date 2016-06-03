@@ -25,6 +25,7 @@ let maxTurnCount = Math.pow(gameSize,2);
 let turnCount = 0;
 let winner = null;
 let winnerString = '';
+let newWatcher = null;
 
 let newGame = {
   id: null,

@@ -8,7 +8,12 @@ const gameApi = require('../apiActions/gameActions/api.js');
 
 const onChange = function(data){
   if (data.timeout) { //not an error
-    this.close();
+    if(this !== undefined){
+      this.close();
+    }
+    if(gameModel.newWatcher !== undefined){
+      gameModel.newWatcher.close();
+    }
     return console.warn(data.timeout);
   } else if (data.game && data.game.cell) {
     let game = data.game;

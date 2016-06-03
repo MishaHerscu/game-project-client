@@ -14,8 +14,6 @@ const signUp = function(data){
 // sign in
 // note: `data: data` is the same as just `data` (it is implied)
 const signIn = function(data){
-  console.log('data is: ', data);
-
   return $.ajax({
     url: app.host + '/sign-in/',
     method: 'POST',
@@ -36,9 +34,6 @@ const signOut = function(){
 
 // change password
 const changePassword = function(data){
-
-  console.log('change pw data: ', data);
-
   return $.ajax({
     url: app.host + '/change-password/' + app.user.id,
     method: 'PATCH',
