@@ -406,6 +406,18 @@ webpackJsonp([0],[
 
 	  gameModel.newGame = data.game;
 
+	  //
+	  // reset game model variables
+	  //
+
+	  // turns gone for each player and total
+	  gameMoves.refreshCounts();
+
+	  $('.table-section').hide();
+	  $('.hideable').hide();
+	  $('.game-over-section').hide();
+	  $('#gameUpdateModal').modal('hide');
+
 	  gameModel.updateGameType(gameModel.newGame);
 
 	  gameModel.activeGame = true;
@@ -427,6 +439,15 @@ webpackJsonp([0],[
 	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  }
+
+	  // display status
+	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+
+	  // reset view
+	  $('.table-section').show();
+	  $('.hideable').show();
+	  $('.not-signed-in').hide();
 	};
 
 	var successPlayThisGame = function successPlayThisGame(data) {
@@ -543,6 +564,8 @@ webpackJsonp([0],[
 	var maxTurnCount = Math.pow(gameSize, 2);
 
 	var turnCount = 0;
+	var xCount = 0;
+	var oCount = 0;
 
 	var winner = null;
 	var winnerString = '';
@@ -661,7 +684,9 @@ webpackJsonp([0],[
 	  winnerString: winnerString,
 	  newWatcher: newWatcher,
 	  gameType: gameType,
-	  updateGameType: updateGameType
+	  updateGameType: updateGameType,
+	  xCount: xCount,
+	  oCount: oCount
 	};
 
 /***/ },
@@ -734,6 +759,27 @@ webpackJsonp([0],[
 	var currentSymbol = gameModel.currentSymbol;
 	var otherPlayer = gameModel.otherPlayer;
 	var otherSymbol = gameModel.otherPlayer;
+
+	var refreshCounts = function refreshCounts() {
+
+	  gameModel.turnCount = 0;
+	  var max = gameModel.maxTurnCount;
+
+	  for (var i = 0; i < max; i++) {
+
+	    if (gameModel.newGame.cells[i] !== '') {
+	      gameModel.turnCount += 1;
+	    }
+
+	    if (gameModel.newGame.cells[i] === gameModel.symbols[0]) {
+	      gameModel.xCount += 1;
+	    }
+
+	    if (gameModel.newGame.cells[i] === gameModel.symbols[1]) {
+	      gameModel.oCount += 1;
+	    }
+	  }
+	};
 
 	var redrawBoard = function redrawBoard() {
 
@@ -811,6 +857,12 @@ webpackJsonp([0],[
 
 	var onSetCellValue = function onSetCellValue() {
 
+	  // make sure it is your turn before you go
+	  if (currentPlayer === gameModel.players[0] && gameModel.xCount > gameModel.oCount || currentPlayer === gameModel.players[1] && gameModel.xCount === gameModel.oCount) {
+	    console.log("Waiting for other player...");
+	    return false;
+	  }
+
 	  // you can only go if there is an active, non-over game
 	  // eventually maybe these variables should be combined into one
 	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
@@ -829,6 +881,9 @@ webpackJsonp([0],[
 
 	      // set the new value using the currentSymbol
 	      $(this).text(currentSymbol);
+
+	      // refresh counts
+	      refreshCounts();
 
 	      // update model
 	      var modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
@@ -911,6 +966,7 @@ webpackJsonp([0],[
 	};
 
 	module.exports = {
+	  refreshCounts: refreshCounts,
 	  redrawBoard: redrawBoard,
 	  refreshGameInfoTable: refreshGameInfoTable,
 	  addHandlers: addHandlers,
@@ -1264,7 +1320,6 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var ui = __webpack_require__(19);
-	var gameMoves = __webpack_require__(12);
 	var gameModel = __webpack_require__(9);
 	var gameApi = __webpack_require__(15);
 

@@ -2,7 +2,6 @@
 
 const app = require('../app.js');
 const ui = require('./watcherActions/ui.js');
-const gameMoves = require('../game/gameMoves.js');
 const gameModel = require('../game/gameModel.js');
 const gameApi = require('../apiActions/gameActions/api.js');
 

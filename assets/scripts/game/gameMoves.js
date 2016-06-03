@@ -9,6 +9,27 @@ let currentSymbol = gameModel.currentSymbol;
 let otherPlayer = gameModel.otherPlayer;
 let otherSymbol = gameModel.otherPlayer;
 
+const refreshCounts = function(){
+
+  gameModel.turnCount = 0;
+  let max = gameModel.maxTurnCount;
+
+  for(let i = 0; i < max; i++){
+
+    if(gameModel.newGame.cells[i] !== ''){
+      gameModel.turnCount += 1;
+    }
+
+    if(gameModel.newGame.cells[i] === gameModel.symbols[0]){
+      gameModel.xCount += 1;
+    }
+
+    if(gameModel.newGame.cells[i] === gameModel.symbols[1]){
+      gameModel.oCount += 1;
+    }
+  }
+
+};
 
 const redrawBoard = function(){
 
@@ -90,6 +111,15 @@ const onGameCheck = function(gameObject){
 
 const onSetCellValue = function(){
 
+  // make sure it is your turn before you go
+  if(
+    (currentPlayer === gameModel.players[0] && gameModel.xCount > gameModel.oCount) ||
+    (currentPlayer === gameModel.players[1] && gameModel.xCount === gameModel.oCount)
+    ){
+    console.log("Waiting for other player...");
+    return false;
+  }
+
   // you can only go if there is an active, non-over game
   // eventually maybe these variables should be combined into one
   if(gameModel.gameOver === false && gameModel.activeGame === true){
@@ -108,6 +138,9 @@ const onSetCellValue = function(){
 
       // set the new value using the currentSymbol
       $(this).text(currentSymbol);
+
+      // refresh counts
+      refreshCounts();
 
       // update model
       let modelGameIndex = turnEffects.updateModelValues(currentSymbol, clickedCell);
@@ -194,6 +227,7 @@ const addHandlers = () => {
 
 
 module.exports = {
+  refreshCounts,
   redrawBoard,
   refreshGameInfoTable,
   addHandlers,

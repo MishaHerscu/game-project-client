@@ -29,6 +29,8 @@ let gameSize = 3;
 let maxTurnCount = Math.pow(gameSize,2);
 
 let turnCount = 0;
+let xCount = 0;
+let oCount = 0;
 
 let winner = null;
 let winnerString = '';
@@ -170,4 +172,6 @@ module.exports = {
   newWatcher,
   gameType,
   updateGameType,
+  xCount,
+  oCount,
 };

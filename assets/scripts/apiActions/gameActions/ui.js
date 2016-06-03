@@ -81,6 +81,18 @@ const successJoin = function(data){
 
   gameModel.newGame = data.game;
 
+  //
+  // reset game model variables
+  //
+
+  // turns gone for each player and total
+  gameMoves.refreshCounts();
+
+  $('.table-section').hide();
+  $('.hideable').hide();
+  $('.game-over-section').hide();
+  $('#gameUpdateModal').modal('hide');
+
   gameModel.updateGameType(gameModel.newGame);
 
   gameModel.activeGame = true;
@@ -102,6 +114,15 @@ const successJoin = function(data){
   if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
+
+  // display status
+  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+
+  // reset view
+  $('.table-section').show();
+  $('.hideable').show();
+  $('.not-signed-in').hide();
 
 };
 
