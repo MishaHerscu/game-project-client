@@ -36,13 +36,14 @@ const successWatch = function(data){
     gameModel.refreshGameInfoTable(gameModel.newGame);
   }
 
-  // redraw Board
+  gameMoves.refreshCounts();
   gameMoves.redrawBoard();
 };
 
 const successShow = function(data){
   gameModel.newGame = data.game;
   gameModel.updateGameType(gameModel.newGame);
+  gameMoves.refreshCounts();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
   gameChecks.checkGame();
