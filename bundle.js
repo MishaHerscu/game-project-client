@@ -539,6 +539,7 @@ webpackJsonp([0],[
 	var newWatcher = null;
 
 	var gameType = gameTypes[0];
+	var botGame = false;
 
 	var newGame = {
 	  id: null,
@@ -561,6 +562,17 @@ webpackJsonp([0],[
 	};
 
 	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
+
+	var updateGameType = function updateGameType() {
+
+	  if (newGame.player_x !== null && newGame.player_x !== undefined && newGame.player_o !== null && newGame.player_o !== undefined && botGame === false) {
+	    gameType = gameTypes[1];
+	  } else if (botGame === true) {
+	    gameType = gameTypes[2];
+	  } else {
+	    gameType = gameTypes[0];
+	  }
+	};
 
 	var swapPlayers = function swapPlayers() {
 
@@ -638,7 +650,8 @@ webpackJsonp([0],[
 	  winner: winner,
 	  winnerString: winnerString,
 	  newWatcher: newWatcher,
-	  gameType: gameType
+	  gameType: gameType,
+	  updateGameType: updateGameType
 	};
 
 /***/ },
@@ -761,6 +774,9 @@ webpackJsonp([0],[
 	  // you can only go if there is an active, non-over game
 	  // eventually maybe these variables should be combined into one
 	  if (gameModel.gameOver === false && gameModel.activeGame === true) {
+
+	    // update gameType
+	    gameModel.updateGameType();
 
 	    // the clicked cell and the value of that cell
 	    var currentVal = $(this).text();
@@ -1326,13 +1342,7 @@ webpackJsonp([0],[
 	var successShow = function successShow(data) {
 
 	  // Update game type
-	  if (gameModel.newGame.player_x !== null && gameModel.newGame.player_x !== undefined && gameModel.newGame.player_o !== null && gameModel.newGame.player_o && gameModel.botGame === false) {
-	    gameModel.gameType = gameModel.gameTypes[1];
-	  } else if (gameModel.botGame === true) {
-	    gameModel.gameType = gameModel.gameTypes[2];
-	  } else {
-	    gameModel.gameType = gameModel.gameTypes[0];
-	  }
+	  gameModel.updateGameType();
 
 	  var gameObject = data.game;
 	  gameModel.newGame = data.game;

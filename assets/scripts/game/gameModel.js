@@ -36,6 +36,7 @@ let winnerString = '';
 let newWatcher = null;
 
 let gameType = gameTypes[0];
+let botGame = false;
 
 let newGame = {
   id: null,
@@ -68,6 +69,18 @@ let boardTrans = [
   'cell-21',
   'cell-22'
 ];
+
+const updateGameType = function(){
+
+  if(newGame.player_x !== null && newGame.player_x !== undefined && newGame.player_o !== null && newGame.player_o !== undefined && botGame === false){
+    gameType = gameTypes[1];
+  }else if(botGame === true){
+    gameType =gameTypes[2];
+  }else{
+    gameType = gameTypes[0];
+  }
+
+};
 
 const swapPlayers = function(){
 
@@ -158,4 +171,5 @@ module.exports = {
   winnerString,
   newWatcher,
   gameType,
+  updateGameType,
 };

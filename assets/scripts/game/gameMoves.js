@@ -63,6 +63,9 @@ const onSetCellValue = function(){
   // eventually maybe these variables should be combined into one
   if(gameModel.gameOver === false && gameModel.activeGame === true){
 
+    // update gameType
+    gameModel.updateGameType();
+
     // the clicked cell and the value of that cell
     let currentVal = $(this).text();
     let clickedCell = this.id;
