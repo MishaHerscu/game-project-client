@@ -484,6 +484,7 @@ webpackJsonp([0],[
 	  gameModel.turnCount = 0;
 	  gameModel.winner = null;
 	  gameModel.winnerString = '';
+	  gameModel.playerJoined = false;
 
 	  $('.table-section').hide();
 	  $('.hideable').hide();
@@ -721,6 +722,9 @@ webpackJsonp([0],[
 	var gameType = gameTypes[0];
 	var botGame = false;
 
+	var multiplayerGame = false;
+	var playerJoined = false;
+
 	var newGame = {
 	  id: null,
 	  cells: null,
@@ -832,7 +836,9 @@ webpackJsonp([0],[
 	  gameType: gameType,
 	  updateGameType: updateGameType,
 	  xCount: xCount,
-	  oCount: oCount
+	  oCount: oCount,
+	  multiplayerGame: multiplayerGame,
+	  playerJoined: playerJoined
 	};
 
 /***/ },
@@ -1377,12 +1383,15 @@ webpackJsonp([0],[
 	var onChange = function onChange(data) {
 	  if (data.timeout) {
 	    //not an error
+
 	    if (this !== undefined && this !== null) {
 	      this.close();
 	    }
+
 	    if (gameModel.newWatcher !== undefined && gameModel.newWatcher !== null) {
 	      gameModel.newWatcher.close();
 	    }
+
 	    return console.warn(data.timeout);
 	  } else if (data.game && data.game.cell) {
 	    var game = data.game;
@@ -1394,6 +1403,8 @@ webpackJsonp([0],[
 
 	    // refresh all data, to get new user info
 	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.updateModel).then(ui.updateView).fail(ui.failure);
+	  } else if (data.game) {
+	    gameModel.playerJoined = true;
 	  } else {
 	    // console.log(data);
 	  }
@@ -1493,6 +1504,8 @@ webpackJsonp([0],[
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
+
+	  $('#SelectGameTypeModal').modal('show');
 
 	  api.newGame().done(ui.success).then(ui.newGame).then(ui.showBoard).then(ui.updateView).fail(ui.failure);
 	};

@@ -7,6 +7,8 @@ const gameModel = require('../../game/gameModel.js');
 const onNewGame = function(event){
   event.preventDefault();
 
+  $('#SelectGameTypeModal').modal('show');
+
   api.newGame()
   .done(ui.success)
   .then(ui.newGame)
