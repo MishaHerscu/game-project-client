@@ -35,16 +35,19 @@ const hideBoard = function(){
 
 const updateView = function(){
 
+  // update counts
+  gameMoves.refreshCounts();
+
   // update grid
   gameMoves.redrawBoard();
 
   // update game info
   gameMoves.refreshGameInfoTable(gameModel.newGame);
-
 };
 
 const successMove = function(){
   if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
+    gameMoves.refreshCounts();
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
 };
@@ -75,6 +78,7 @@ const successShowGameInfo = function(data){
   let gameObject = data.game;
   gameMoves.refreshGameInfoTable(gameObject);
   gameMoves.redrawBoard();
+  gameMoves.refreshCounts();
 };
 
 const successJoin = function(data){
@@ -132,6 +136,7 @@ const successPlayThisGame = function(data){
   // show game info
   if(gameModel.newGame.id !== null){
     gameMoves.refreshGameInfoTable(gameModel.newGame);
+    gameMoves.refreshCounts();
   }
 };
 
@@ -142,6 +147,9 @@ const newGame = function(data){
   gameModel.turnCount = 0;
   gameModel.winner = null;
   gameModel.winnerString = '';
+
+  // counts should be zero
+  gameMoves.refreshCounts();
 
   $('.table-section').hide();
   $('.hideable').hide();

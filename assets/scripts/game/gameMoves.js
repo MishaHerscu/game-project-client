@@ -6,6 +6,13 @@ const turnEffects = require('./turnEffects.js');
 
 const refreshCounts = function(){
 
+  if(gameModel.newGame === undefined ||
+    gameModel.newGame === null ||
+    gameModel.newGame.cells === undefined ||
+    gameModel.newGame.cells === null){
+    return false;
+  }
+
   gameModel.turnCount = 0;
   gameModel.xCount = 0;
   gameModel.oCount = 0;
@@ -26,6 +33,7 @@ const refreshCounts = function(){
       gameModel.oCount += 1;
     }
   }
+  return true;
 };
 
 const redrawBoard = function(){

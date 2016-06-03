@@ -361,6 +361,9 @@ webpackJsonp([0],[
 
 	var updateView = function updateView() {
 
+	  // update counts
+	  gameMoves.refreshCounts();
+
 	  // update grid
 	  gameMoves.redrawBoard();
 
@@ -370,6 +373,7 @@ webpackJsonp([0],[
 
 	var successMove = function successMove() {
 	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
+	    gameMoves.refreshCounts();
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  }
 	};
@@ -400,6 +404,7 @@ webpackJsonp([0],[
 	  var gameObject = data.game;
 	  gameMoves.refreshGameInfoTable(gameObject);
 	  gameMoves.redrawBoard();
+	  gameMoves.refreshCounts();
 	};
 
 	var successJoin = function successJoin(data) {
@@ -456,6 +461,7 @@ webpackJsonp([0],[
 	  // show game info
 	  if (gameModel.newGame.id !== null) {
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
+	    gameMoves.refreshCounts();
 	  }
 	};
 
@@ -466,6 +472,9 @@ webpackJsonp([0],[
 	  gameModel.turnCount = 0;
 	  gameModel.winner = null;
 	  gameModel.winnerString = '';
+
+	  // counts should be zero
+	  gameMoves.refreshCounts();
 
 	  $('.table-section').hide();
 	  $('.hideable').hide();
@@ -744,6 +753,10 @@ webpackJsonp([0],[
 
 	var refreshCounts = function refreshCounts() {
 
+	  if (gameModel.newGame === undefined || gameModel.newGame === null || gameModel.newGame.cells === undefined || gameModel.newGame.cells === null) {
+	    return false;
+	  }
+
 	  gameModel.turnCount = 0;
 	  gameModel.xCount = 0;
 	  gameModel.oCount = 0;
@@ -764,6 +777,7 @@ webpackJsonp([0],[
 	      gameModel.oCount += 1;
 	    }
 	  }
+	  return true;
 	};
 
 	var redrawBoard = function redrawBoard() {
@@ -844,6 +858,9 @@ webpackJsonp([0],[
 
 	  // refresh counts
 	  refreshCounts();
+
+	  // update gameType (single vs double player)
+	  gameModel.updateGameType(gameModel.newGame);
 
 	  // make sure it is your turn before you go
 	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
