@@ -159,6 +159,7 @@ const newGame = function(data){
   gameModel.turnCount = 0;
   gameModel.winner = null;
   gameModel.winnerString = '';
+  gameModel.playerJoined = false;
 
   $('.table-section').hide();
   $('.hideable').hide();

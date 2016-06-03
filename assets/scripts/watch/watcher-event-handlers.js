@@ -7,13 +7,17 @@ const gameApi = require('../apiActions/gameActions/api.js');
 
 const onChange = function(data){
   if (data.timeout) { //not an error
+
     if(this !== undefined && this !== null){
       this.close();
     }
+
     if(gameModel.newWatcher !== undefined && gameModel.newWatcher !== null){
       gameModel.newWatcher.close();
     }
+
     return console.warn(data.timeout);
+
   } else if (data.game && data.game.cell) {
     let game = data.game;
     let cell = game.cell;
@@ -28,7 +32,9 @@ const onChange = function(data){
     .then(ui.updateView)
     .fail(ui.failure);
 
-  } else {
+  } else if(data.game){
+    gameModel.playerJoined = true;
+  } else{
     // console.log(data);
   }
 };
