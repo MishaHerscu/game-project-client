@@ -54,7 +54,38 @@ const refreshGameInfoTable = function(gameObject){
   }
 
   return true;
+};
 
+const onGameCheck = function(gameObject){
+
+  if(gameObject.over === false){
+    $('#player-turn').text(currentPlayer + "'s Turn!");
+    $('#game-update-modal').text(currentPlayer + "'s Turn!");
+
+  } else if (gameModel.winner === null){
+    gameModel.winner = 'Tie';
+    gameModel.winnerString = "Game over! It's a tie!";
+    gameModel.newGame.over = true;
+
+    $('#player-turn').text(gameModel.winnerString);
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+
+    $('.table-section').hide();
+    $('.game-over-section').show();
+
+  } else {
+    gameModel.winner = otherPlayer;
+    gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+    gameModel.newGame.over = true;
+
+    $('#player-turn').text(gameModel.winnerString);
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+
+    $('.table-section').hide();
+    $('.game-over-section').show();
+  }
 };
 
 const onSetCellValue = function(){
@@ -111,34 +142,8 @@ const onSetCellValue = function(){
         // check if game over now
         gameModel.gameOver = gameChecks.checkGame();
 
-        if(gameModel.gameOver !== true){
-          $('#player-turn').text(currentPlayer + "'s Turn!");
-          $('#game-update-modal').text(currentPlayer + "'s Turn!");
-
-        } else if (gameModel.winner === null){
-          gameModel.winner = 'Tie';
-          gameModel.winnerString = "Game over! It's a tie!";
-          gameModel.newGame.over = true;
-
-          $('#player-turn').text(gameModel.winnerString);
-          $('#game-update-modal').text(gameModel.winnerString);
-          $('#gameUpdateModal').modal('show');
-
-          $('.table-section').hide();
-          $('.game-over-section').show();
-
-        } else {
-          gameModel.winner = otherPlayer;
-          gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
-          gameModel.newGame.over = true;
-
-          $('#player-turn').text(gameModel.winnerString);
-          $('#game-update-modal').text(gameModel.winnerString);
-          $('#gameUpdateModal').modal('show');
-
-          $('.table-section').hide();
-          $('.game-over-section').show();
-        }
+        // check game and show responses
+        onGameCheck(gameModel.newGame);
 
       } else{
         if(gameModel.turnCount < gameModel.maxTurnCount){
@@ -158,7 +163,6 @@ const onSetCellValue = function(){
 
         $('.table-section').hide();
         $('.game-over-section').show();
-
       }
     }
   } else if (gameModel.gameOver === true){
@@ -190,4 +194,5 @@ module.exports = {
   redrawBoard,
   refreshGameInfoTable,
   addHandlers,
+  onGameCheck,
 };

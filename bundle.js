@@ -335,6 +335,7 @@ webpackJsonp([0],[
 	var gameWatcherAttachHandler = __webpack_require__(18);
 
 	var success = function success(data) {
+
 	  if (data) {
 	    console.log(data);
 	  } else {
@@ -405,7 +406,10 @@ webpackJsonp([0],[
 	};
 
 	var successJoin = function successJoin(data) {
+
 	  gameModel.newGame = data.game;
+
+	  gameModel.updateGameType();
 
 	  gameModel.activeGame = true;
 
@@ -445,7 +449,6 @@ webpackJsonp([0],[
 
 	  // instantiate new game
 	  gameModel.newGame = new games.game(gameObject);
-	  console.log(gameModel.newGame);
 
 	  // reset gameOver and activeGame
 	  gameModel.gameOver = gameModel.newGame.over;
@@ -466,6 +469,9 @@ webpackJsonp([0],[
 
 	  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
 	  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+
+	  // check game type
+	  gameModel.updateGameType();
 
 	  // display status
 	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
@@ -769,6 +775,36 @@ webpackJsonp([0],[
 	  return true;
 	};
 
+	var onGameCheck = function onGameCheck(gameObject) {
+
+	  if (gameObject.over === false) {
+	    $('#player-turn').text(currentPlayer + "'s Turn!");
+	    $('#game-update-modal').text(currentPlayer + "'s Turn!");
+	  } else if (gameModel.winner === null) {
+	    gameModel.winner = 'Tie';
+	    gameModel.winnerString = "Game over! It's a tie!";
+	    gameModel.newGame.over = true;
+
+	    $('#player-turn').text(gameModel.winnerString);
+	    $('#game-update-modal').text(gameModel.winnerString);
+	    $('#gameUpdateModal').modal('show');
+
+	    $('.table-section').hide();
+	    $('.game-over-section').show();
+	  } else {
+	    gameModel.winner = otherPlayer;
+	    gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
+	    gameModel.newGame.over = true;
+
+	    $('#player-turn').text(gameModel.winnerString);
+	    $('#game-update-modal').text(gameModel.winnerString);
+	    $('#gameUpdateModal').modal('show');
+
+	    $('.table-section').hide();
+	    $('.game-over-section').show();
+	  }
+	};
+
 	var onSetCellValue = function onSetCellValue() {
 
 	  // you can only go if there is an active, non-over game
@@ -823,32 +859,8 @@ webpackJsonp([0],[
 	        // check if game over now
 	        gameModel.gameOver = gameChecks.checkGame();
 
-	        if (gameModel.gameOver !== true) {
-	          $('#player-turn').text(currentPlayer + "'s Turn!");
-	          $('#game-update-modal').text(currentPlayer + "'s Turn!");
-	        } else if (gameModel.winner === null) {
-	          gameModel.winner = 'Tie';
-	          gameModel.winnerString = "Game over! It's a tie!";
-	          gameModel.newGame.over = true;
-
-	          $('#player-turn').text(gameModel.winnerString);
-	          $('#game-update-modal').text(gameModel.winnerString);
-	          $('#gameUpdateModal').modal('show');
-
-	          $('.table-section').hide();
-	          $('.game-over-section').show();
-	        } else {
-	          gameModel.winner = otherPlayer;
-	          gameModel.winnerString = 'Game over! ' + otherPlayer + ' Wins!';
-	          gameModel.newGame.over = true;
-
-	          $('#player-turn').text(gameModel.winnerString);
-	          $('#game-update-modal').text(gameModel.winnerString);
-	          $('#gameUpdateModal').modal('show');
-
-	          $('.table-section').hide();
-	          $('.game-over-section').show();
-	        }
+	        // check game and show responses
+	        onGameCheck(gameModel.newGame);
 	      } else {
 	        if (gameModel.turnCount < gameModel.maxTurnCount) {
 	          gameModel.winner = currentPlayer;
@@ -894,7 +906,8 @@ webpackJsonp([0],[
 	module.exports = {
 	  redrawBoard: redrawBoard,
 	  refreshGameInfoTable: refreshGameInfoTable,
-	  addHandlers: addHandlers
+	  addHandlers: addHandlers,
+	  onGameCheck: onGameCheck
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -1303,6 +1316,7 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var gameModel = __webpack_require__(9);
+	var gameChecks = __webpack_require__(13);
 	var gameWatcherMaker = __webpack_require__(16);
 	var gameWatcherAttachHandler = __webpack_require__(18);
 	var gameMoves = __webpack_require__(12);
@@ -1348,6 +1362,7 @@ webpackJsonp([0],[
 	  gameModel.newGame = data.game;
 	  gameMoves.refreshGameInfoTable(gameObject);
 	  gameMoves.redrawBoard();
+	  gameChecks.checkGame();
 	};
 
 	module.exports = {

@@ -2,6 +2,7 @@
 
 const app = require('../../app.js');
 const gameModel = require('../../game/gameModel.js');
+const gameChecks = require('../../game/gameChecks.js');
 const gameWatcherMaker = require('../make-watcher.js');
 const gameWatcherAttachHandler = require('../watcher-event-handlers.js');
 const gameMoves = require('../../game/gameMoves.js');
@@ -48,6 +49,7 @@ const successShow = function(data){
   gameModel.newGame = data.game;
   gameMoves.refreshGameInfoTable(gameObject);
   gameMoves.redrawBoard();
+  gameChecks.checkGame();
 };
 
 module.exports = {

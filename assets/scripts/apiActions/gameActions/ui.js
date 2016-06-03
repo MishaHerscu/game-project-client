@@ -8,6 +8,7 @@ const gameWatcherMaker = require('../../watch/make-watcher.js');
 const gameWatcherAttachHandler = require('../../watch/watcher-event-handlers.js');
 
 const success = function(data){
+
   if(data){
     console.log(data);
   }else{
@@ -80,7 +81,10 @@ const successShowGameInfo = function(data){
 };
 
 const successJoin = function(data){
+
   gameModel.newGame = data.game;
+
+  gameModel.updateGameType();
 
   gameModel.activeGame = true;
 
@@ -121,7 +125,6 @@ const newGame = function(data){
 
   // instantiate new game
   gameModel.newGame = new games.game(gameObject);
-  console.log(gameModel.newGame);
 
   // reset gameOver and activeGame
   gameModel.gameOver = gameModel.newGame.over;
@@ -142,6 +145,9 @@ const newGame = function(data){
 
   gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
   gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+
+  // check game type
+  gameModel.updateGameType();
 
   // display status
   $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
