@@ -60,7 +60,7 @@ const botMove = function(gameObject){
     return false;
   } else if(turnCount === 0){
     move = 4;
-  } else if(turnCount === 1 && cells[4] === ''){
+  } else if(turnCount === 1 && gameCells[4] === ''){
     move = 4;
 
     /////// THIS IS WHERE I WILL ADD ALL OF THE MORE COMPLEX POSSIBLE SCENARIOS

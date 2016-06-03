@@ -6,8 +6,8 @@ const gameModel = require('./gameModel.js');
 // check whether dict values are the same
 // the keys have to be 0, 1, 2 etc.
 // this is based on matching the format we get from jQuery
-const checkSame = function(dict){
-  let checkVal = $(dict[0]).text();
+const checkSame = function(list){
+  let checkVal = gameModel.newGame.cells[list[0]];
 
   if(checkVal === ""){
 
@@ -16,7 +16,7 @@ const checkSame = function(dict){
   }else{
 
     for(let i = 0, max = gameModel.gameSize; i < max; i++){
-      if($(dict[i]).text() !== checkVal){
+      if(gameModel.newGame.cells[list[i]] !== checkVal){
         return false;
       }
     }
@@ -56,13 +56,21 @@ const checkDiags = function(){
 // check the game
 const checkGame = function(){
   let gameOver = false;
+
+  let row0 = [0,1,2];
+  let row1 = [3,4,5];
+  let row2 = [6,7,8];
+  let col0 = [0,3,6];
+  let col1 = [1,4,7];
+  let col2 = [2,5,8];
+
   if(
-    checkSame($(".row-0")) === true ||
-    checkSame($(".col-0")) === true ||
-    checkSame($(".row-1")) === true ||
-    checkSame($(".col-1")) === true ||
-    checkSame($(".row-2")) === true ||
-    checkSame($(".col-2")) === true ||
+    checkSame(row0) === true ||
+    checkSame(row1) === true ||
+    checkSame(row2) === true ||
+    checkSame(col0) === true ||
+    checkSame(col1) === true ||
+    checkSame(col2) === true ||
     checkDiags() === true ||
     gameModel.turnCount === gameModel.maxTurnCount
   ){
