@@ -39,8 +39,6 @@ const refreshCounts = function(){
 
 const redrawBoard = function(){
 
-  console.log('redrawing board');
-
   // check that game exists
   if(gameModel.newGame === undefined ||
     gameModel.newGame === null ||

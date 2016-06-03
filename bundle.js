@@ -374,6 +374,7 @@ webpackJsonp([0],[
 	var successMove = function successMove() {
 	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
 	    gameMoves.refreshCounts();
+	    gameModel.updateGameType(gameModel.newGame);
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  }
 	};
@@ -782,8 +783,6 @@ webpackJsonp([0],[
 	};
 
 	var redrawBoard = function redrawBoard() {
-
-	  console.log('redrawing board');
 
 	  // check that game exists
 	  if (gameModel.newGame === undefined || gameModel.newGame === null || gameModel.newGame.cells === undefined || gameModel.newGame.cells === null) {
