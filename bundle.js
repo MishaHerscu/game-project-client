@@ -848,9 +848,9 @@ webpackJsonp([0],[
 	  // make sure it is your turn before you go
 	  if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
 
-	    console.log(gameModel.xCount);
-	    console.log(gameModel.oCount);
-	    console.log(gameModel.currentPlayer);
+	    console.log('xCount: ', gameModel.xCount);
+	    console.log('oCount: ', gameModel.oCount);
+	    console.log('currentPlayer: ', gameModel.currentPlayer);
 	    console.log('waiting for other player...');
 
 	    return false;

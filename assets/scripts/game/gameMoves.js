@@ -117,9 +117,9 @@ const onSetCellValue = function(){
     (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
     ){
 
-    console.log(gameModel.xCount);
-    console.log(gameModel.oCount);
-    console.log(gameModel.currentPlayer);
+    console.log('xCount: ', gameModel.xCount);
+    console.log('oCount: ',gameModel.oCount);
+    console.log('currentPlayer: ',gameModel.currentPlayer);
     console.log('waiting for other player...');
 
     return false;
