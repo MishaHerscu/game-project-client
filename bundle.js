@@ -747,6 +747,7 @@ webpackJsonp([0],[
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
+	var games = __webpack_require__(11);
 	var gameModel = __webpack_require__(9);
 	var gameChecks = __webpack_require__(13);
 	var turnEffects = __webpack_require__(14);
@@ -825,13 +826,16 @@ webpackJsonp([0],[
 
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
-	  if (gameModel.gameType === gameModel.gameTypes[0]) {
+	  if (gameModel.gameType === games.gameTypes[0]) {
+
 	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
 	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 	  } else if (gameModel.gameType === gameModel.gameTypes[1]) {
+
 	    $('#player-turn').text(gameModel.currentPlayer);
 	    $('#game-update-modal').text(gameModel.currentPlayer);
 	  } else if (gameModel.gameType === gameModel.gameTypes[2]) {
+
 	    $('#player-turn').text(gameModel.currentPlayer);
 	    $('#game-update-modal').text(gameModel.currentPlayer);
 	  } else {
