@@ -29,7 +29,7 @@ const onChange = function(data){
     .fail(ui.failure);
 
   } else {
-    console.log(data);
+    // console.log(data);
   }
 };
 

@@ -112,7 +112,7 @@ const updatePlayerTurnAnnouncement = function(){
     $('#game-update-modal').text(gameModel.currentPlayer);
 
   } else {
-    console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
+    // console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
   }
 };
 
@@ -163,7 +163,7 @@ const onSetCellValue = function(){
       (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
       ){
 
-      console.log('waiting for other player...');
+      // console.log('waiting for other player...');
 
       return false;
     }
@@ -205,7 +205,7 @@ const onSetCellValue = function(){
     }
   } else if (gameModel.gameOver === true){
 
-    console.log('The game is over! Start a new game!');
+    // console.log('The game is over! Start a new game!');
     $('.table-section').hide();
 
     $('#player-turn').text('Game over! Start a new Game!');
@@ -214,10 +214,10 @@ const onSetCellValue = function(){
     $('.game-over-section').show();
 
   } else if(gameModel.activeGame === false){
-    console.log('You need to activate or start a game!');
+    // console.log('You need to activate or start a game!');
 
   } else {
-    console.log('There is an unexpected error with gameOver');
+    // console.log('There is an unexpected error with gameOver');
   }
 
   return true;

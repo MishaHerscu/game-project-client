@@ -7,7 +7,7 @@ const gameUi = require('../apiActions/gameActions/ui.js');
 
 const checkCellEmpty = function(val){
   if(val !== ""){
-    console.log('Sorry! Someone already went there.');
+    // console.log('Sorry! Someone already went there.');
     return false;
   } else {
     return true;

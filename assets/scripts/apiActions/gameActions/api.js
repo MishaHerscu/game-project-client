@@ -25,9 +25,6 @@ const play = function(gameId, authToken){
 };
 
 const showGameInfo = function(){
-
-  console.log('inside showGameInfo');
-
   return $.ajax({
     url: app.host + '/games/' + gameModel.newGame.id,
     method: 'GET',

@@ -9,9 +9,9 @@ const gameMoves = require('../../game/gameMoves.js');
 
 const success = function(data){
   if(data){
-    console.log(data);
+    // console.log(data);
   }else{
-    console.log('GREAT SUCCESS!!!!!');
+    // console.log('GREAT SUCCESS!!!!!');
   }
 
   // redraw Board
@@ -20,7 +20,9 @@ const success = function(data){
 };
 
 const failure = function(error){
-  console.error(error);
+  if(error !== undefined || error !== null){
+    // console.error(error);
+  }
 };
 
 const successWatch = function(data){

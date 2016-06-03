@@ -266,15 +266,18 @@ webpackJsonp([0],[
 	var app = __webpack_require__(3);
 
 	var success = function success(data) {
+
 	  if (data) {
-	    console.log(data);
+	    // console.log(data);
 	  } else {
-	    console.log('GREAT SUCCESS!!!!!');
-	  }
+	      // console.log('GREAT SUCCESS!!!!!');
+	    }
 	};
 
 	var failure = function failure(error) {
-	  console.error(error);
+	  if (error !== undefined || error !== null) {
+	    // console.error(error);
+	  }
 	};
 
 	var signUpSuccess = function signUpSuccess() {
@@ -292,8 +295,6 @@ webpackJsonp([0],[
 	  $('#game-to-play-auth').val(app.user.token);
 	  $('#signInModal').modal('hide');
 	  $('#gameUpdateModal').modal('hide');
-
-	  console.log('app: ', app);
 	};
 
 	var changePasswordSuccess = function changePasswordSuccess() {
@@ -302,7 +303,6 @@ webpackJsonp([0],[
 
 	var signOutSuccess = function signOutSuccess() {
 	  app.user = null;
-	  console.log('app: ', app);
 	  $('.not-signed-in').show();
 	  $('.table-section').hide();
 	  $('.hideable').hide();
@@ -338,17 +338,19 @@ webpackJsonp([0],[
 	var success = function success(data) {
 
 	  if (data) {
-	    console.log(data);
-	  } else {
-	    console.log('GREAT SUCCESS!!!!!');
-	  }
+	    // console.log(data);
+	  } else {}
+	    // console.log('GREAT SUCCESS!!!!!');
 
-	  // redraw Board
+
+	    // redraw Board
 	  gameMoves.redrawBoard();
 	};
 
 	var failure = function failure(error) {
-	  console.error(error);
+	  if (error !== undefined || error !== null) {
+	    // console.error(error);
+	  }
 	};
 
 	var showBoard = function showBoard() {
@@ -560,7 +562,6 @@ webpackJsonp([0],[
 	    gameModel.newGame.over = true;
 	  }
 
-	  console.log('The game is over! Start a new game!');
 	  $('#player-turn').text(gameModel.winnerString);
 	  $('#game-update-modal').text(gameModel.winnerString);
 	  $('#gameUpdateModal').modal('show');
@@ -801,7 +802,7 @@ webpackJsonp([0],[
 
 	        NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
 	      } else {
-	        console.log('There is an error with toggling currentPlayer!');
+	        // console.log('There is an error with toggling currentPlayer!');
 	        return false;
 	      }
 	      break;
@@ -994,7 +995,7 @@ webpackJsonp([0],[
 	    $('#player-turn').text(gameModel.currentPlayer);
 	    $('#game-update-modal').text(gameModel.currentPlayer);
 	  } else {
-	    console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
+	    // console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
 	  }
 	};
 
@@ -1040,7 +1041,7 @@ webpackJsonp([0],[
 	  if (gameModel.gameType === games.gameTypes[1]) {
 	    if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
 
-	      console.log('waiting for other player...');
+	      // console.log('waiting for other player...');
 
 	      return false;
 	    }
@@ -1082,7 +1083,7 @@ webpackJsonp([0],[
 	    }
 	  } else if (gameModel.gameOver === true) {
 
-	    console.log('The game is over! Start a new game!');
+	    // console.log('The game is over! Start a new game!');
 	    $('.table-section').hide();
 
 	    $('#player-turn').text('Game over! Start a new Game!');
@@ -1090,10 +1091,11 @@ webpackJsonp([0],[
 
 	    $('.game-over-section').show();
 	  } else if (gameModel.activeGame === false) {
-	    console.log('You need to activate or start a game!');
+	    // console.log('You need to activate or start a game!');
+
 	  } else {
-	    console.log('There is an unexpected error with gameOver');
-	  }
+	      // console.log('There is an unexpected error with gameOver');
+	    }
 
 	  return true;
 	};
@@ -1124,7 +1126,7 @@ webpackJsonp([0],[
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
-	    console.log('Sorry! Someone already went there.');
+	    // console.log('Sorry! Someone already went there.');
 	    return false;
 	  } else {
 	    return true;
@@ -1190,9 +1192,6 @@ webpackJsonp([0],[
 	};
 
 	var showGameInfo = function showGameInfo() {
-
-	  console.log('inside showGameInfo');
-
 	  return $.ajax({
 	    url: app.host + '/games/' + gameModel.newGame.id,
 	    method: 'GET',
@@ -1401,7 +1400,7 @@ webpackJsonp([0],[
 	    // refresh all data, to get new user info
 	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.updateModel).then(ui.updateView).fail(ui.failure);
 	  } else {
-	    console.log(data);
+	    // console.log(data);
 	  }
 	};
 
@@ -1434,17 +1433,19 @@ webpackJsonp([0],[
 
 	var success = function success(data) {
 	  if (data) {
-	    console.log(data);
-	  } else {
-	    console.log('GREAT SUCCESS!!!!!');
-	  }
+	    // console.log(data);
+	  } else {}
+	    // console.log('GREAT SUCCESS!!!!!');
 
-	  // redraw Board
+
+	    // redraw Board
 	  gameMoves.redrawBoard();
 	};
 
 	var failure = function failure(error) {
-	  console.error(error);
+	  if (error !== undefined || error !== null) {
+	    // console.error(error);
+	  }
 	};
 
 	var successWatch = function successWatch(data) {

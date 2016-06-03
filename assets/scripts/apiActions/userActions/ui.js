@@ -3,15 +3,19 @@
 const app = require('../../app.js');
 
 const success = function(data){
+
   if(data){
-    console.log(data);
+    // console.log(data);
   }else{
-    console.log('GREAT SUCCESS!!!!!');
+    // console.log('GREAT SUCCESS!!!!!');
   }
+
 };
 
 const failure = function(error){
-  console.error(error);
+  if(error !== undefined || error !== null){
+    // console.error(error);
+  }
 };
 
 const signUpSuccess = function(){
@@ -30,8 +34,6 @@ const signInSuccess = function(data){
   $('#game-to-play-auth').val(app.user.token);
   $('#signInModal').modal('hide');
   $('#gameUpdateModal').modal('hide');
-
-  console.log('app: ', app);
 };
 
 const changePasswordSuccess = function(){
@@ -40,7 +42,6 @@ const changePasswordSuccess = function(){
 
 const signOutSuccess = function(){
   app.user = null;
-  console.log('app: ', app);
   $('.not-signed-in').show();
   $('.table-section').hide();
   $('.hideable').hide();
