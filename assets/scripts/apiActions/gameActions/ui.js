@@ -88,6 +88,13 @@ const successJoin = function(data){
   gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
   gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
 
+  // set yourself as player_o
+  gameModel.currentPlayer = gameModel.players[1];
+  gameModel.otherPlayer = gameModel.players[0];
+  gameModel.currentSymbol = gameModel.symbols[gameModel.currentPlayer];
+  gameModel.otherSymbol = gameModel.symbols[gameModel.otherPlayer];
+  gameMoves.onGameCheck(gameModel.newGame);
+
   // redraw Board
   gameMoves.redrawBoard();
 
