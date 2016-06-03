@@ -5,13 +5,13 @@
 //
 
 // const games = require('./games');
-const players_file = require('./players.js');
+const playersFile = require('./players.js');
 
-let symbols = players_file.symbols;
-let players = players_file.players;
+let symbols = playersFile.symbols;
+let players = playersFile.players;
 
 //
-// game flow
+// game vars
 //
 
 let currentPlayer = players[0];
