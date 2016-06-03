@@ -111,6 +111,9 @@ const onSetCellValue = function(){
   // refresh counts
   refreshCounts();
 
+  // update gameType (single vs double player)
+  gameModel.updateGameType(gameModel.newGame);
+
   // make sure it is your turn before you go
   if(
     (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||
