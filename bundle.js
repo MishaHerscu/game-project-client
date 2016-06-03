@@ -1294,11 +1294,6 @@ webpackJsonp([0],[
 	var watcherMaker = __webpack_require__(17);
 	var app = __webpack_require__(3);
 
-	// let gameWatcher = watcherMaker.resourceWatcher('<server>/games/:id/watch', {
-	//       Authorization: 'Token token=<token>'[,
-	//       timeout: <timeout>]
-	// });
-
 	var gameWatcher = function gameWatcher(id, authToken) {
 
 	  var gameWatcherObject = watcherMaker.resourceWatcher(app.host + '/games/' + id + '/watch', {
@@ -1353,7 +1348,7 @@ webpackJsonp([0],[
 	        es.onerror = makeHandler(handler, close);
 	        break;
 	      default:
-	        console.error('Unknown event type:' + event);
+	        // console.error('Unknown event type:' + event);
 	        break;
 	    }
 	  };

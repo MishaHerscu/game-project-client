@@ -37,7 +37,7 @@ const resourceWatcher = function (url, conf) {
         es.onerror = makeHandler(handler, close);
         break;
       default:
-        console.error('Unknown event type:' + event);
+        // console.error('Unknown event type:' + event);
         break;
     }
   };
