@@ -722,7 +722,6 @@ webpackJsonp([0],[
 	var gameType = gameTypes[0];
 	var botGame = false;
 
-	var multiplayerGame = false;
 	var playerJoined = false;
 
 	var newGame = {
@@ -837,7 +836,6 @@ webpackJsonp([0],[
 	  updateGameType: updateGameType,
 	  xCount: xCount,
 	  oCount: oCount,
-	  multiplayerGame: multiplayerGame,
 	  playerJoined: playerJoined
 	};
 
@@ -1501,6 +1499,7 @@ webpackJsonp([0],[
 	var api = __webpack_require__(15);
 	var ui = __webpack_require__(8);
 	var gameModel = __webpack_require__(10);
+	var games = __webpack_require__(12);
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
@@ -1555,9 +1554,16 @@ webpackJsonp([0],[
 	  api.play(gameId, authToken).done(ui.successPlayThisGame).fail(ui.failure);
 	};
 
+	var onSelectGameType = function onSelectGameType(event) {
+	  event.preventDefault();
+	  gameModel.gameType = games.gameTypes[$('#select-game-type').val()];
+	  console.log(gameModel.gameType);
+	};
+
 	var addHandlers = function addHandlers() {
 
 	  $('#new-game').on('submit', onNewGame);
+	  $('#select-game-type').on('submit', onSelectGameType);
 	  $('#get-games').on('submit', onGetGames);
 	  $('#get-done-games').on('submit', onGetDoneGames);
 	  $('#join-game').on('submit', onJoinGame);

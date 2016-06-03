@@ -38,7 +38,6 @@ let newWatcher = null;
 let gameType = gameTypes[0];
 let botGame = false;
 
-let multiplayerGame = false;
 let playerJoined = false;
 
 let newGame = {
@@ -175,6 +174,5 @@ module.exports = {
   updateGameType,
   xCount,
   oCount,
-  multiplayerGame,
   playerJoined,
 };

@@ -3,6 +3,7 @@
 const api = require('./api.js');
 const ui = require('./ui.js');
 const gameModel = require('../../game/gameModel.js');
+const games = require('../../game/games.js');
 
 const onNewGame = function(event){
   event.preventDefault();
@@ -80,10 +81,16 @@ const onPlayThisGame = function(event){
   .fail(ui.failure);
 };
 
+const onSelectGameType = function(event) {
+  event.preventDefault();
+  gameModel.gameType = games.gameTypes[$('#select-game-type').val()];
+  console.log(gameModel.gameType);
+};
 
 const addHandlers = () => {
 
   $('#new-game').on('submit', onNewGame);
+  $('#select-game-type').on('submit', onSelectGameType);
   $('#get-games').on('submit', onGetGames);
   $('#get-done-games').on('submit', onGetDoneGames);
   $('#join-game').on('submit', onJoinGame);
