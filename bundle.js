@@ -522,9 +522,6 @@ webpackJsonp([0],[
 
 	  if (gameModel.gameOver === false) {
 
-	    // update gameType
-	    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
 	    // swap players
 	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
@@ -542,9 +539,6 @@ webpackJsonp([0],[
 
 	    // check game and show responses
 	    gameMoves.onGameCheck(gameModel.newGame);
-
-	    // update gameType (single vs double player)
-	    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 	  }
 
 	  return true;

@@ -198,9 +198,6 @@ const togglePlayer = function(){
 
   if(gameModel.gameOver === false){
 
-    // update gameType
-    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
     // swap players
     let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
@@ -218,10 +215,6 @@ const togglePlayer = function(){
 
     // check game and show responses
     gameMoves.onGameCheck(gameModel.newGame);
-
-    // update gameType (single vs double player)
-    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
   }
 
   return true;
