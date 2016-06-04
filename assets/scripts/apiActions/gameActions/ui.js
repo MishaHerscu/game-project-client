@@ -37,14 +37,8 @@ const hideBoard = function(){
 };
 
 const updateView = function(){
-
-  // update counts
   gameMoves.refreshCounts();
-
-  // update grid
   gameMoves.redrawBoard();
-
-  // update game info
   gameMoves.refreshGameInfoTable(gameModel.newGame);
 };
 

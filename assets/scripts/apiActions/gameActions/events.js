@@ -86,6 +86,7 @@ const onSelectGameType = function(event) {
   event.preventDefault();
   let gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
   gameModel.gameType = games.gameTypes[gameTypeSelection];
+
   gameMoves.updatePlayerTurnAnnouncement();
   $('#selectGameTypeModal').modal('hide');
 

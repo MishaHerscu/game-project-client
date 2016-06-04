@@ -93,9 +93,6 @@ const refreshGameInfoTable = function(gameObject){
 
 const updatePlayerTurnAnnouncement = function(){
 
-  // update gameType (single vs double player)
-  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
   if(gameModel.gameType === games.gameTypes[0]){
 
     $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
@@ -112,7 +109,8 @@ const updatePlayerTurnAnnouncement = function(){
     $('#game-update-modal').text(gameModel.currentPlayer);
 
   } else {
-    // console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
+    $('#player-turn').text('An error occurred. Please start a new game.');
+    $('#game-update-modal').text('An error occurred. Please start a new game.');
   }
 };
 

@@ -363,14 +363,8 @@ webpackJsonp([0],[
 	};
 
 	var updateView = function updateView() {
-
-	  // update counts
 	  gameMoves.refreshCounts();
-
-	  // update grid
 	  gameMoves.redrawBoard();
-
-	  // update game info
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	};
 
@@ -1072,9 +1066,6 @@ webpackJsonp([0],[
 
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
-	  // update gameType (single vs double player)
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
 	  if (gameModel.gameType === games.gameTypes[0]) {
 
 	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
@@ -1088,7 +1079,8 @@ webpackJsonp([0],[
 	    $('#player-turn').text(gameModel.currentPlayer);
 	    $('#game-update-modal').text(gameModel.currentPlayer);
 	  } else {
-	    // console.log('There is an unexpected error with updatePlayerTurnAnnouncement');
+	    $('#player-turn').text('An error occurred. Please start a new game.');
+	    $('#game-update-modal').text('An error occurred. Please start a new game.');
 	  }
 	};
 
@@ -1655,6 +1647,7 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  var gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
 	  gameModel.gameType = games.gameTypes[gameTypeSelection];
+
 	  gameMoves.updatePlayerTurnAnnouncement();
 	  $('#selectGameTypeModal').modal('hide');
 
