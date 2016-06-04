@@ -1595,6 +1595,7 @@ webpackJsonp([0],[
 	var api = __webpack_require__(15);
 	var ui = __webpack_require__(8);
 	var gameModel = __webpack_require__(10);
+	var gameMoves = __webpack_require__(13);
 	var games = __webpack_require__(12);
 
 	var onNewGame = function onNewGame(event) {
@@ -1654,6 +1655,7 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  var gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
 	  gameModel.gameType = games.gameTypes[gameTypeSelection];
+	  gameMoves.updatePlayerTurnAnnouncement();
 	  $('#selectGameTypeModal').modal('hide');
 
 	  if (gameModel.gameType === games.gameTypes[1]) {

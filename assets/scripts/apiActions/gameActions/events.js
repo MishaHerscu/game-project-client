@@ -3,6 +3,7 @@
 const api = require('./api.js');
 const ui = require('./ui.js');
 const gameModel = require('../../game/gameModel.js');
+const gameMoves = require('../../game/gameMoves.js');
 const games = require('../../game/games.js');
 
 const onNewGame = function(event){
@@ -85,6 +86,7 @@ const onSelectGameType = function(event) {
   event.preventDefault();
   let gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
   gameModel.gameType = games.gameTypes[gameTypeSelection];
+  gameMoves.updatePlayerTurnAnnouncement();
   $('#selectGameTypeModal').modal('hide');
 
   if(gameModel.gameType === games.gameTypes[1]){
