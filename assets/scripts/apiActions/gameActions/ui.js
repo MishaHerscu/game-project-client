@@ -213,7 +213,8 @@ const togglePlayer = function(){
     gameModel.turnCount += 1;
 
     // check if game over now
-    gameModel.gameOver = gameChecks.checkGame();
+    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
     // check game and show responses
     gameMoves.onGameCheck(gameModel.newGame);

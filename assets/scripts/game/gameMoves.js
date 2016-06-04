@@ -198,7 +198,8 @@ const onSetCellValue = function(){
       refreshGameInfoTable(gameModel.newGame);
 
       // check if the game is over
-      gameModel.gameOver = gameChecks.checkGame();
+      gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+      gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
       // update object for API
       turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);

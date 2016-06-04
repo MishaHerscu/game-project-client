@@ -52,7 +52,9 @@ const updateView = function(){
   gameMoves.refreshCounts();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
-  gameChecks.checkGame();
+  gameChecks.checkGame(gameModel.newGame);
+  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
   gameMoves.updatePlayerTurnAnnouncement();
 };
 

@@ -96,14 +96,13 @@ const onSelectGameType = function(event) {
 const onCancelGame = function() {
   event.preventDefault();
   gameModel.cancelGameResets();
-  gameMoves.refreshCounts();
-  gameMoves.refreshGameInfoTable(gameModel.newGame);
-  gameMoves.redrawBoard();
+  $('#waitingForPlayerModal').modal('hide');
 };
 
 const onSwitchGameType = function() {
   event.preventDefault();
   gameModel.gameType = games.gameTypes[0];
+  $('#waitingForPlayerModal').modal('hide');
 };
 
 const addHandlers = () => {
