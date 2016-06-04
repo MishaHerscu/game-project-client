@@ -693,10 +693,19 @@ webpackJsonp([0],[
 	var games = __webpack_require__(12);
 	var app = __webpack_require__(3);
 
+	//
+	// variables that don't change during games
+	//
+
 	var gameTypes = games.gameTypes;
 
+	var gameSize = 3;
+	var maxTurnCount = Math.pow(gameSize, 2);
+
+	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
+
 	//
-	// game vars
+	// variables that may change during games
 	//
 
 	var currentPlayer = players.players[0];
@@ -706,9 +715,6 @@ webpackJsonp([0],[
 
 	var activeGame = false;
 	var gameOver = false;
-
-	var gameSize = 3;
-	var maxTurnCount = Math.pow(gameSize, 2);
 
 	var turnCount = 0;
 	var xCount = 0;
@@ -744,7 +750,55 @@ webpackJsonp([0],[
 	  'cell-22': ''
 	};
 
-	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
+	//
+	// functions
+	//
+
+	var cancelGameResets = function cancelGameResets() {
+
+	  currentPlayer = players.players[0];
+	  otherPlayer = players.players[1];
+	  currentSymbol = players.symbols[currentPlayer];
+	  otherSymbol = players.symbols[otherPlayer];
+
+	  activeGame = false;
+	  gameOver = false;
+
+	  turnCount = 0;
+	  xCount = 0;
+	  oCount = 0;
+
+	  winner = null;
+	  winnerString = '';
+
+	  newWatcher = null;
+
+	  gameType = gameTypes[0];
+	  botGame = false;
+
+	  playerJoined = false;
+
+	  newGame = {
+	    id: null,
+	    cells: null,
+	    over: null,
+	    player_x: null,
+	    player_o: null
+	  };
+
+	  boardDict = {
+	    'cell-00': '',
+	    'cell-01': '',
+	    'cell-02': '',
+	    'cell-10': '',
+	    'cell-11': '',
+	    'cell-12': '',
+	    'cell-20': '',
+	    'cell-21': '',
+	    'cell-22': ''
+	  };
+	  return true;
+	};
 
 	var updateGameType = function updateGameType(gameObject) {
 	  if (gameObject.player_x !== null && gameObject.player_x !== undefined && gameObject.player_o !== null && gameObject.player_o !== undefined && botGame === false) {
@@ -836,7 +890,8 @@ webpackJsonp([0],[
 	  updateGameType: updateGameType,
 	  xCount: xCount,
 	  oCount: oCount,
-	  playerJoined: playerJoined
+	  playerJoined: playerJoined,
+	  cancelGameResets: cancelGameResets
 	};
 
 /***/ },
@@ -1371,7 +1426,7 @@ webpackJsonp([0],[
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
 	var ui = __webpack_require__(19);
@@ -1399,10 +1454,13 @@ webpackJsonp([0],[
 
 	    gameModel.newGame.cells[cell.index] = cell.value;
 
+	    $('#waitingForPlayerModal').modal('hide');
+
 	    // refresh all data, to get new user info
 	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.updateModel).then(ui.updateView).fail(ui.failure);
 	  } else if (data.game) {
 	    gameModel.playerJoined = true;
+	    $('#waitingForPlayerModal').modal('hide');
 	  } else {
 	    // console.log(data);
 	  }
@@ -1421,6 +1479,7 @@ webpackJsonp([0],[
 	module.exports = {
 	  addHandlers: addHandlers
 	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 19 */
@@ -1499,12 +1558,13 @@ webpackJsonp([0],[
 	var api = __webpack_require__(15);
 	var ui = __webpack_require__(8);
 	var gameModel = __webpack_require__(10);
+	var gameMoves = __webpack_require__(10);
 	var games = __webpack_require__(12);
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
 
-	  $('#SelectGameTypeModal').modal('show');
+	  $('#selectGameTypeModal').modal('show');
 
 	  api.newGame().done(ui.success).then(ui.newGame).then(ui.showBoard).then(ui.updateView).fail(ui.failure);
 	};
@@ -1558,7 +1618,24 @@ webpackJsonp([0],[
 	  event.preventDefault();
 	  var gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
 	  gameModel.gameType = games.gameTypes[gameTypeSelection];
-	  $('#SelectGameTypeModal').modal('hide');
+	  $('#selectGameTypeModal').modal('hide');
+
+	  if (gameModel.gameType === games.gameTypes[1]) {
+	    $('#waitingForPlayerModal').modal('show');
+	  }
+	};
+
+	var onCancelGame = function onCancelGame() {
+	  event.preventDefault();
+	  gameModel.cancelGameResets();
+	  gameMoves.refreshCounts();
+	  gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  gameMoves.redrawBoard();
+	};
+
+	var onSwitchGameType = function onSwitchGameType() {
+	  event.preventDefault();
+	  gameModel.gameType = games.gameTypes[0];
 	};
 
 	var addHandlers = function addHandlers() {
@@ -1572,6 +1649,8 @@ webpackJsonp([0],[
 	  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
 	  $('#play-this-game').on('submit', onPlayThisGame);
 	  $('#start-another-game').on('submit', onNewGame);
+	  $('#cancel-game').on('submit', onCancelGame);
+	  $('#switch-to-single-player').on('submit', onSwitchGameType);
 	};
 
 	module.exports = {

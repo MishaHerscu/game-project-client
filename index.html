@@ -324,7 +324,7 @@
           </div>
 
           <!-- Choose Game Type Modal -->
-          <div id="SelectGameTypeModal" class="modal fade" role="dialog">
+          <div id="selectGameTypeModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
               <!-- Modal content-->
@@ -341,6 +341,39 @@
                     <input type="radio" name="gametype" value=0 checked /> Singleplayer<br>
                     <input type="radio" name="gametype" value=1 /> Multiplayer<br>
                     <input type="submit" name="gametype" value="Select" />
+                  </form>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Waiting for Player to Join Modal -->
+          <div id="waitingForPlayerModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Waiting for player_o to join...</h4>
+                </div>
+
+                <div class="modal-body">
+
+                  <form id="cancel-game" class="carbon-text">
+                    <input type="submit" name="gametype" value="Cancel Game"/>
+                  </form>
+
+                  <form id="switch-to-single-player" class="carbon-text">
+                    <input type="submit" name="gametype" value="Switch to Single Player"/>
                   </form>
 
                 </div>

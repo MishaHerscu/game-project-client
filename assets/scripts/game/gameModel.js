@@ -9,10 +9,29 @@ const players = require('./players.js');
 const games = require('./games.js');
 const app = require('../app.js');
 
+//
+// variables that don't change during games
+//
+
 let gameTypes = games.gameTypes;
 
+let gameSize = 3;
+let maxTurnCount = Math.pow(gameSize,2);
+
+let boardTrans = [
+  'cell-00',
+  'cell-01',
+  'cell-02',
+  'cell-10',
+  'cell-11',
+  'cell-12',
+  'cell-20',
+  'cell-21',
+  'cell-22'
+];
+
 //
-// game vars
+// variables that may change during games
 //
 
 let currentPlayer = players.players[0];
@@ -22,9 +41,6 @@ let otherSymbol = players.symbols[otherPlayer];
 
 let activeGame = false;
 let gameOver = false;
-
-let gameSize = 3;
-let maxTurnCount = Math.pow(gameSize,2);
 
 let turnCount = 0;
 let xCount = 0;
@@ -60,17 +76,55 @@ let boardDict = {
   'cell-22': '',
 };
 
-let boardTrans = [
-  'cell-00',
-  'cell-01',
-  'cell-02',
-  'cell-10',
-  'cell-11',
-  'cell-12',
-  'cell-20',
-  'cell-21',
-  'cell-22'
-];
+//
+// functions
+//
+
+const cancelGameResets = function(){
+
+  currentPlayer = players.players[0];
+  otherPlayer = players.players[1];
+  currentSymbol = players.symbols[currentPlayer];
+  otherSymbol = players.symbols[otherPlayer];
+
+  activeGame = false;
+  gameOver = false;
+
+  turnCount = 0;
+  xCount = 0;
+  oCount = 0;
+
+  winner = null;
+  winnerString = '';
+
+  newWatcher = null;
+
+  gameType = gameTypes[0];
+  botGame = false;
+
+  playerJoined = false;
+
+  newGame = {
+    id: null,
+    cells: null,
+    over: null,
+    player_x: null,
+    player_o: null,
+  };
+
+  boardDict = {
+    'cell-00': '',
+    'cell-01': '',
+    'cell-02': '',
+    'cell-10': '',
+    'cell-11': '',
+    'cell-12': '',
+    'cell-20': '',
+    'cell-21': '',
+    'cell-22': '',
+  };
+  return true;
+};
 
 const updateGameType = function(gameObject){
   if(gameObject.player_x !== null && gameObject.player_x !== undefined && gameObject.player_o !== null && gameObject.player_o !== undefined && botGame === false){
@@ -175,4 +229,5 @@ module.exports = {
   xCount,
   oCount,
   playerJoined,
+  cancelGameResets,
 };

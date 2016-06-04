@@ -26,6 +26,8 @@ const onChange = function(data){
 
     gameModel.newGame.cells[cell.index] = cell.value;
 
+    $('#waitingForPlayerModal').modal('hide');
+
     // refresh all data, to get new user info
     gameApi.show(gameModel.newGame.id, app.user.token)
     .done(ui.updateModel)
@@ -34,6 +36,7 @@ const onChange = function(data){
 
   } else if(data.game){
     gameModel.playerJoined = true;
+    $('#waitingForPlayerModal').modal('hide');
   } else{
     // console.log(data);
   }

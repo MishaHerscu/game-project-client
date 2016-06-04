@@ -3,12 +3,13 @@
 const api = require('./api.js');
 const ui = require('./ui.js');
 const gameModel = require('../../game/gameModel.js');
+const gameMoves = require('../../game/gameModel.js');
 const games = require('../../game/games.js');
 
 const onNewGame = function(event){
   event.preventDefault();
 
-  $('#SelectGameTypeModal').modal('show');
+  $('#selectGameTypeModal').modal('show');
 
   api.newGame()
   .done(ui.success)
@@ -85,7 +86,24 @@ const onSelectGameType = function(event) {
   event.preventDefault();
   let gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
   gameModel.gameType = games.gameTypes[gameTypeSelection];
-  $('#SelectGameTypeModal').modal('hide');
+  $('#selectGameTypeModal').modal('hide');
+
+  if(gameModel.gameType === games.gameTypes[1]){
+    $('#waitingForPlayerModal').modal('show');
+  }
+};
+
+const onCancelGame = function() {
+  event.preventDefault();
+  gameModel.cancelGameResets();
+  gameMoves.refreshCounts();
+  gameMoves.refreshGameInfoTable(gameModel.newGame);
+  gameMoves.redrawBoard();
+};
+
+const onSwitchGameType = function() {
+  event.preventDefault();
+  gameModel.gameType = games.gameTypes[0];
 };
 
 const addHandlers = () => {
@@ -99,6 +117,8 @@ const addHandlers = () => {
   $('#show-any-game-info').on('submit', onShowAnyGameInfo);
   $('#play-this-game').on('submit', onPlayThisGame);
   $('#start-another-game').on('submit', onNewGame);
+  $('#cancel-game').on('submit', onCancelGame);
+  $('#switch-to-single-player').on('submit', onSwitchGameType);
 
 };
 
