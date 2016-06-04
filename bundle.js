@@ -1556,8 +1556,9 @@ webpackJsonp([0],[
 
 	var onSelectGameType = function onSelectGameType(event) {
 	  event.preventDefault();
-	  gameModel.gameType = games.gameTypes[$('#select-game-type').val()];
-	  console.log(gameModel.gameType);
+	  var gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
+	  gameModel.gameType = games.gameTypes[gameTypeSelection];
+	  $('#SelectGameTypeModal').modal('hide');
 	};
 
 	var addHandlers = function addHandlers() {

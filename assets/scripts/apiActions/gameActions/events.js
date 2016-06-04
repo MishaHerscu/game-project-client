@@ -83,8 +83,9 @@ const onPlayThisGame = function(event){
 
 const onSelectGameType = function(event) {
   event.preventDefault();
-  gameModel.gameType = games.gameTypes[$('#select-game-type').val()];
-  console.log(gameModel.gameType);
+  let gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
+  gameModel.gameType = games.gameTypes[gameTypeSelection];
+  $('#SelectGameTypeModal').modal('hide');
 };
 
 const addHandlers = () => {
