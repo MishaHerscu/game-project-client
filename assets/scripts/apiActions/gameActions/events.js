@@ -3,7 +3,6 @@
 const api = require('./api.js');
 const ui = require('./ui.js');
 const gameModel = require('../../game/gameModel.js');
-const gameMoves = require('../../game/gameModel.js');
 const games = require('../../game/games.js');
 
 const onNewGame = function(event){

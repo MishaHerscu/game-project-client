@@ -537,7 +537,8 @@ webpackJsonp([0],[
 	    gameModel.turnCount += 1;
 
 	    // check if game over now
-	    gameModel.gameOver = gameChecks.checkGame();
+	    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+	    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
 	    // check game and show responses
 	    gameMoves.onGameCheck(gameModel.newGame);
@@ -549,7 +550,7 @@ webpackJsonp([0],[
 	  return true;
 	};
 
-	var checkGame = function checkGame() {
+	var checkGameStatus = function checkGameStatus() {
 
 	  if (gameModel.newGame.over === false) {
 	    return false;
@@ -587,7 +588,7 @@ webpackJsonp([0],[
 	  successPlayThisGame: successPlayThisGame,
 	  newGame: newGame,
 	  togglePlayer: togglePlayer,
-	  checkGame: checkGame
+	  checkGameStatus: checkGameStatus
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -604,76 +605,115 @@ webpackJsonp([0],[
 	// check whether dict values are the same
 	// the keys have to be 0, 1, 2 etc.
 	// this is based on matching the format we get from jQuery
-	var checkSame = function checkSame(list) {
-	  var checkVal = gameModel.newGame.cells[list[0]];
+	// const checkSame = function(list){
+	//   let checkVal = gameModel.newGame.cells[list[0]];
+	//
+	//   if(checkVal === ""){
+	//
+	//     return false;
+	//
+	//   }else{
+	//
+	//     for(let i = 0, max = gameModel.gameSize; i < max; i++){
+	//       if(gameModel.newGame.cells[list[i]] !== checkVal){
+	//         return false;
+	//       }
+	//     }
+	//   }
+	//   gameModel.winner = gameModel.currentPlayer;
+	//   return true;
+	// };
+	//
+	// // check diagonal win conditions
+	// const checkDiags = function(){
+	//
+	//   // define vars
+	//   let topLeft = gameModel.newGame.cells[0];
+	//   let topRight = gameModel.newGame.cells[2];
+	//   let center = gameModel.newGame.cells[4];
+	//   let bottomLeft = gameModel.newGame.cells[6];
+	//   let bottomRight = gameModel.newGame.cells[8];
+	//
+	//   if(topLeft === 'X' || topLeft === 'O'){
+	//     if(topLeft === center && center === bottomRight){
+	//       gameModel.winner = gameModel.currentPlayer;
+	//       return true;
+	//     }
+	//   }
+	//
+	//   if(topRight === 'X' || topRight === 'O'){
+	//     if(topRight === center && center === bottomLeft){
+	//       gameModel.winner = gameModel.currentPlayer;
+	//       return true;
+	//     }
+	//   }
+	//
+	//   return false;
+	//
+	// };
+	//
+	// // check the game
+	// const checkGame = function(){
+	//   let gameOver = false;
+	//
+	//   let row0 = [0,1,2];
+	//   let row1 = [3,4,5];
+	//   let row2 = [6,7,8];
+	//   let col0 = [0,3,6];
+	//   let col1 = [1,4,7];
+	//   let col2 = [2,5,8];
+	//
+	//   if(
+	//     checkSame(row0) === true ||
+	//     checkSame(row1) === true ||
+	//     checkSame(row2) === true ||
+	//     checkSame(col0) === true ||
+	//     checkSame(col1) === true ||
+	//     checkSame(col2) === true ||
+	//     checkDiags() === true ||
+	//     gameModel.turnCount === gameModel.maxTurnCount
+	//   ){
+	//     gameOver = true;
+	//   }
+	//
+	//   // make sure everything is updated in the model after each check
+	//   gameModel.newGame.over = gameOver;
+	//   gameModel.gameOver = gameOver;
+	//
+	//   return gameOver;
+	// };
 
-	  if (checkVal === "") {
+	var checkGame = function checkGame(gameObject) {
+	  var gameOver = false;
 
-	    return false;
-	  } else {
+	  var winConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
-	    for (var i = 0, max = gameModel.gameSize; i < max; i++) {
-	      if (gameModel.newGame.cells[list[i]] !== checkVal) {
-	        return false;
+	  for (var i = 0; i < winConditions.length; i++) {
+
+	    var checkVal = gameObject.cells[winConditions[i][0]];
+
+	    if (checkVal !== '') {
+	      var match = true;
+
+	      for (var j = 0; j < gameModel.gameSize; j++) {
+
+	        if (gameObject.cells[winConditions[i][j]] !== checkVal) {
+	          match = false;
+	        }
+	      }
+
+	      if (match === true) {
+	        gameOver = true;
 	      }
 	    }
 	  }
-	  gameModel.winner = gameModel.currentPlayer;
-	  return true;
-	};
-
-	// check diagonal win conditions
-	var checkDiags = function checkDiags() {
-
-	  // define vars
-	  var topLeft = gameModel.newGame.cells[0];
-	  var topRight = gameModel.newGame.cells[2];
-	  var center = gameModel.newGame.cells[4];
-	  var bottomLeft = gameModel.newGame.cells[6];
-	  var bottomRight = gameModel.newGame.cells[8];
-
-	  if (topLeft === 'X' || topLeft === 'O') {
-	    if (topLeft === center && center === bottomRight) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      return true;
-	    }
-	  }
-
-	  if (topRight === 'X' || topRight === 'O') {
-	    if (topRight === center && center === bottomLeft) {
-	      gameModel.winner = gameModel.currentPlayer;
-	      return true;
-	    }
-	  }
-
-	  return false;
-	};
-
-	// check the game
-	var checkGame = function checkGame() {
-	  var gameOver = false;
-
-	  var row0 = [0, 1, 2];
-	  var row1 = [3, 4, 5];
-	  var row2 = [6, 7, 8];
-	  var col0 = [0, 3, 6];
-	  var col1 = [1, 4, 7];
-	  var col2 = [2, 5, 8];
-
-	  if (checkSame(row0) === true || checkSame(row1) === true || checkSame(row2) === true || checkSame(col0) === true || checkSame(col1) === true || checkSame(col2) === true || checkDiags() === true || gameModel.turnCount === gameModel.maxTurnCount) {
-	    gameOver = true;
-	  }
-
-	  // make sure everything is updated in the model after each check
-	  gameModel.newGame.over = gameOver;
-	  gameModel.gameOver = gameOver;
 
 	  return gameOver;
 	};
 
 	module.exports = {
-	  checkSame: checkSame,
-	  checkDiags: checkDiags,
+	  // checkSame,
+	  // checkDiags,
 	  checkGame: checkGame
 	};
 
@@ -1135,7 +1175,8 @@ webpackJsonp([0],[
 	      refreshGameInfoTable(gameModel.newGame);
 
 	      // check if the game is over
-	      gameModel.gameOver = gameChecks.checkGame();
+	      gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+	      gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
 	      // update object for API
 	      turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
@@ -1211,7 +1252,7 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameUi.checkGame).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameUi.checkGameStatus).fail(gameUi.failure);
 	};
 
 	module.exports = {
@@ -1537,7 +1578,9 @@ webpackJsonp([0],[
 	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
-	  gameChecks.checkGame();
+	  gameChecks.checkGame(gameModel.newGame);
+	  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+	  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 	  gameMoves.updatePlayerTurnAnnouncement();
 	};
 
@@ -1558,7 +1601,6 @@ webpackJsonp([0],[
 	var api = __webpack_require__(15);
 	var ui = __webpack_require__(8);
 	var gameModel = __webpack_require__(10);
-	var gameMoves = __webpack_require__(10);
 	var games = __webpack_require__(12);
 
 	var onNewGame = function onNewGame(event) {
@@ -1628,14 +1670,13 @@ webpackJsonp([0],[
 	var onCancelGame = function onCancelGame() {
 	  event.preventDefault();
 	  gameModel.cancelGameResets();
-	  gameMoves.refreshCounts();
-	  gameMoves.refreshGameInfoTable(gameModel.newGame);
-	  gameMoves.redrawBoard();
+	  $('#waitingForPlayerModal').modal('hide');
 	};
 
 	var onSwitchGameType = function onSwitchGameType() {
 	  event.preventDefault();
 	  gameModel.gameType = games.gameTypes[0];
+	  $('#waitingForPlayerModal').modal('hide');
 	};
 
 	var addHandlers = function addHandlers() {

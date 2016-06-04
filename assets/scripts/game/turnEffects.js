@@ -35,7 +35,7 @@ const updateAPI = function(modelGameIndex,currentSymbol){
   // update game in the back end
   gameApi.updateGame(updateGameData)
   .done(gameUi.successMove)
-  .then(gameUi.checkGame)
+  .then(gameUi.checkGameStatus)
   .fail(gameUi.failure);
 };
 

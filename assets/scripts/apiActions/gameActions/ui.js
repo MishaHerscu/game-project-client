@@ -227,7 +227,7 @@ const togglePlayer = function(){
   return true;
 };
 
-const checkGame = function (){
+const checkGameStatus = function (){
 
   if(gameModel.newGame.over === false){
     return false;
@@ -265,5 +265,5 @@ module.exports = {
   successPlayThisGame,
   newGame,
   togglePlayer,
-  checkGame,
+  checkGameStatus,
 };
