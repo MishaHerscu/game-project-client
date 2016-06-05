@@ -32,14 +32,6 @@
           <input id="join-game-modal" class="btn btn-default hideable" type="submit" name="submit" value="Join Game!">
         </span>
 
-        <span class="modal-button-container hideable">
-          <input type="submit" class="modal-button btn btn-default" data-toggle="modal" data-target="#changePWModal" value="Change Password">
-        </span>
-
-        <span>
-          <input id="sign-out" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Sign out!">
-        </span>
-
         <span>
           <input id="show-player-stats-modal" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Stats">
         </span>
@@ -48,108 +40,121 @@
           <input id="show-token-modal" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Auth Token">
         </span>
 
+        <span class="modal-button-container hideable">
+          <input type="submit" class="modal-button btn btn-default" data-toggle="modal" data-target="#changePWModal" value="Change Password">
+        </span>
+
+        <span>
+          <input id="sign-out" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Sign out!">
+        </span>
+
       </nav>
 
-      <br><br><br><br><br>
-      <div>
-        <h1 id="page-title" class="not-signed-in">Tic Tac Toe</h1>
-      </div>
+      <br><br><br><br>
 
-      <br>
-
-      <div id="game-management" class="hideable hidden">
-        <form class="game-mgmt-button" id="get-games">
-            <input type="submit" name="submit" value="Refresh Games Info!" class="btn btn-default">
-        </form>
-        <form class="game-mgmt-button hideable" id="get-done-games">
-            <input type="submit" name="submit" value="Refresh Done Games Info!" class="btn btn-default">
-        </form>
-      </div>
-
-      <br>
-
-      <div class="game-section">
+      <div class="container">
 
         <div>
-          <h3 id="instructructions-title" class="hideable">Instructions</h3>
-          <p id="instructructions" class="hideable">
-            Click a box when it is your turn.
-            Try to connect three in a row to win.
-          </p>
+          <h1 id="page-title" class="not-signed-in">Tic Tac Toe</h1>
         </div>
-
-        <div id="table-container" class="hideable">
-
-          <h3 id="current-game">Game Information</h3>
-
-          <table id="current-game-info" class="table table-bordered">
-
-            <tr>
-              <th id="game-id-header"  class="game-info-header">ID</th>
-              <th id="game-cells-header"  class="game-info-header">Cells</th>
-              <th id="game-over-header"  class="game-info-header">Game Over</th>
-              <th id="player-x-header"  class="game-info-header">Player_X</th>
-              <th id="player-o-header"  class="game-info-header">Player_O</th>
-            </tr>
-
-            <tr>
-              <td id="game-id-data"  class="game-info-cell"></td>
-              <td id="game-cells-data"  class="game-info-cell"></td>
-              <td id="game-over-data"  class="game-info-cell"></td>
-              <td id="player-x-data"  class="game-info-cell"></td>
-              <td id="player-o-data"  class="game-info-cell"></td>
-            </tr>
-
-          </table>
-
-          <br>
-
-          <form id="show-this-game-info" class="hideable">
-            <input type="submit" value="Refresh Current Game's Info" class="btn btn-default">
-          </form>
-
-          <form id="show-any-game-info" class="hideable">
-            <input type="submit" value="Check Any Game Info" class="btn btn-default">
-            <input type="number" id="any-game-id" placeholder="Game ID">
-            <input type="text" id="any-game-auth">
-          </form>
-
-          <form id="play-this-game" class="hideable">
-            <input type="submit" value="Continue Playing this Game" class="btn btn-default">
-            <input type="number" id="game-to-play-id" placeholder="Game ID">
-            <input type="text" id="game-to-play-auth">
-          </form>
-
-          <br>
-
-          <h3 id="game-board-label">Game Board</h3>
-          <h4 id="player-turn"></h4>
-
-          <table id="game-board" class="table table-bordered game-table">
-
-            <tr>
-              <td id="cell-00"  class="cell row-0 col-0 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-              <td id="cell-01"  class="cell row-0 col-1 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-              <td id="cell-02"  class="cell row-0 col-2 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-            </tr>
-
-            <tr>
-              <td id="cell-10"  class="cell row-1 col-0 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-              <td id="cell-11"  class="cell row-1 col-1 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-              <td id="cell-12"  class="cell row-1 col-2 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-            </tr>
-
-            <tr>
-              <td id="cell-20"  class="cell row-2 col-0 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-              <td id="cell-21"  class="cell row-2 col-1 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-              <td id="cell-22"  class="cell row-2 col-2 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
-            </tr>
-
-          </table>
-        </div>
-      </div>
 
         <br>
+
+        <div id="game-management" class="hideable hidden">
+          <form class="game-mgmt-button" id="get-games">
+              <input type="submit" name="submit" value="Refresh Games Info!" class="btn btn-default">
+          </form>
+          <form class="game-mgmt-button hideable" id="get-done-games">
+              <input type="submit" name="submit" value="Refresh Done Games Info!" class="btn btn-default">
+          </form>
+        </div>
+
+        <br>
+
+        <div class="game-section">
+
+          <div>
+            <h3 id="instructructions-title" class="hideable">Instructions</h3>
+            <p id="instructructions" class="hideable">
+              Click a box when it is your turn.
+              Try to connect three in a row to win.
+            </p>
+          </div>
+
+          <div id="table-container" class="hideable">
+
+            <h3 id="current-game">Game Information</h3>
+
+            <table id="current-game-info" class="table table-bordered">
+
+              <tr>
+                <th id="game-id-header"  class="game-info-header">ID</th>
+                <th id="game-cells-header"  class="game-info-header">Cells</th>
+                <th id="game-over-header"  class="game-info-header">Game Over</th>
+                <th id="player-x-header"  class="game-info-header">Player_X</th>
+                <th id="player-o-header"  class="game-info-header">Player_O</th>
+              </tr>
+
+              <tr>
+                <td id="game-id-data"  class="game-info-cell"></td>
+                <td id="game-cells-data"  class="game-info-cell"></td>
+                <td id="game-over-data"  class="game-info-cell"></td>
+                <td id="player-x-data"  class="game-info-cell"></td>
+                <td id="player-o-data"  class="game-info-cell"></td>
+              </tr>
+
+            </table>
+
+            <br>
+
+            <form id="show-this-game-info" class="hideable">
+              <input type="submit" value="Refresh Current Game's Info" class="btn btn-default">
+            </form>
+
+            <form id="show-any-game-info" class="hideable">
+              <input type="submit" value="Check Any Game Info" class="btn btn-default">
+              <input type="number" id="any-game-id" placeholder="Game ID">
+              <input type="text" id="any-game-auth">
+            </form>
+
+            <form id="play-this-game" class="hideable">
+              <input type="submit" value="Continue Playing this Game" class="btn btn-default">
+              <input type="number" id="game-to-play-id" placeholder="Game ID">
+              <input type="text" id="game-to-play-auth">
+            </form>
+
+            <br>
+
+            <h3 id="game-board-label">Game Board</h3>
+            <h4 id="player-turn"></h4>
+
+            <table id="game-board" class="table table-bordered game-table">
+
+              <tr>
+                <td id="cell-00"  class="cell row-0 col-0 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+                <td id="cell-01"  class="cell row-0 col-1 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+                <td id="cell-02"  class="cell row-0 col-2 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+              </tr>
+
+              <tr>
+                <td id="cell-10"  class="cell row-1 col-0 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+                <td id="cell-11"  class="cell row-1 col-1 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+                <td id="cell-12"  class="cell row-1 col-2 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+              </tr>
+
+              <tr>
+                <td id="cell-20"  class="cell row-2 col-0 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+                <td id="cell-21"  class="cell row-2 col-1 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+                <td id="cell-22"  class="cell row-2 col-2 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4"></td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+
+          <br>
+
+        </div>
 
 
         <!-- MODAL SECTION -->
@@ -465,7 +470,7 @@
 
                   <div id="player-stats" class="stats-table">
 
-                    <table class="table table-bordered hideable carbon-text">
+                    <table class="table table-bordered carbon-text">
                       <tr>
                         <th class="carbon-text">Player ID</th>
                         <th class="carbon-text">Games</th>

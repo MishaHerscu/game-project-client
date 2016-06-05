@@ -17,6 +17,7 @@ body {
 h1 {
   font-size: 7em;
   line-height: $header-line-height;
+  text-align: center;
 }
 
 h2,
@@ -39,9 +40,8 @@ th {
 div {
   border: 0;
   clear: left;
-  margin-left: 10%;
   opacity: 0%;
-  width: 80%;
+  width: 100%;
 }
 
 form {
@@ -161,6 +161,13 @@ a {
 
 .modal-content {
   color: $carbon;
+  margin-left: 10%;
+  width: 80%;
+}
+
+.modal-body {
+  margin-left: 10%;
+  width: 80%;
 }
 
 .modal-button {
@@ -189,4 +196,14 @@ a {
 
 .carbon-text {
   color: $carbon;
+}
+
+.container {
+  margin-left: 10%;
+  width: 80%;
+}
+
+.stats-table {
+  margin-left: 10%;
+  width: 80%;
 }
