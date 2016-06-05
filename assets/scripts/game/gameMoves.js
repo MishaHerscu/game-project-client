@@ -285,7 +285,8 @@ const onSetCellValue = function(){
 
       // show modal if game over
       if(gameModel.gameOver === true){
-        $('#game-update-modal').modal('show');
+        $('#game-update-modal').text(gameModel.winnerString);
+        $('#gameUpdateModal').modal('show');
       }
 
       togglePlayer();
@@ -298,7 +299,7 @@ const onSetCellValue = function(){
 
     $('#player-turn').text('Game over! Start a new Game!');
     $('#game-update-modal').text('Game over! Start a new Game!');
-    $('#game-update-modal').modal('show');
+    $('#gameUpdateModal').modal('show');
     $('.game-over-section').show();
 
   } else if(gameModel.activeGame === false){

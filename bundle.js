@@ -330,6 +330,7 @@ webpackJsonp([0],[
 	var app = __webpack_require__(3);
 	var gameModel = __webpack_require__(9);
 	var gameMoves = __webpack_require__(12);
+	var gameChecks = __webpack_require__(13);
 	var games = __webpack_require__(11);
 	var gameWatcherMaker = __webpack_require__(15);
 	var gameWatcherAttachHandler = __webpack_require__(17);
@@ -362,9 +363,19 @@ webpackJsonp([0],[
 	};
 
 	var updateView = function updateView() {
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 	  gameMoves.refreshCounts();
-	  gameMoves.redrawBoard();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  gameMoves.redrawBoard();
+	  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+	  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+	  gameMoves.updatePlayerTurnAnnouncement();
+
+	  // show modal if game over
+	  if (gameModel.gameOver === true) {
+	    $('#game-update-modal').text(gameModel.winnerString);
+	    $('#gameUpdateModal').modal('show');
+	  }
 	};
 
 	var successMove = function successMove() {
@@ -496,10 +507,8 @@ webpackJsonp([0],[
 	  // display status
 	  if (gameModel.gameType === games.gameTypes[0]) {
 	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 	  } else {
 	    $('#player-turn').text(gameModel.currentPlayer);
-	    $('#game-update-modal').text(gameModel.currentPlayer);
 	  }
 
 	  // watch for updates
@@ -1069,7 +1078,8 @@ webpackJsonp([0],[
 
 	      // show modal if game over
 	      if (gameModel.gameOver === true) {
-	        $('#game-update-modal').modal('show');
+	        $('#game-update-modal').text(gameModel.winnerString);
+	        $('#gameUpdateModal').modal('show');
 	      }
 
 	      togglePlayer();
@@ -1081,7 +1091,7 @@ webpackJsonp([0],[
 
 	    $('#player-turn').text('Game over! Start a new Game!');
 	    $('#game-update-modal').text('Game over! Start a new Game!');
-	    $('#game-update-modal').modal('show');
+	    $('#gameUpdateModal').modal('show');
 	    $('.game-over-section').show();
 	  } else if (gameModel.activeGame === false) {
 	    // console.log('You need to activate or start a game!');
@@ -1473,14 +1483,14 @@ webpackJsonp([0],[
 	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
-	  gameChecks.checkGame(gameModel.newGame);
 	  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
 	  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 	  gameMoves.updatePlayerTurnAnnouncement();
 
 	  // show modal if game over
 	  if (gameModel.gameOver === true) {
-	    $('#game-update-modal').modal('show');
+	    $('#game-update-modal').text(gameModel.winnerString);
+	    $('#gameUpdateModal').modal('show');
 	  }
 	};
 

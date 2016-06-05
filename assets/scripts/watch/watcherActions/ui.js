@@ -52,16 +52,16 @@ const updateView = function(){
   gameMoves.refreshCounts();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
-  gameChecks.checkGame(gameModel.newGame);
   gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
   gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
   gameMoves.updatePlayerTurnAnnouncement();
 
   // show modal if game over
   if(gameModel.gameOver === true){
-    $('#game-update-modal').modal('show');
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
   }
-  
+
 };
 
 module.exports = {

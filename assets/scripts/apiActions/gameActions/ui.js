@@ -3,6 +3,7 @@
 const app = require('../../app.js');
 const gameModel = require('../../game/gameModel.js');
 const gameMoves = require('../../game/gameMoves.js');
+const gameChecks = require('../../game/gameChecks.js');
 const games = require('../../game/games.js');
 const gameWatcherMaker = require('../../watch/make-watcher.js');
 const gameWatcherAttachHandler = require('../../watch/watcher-event-handlers.js');
@@ -36,9 +37,20 @@ const hideBoard = function(){
 };
 
 const updateView = function(){
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
   gameMoves.refreshCounts();
-  gameMoves.redrawBoard();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
+  gameMoves.redrawBoard();
+  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+  gameMoves.updatePlayerTurnAnnouncement();
+
+  // show modal if game over
+  if(gameModel.gameOver === true){
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+  }
+
 };
 
 const successMove = function(){
@@ -171,10 +183,8 @@ const newGame = function(data){
   // display status
   if(gameModel.gameType === games.gameTypes[0]){
     $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
   } else {
     $('#player-turn').text(gameModel.currentPlayer);
-    $('#game-update-modal').text(gameModel.currentPlayer);
   }
 
   // watch for updates
