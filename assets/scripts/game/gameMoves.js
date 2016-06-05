@@ -228,6 +228,27 @@ const onSetCellValue = function(){
   return true;
 };
 
+const checkGameStatus = function (){
+
+  if(gameModel.newGame.over === false){
+    return false;
+  } else if(gameModel.turnCount < gameModel.maxTurnCount){
+    gameModel.winner = gameModel.currentPlayer;
+    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+    gameModel.newGame.over = true;
+  } else {
+    gameModel.winner = null;
+    gameModel.winnerString = "Game over! It's a tie!";
+    gameModel.newGame.over = true;
+  }
+
+  $('#player-turn').text(gameModel.winnerString);
+  $('#game-update-modal').text(gameModel.winnerString);
+  $('#gameUpdateModal').modal('show');
+
+  return true;
+};
+
 const addHandlers = () => {
   $('.cell').on('click', onSetCellValue);
 };
@@ -240,4 +261,5 @@ module.exports = {
   addHandlers,
   onGameCheck,
   updatePlayerTurnAnnouncement,
+  checkGameStatus,
 };

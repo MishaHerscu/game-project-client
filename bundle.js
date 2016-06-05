@@ -1013,6 +1013,27 @@ webpackJsonp([0],[
 	  return true;
 	};
 
+	var checkGameStatus = function checkGameStatus() {
+
+	  if (gameModel.newGame.over === false) {
+	    return false;
+	  } else if (gameModel.turnCount < gameModel.maxTurnCount) {
+	    gameModel.winner = gameModel.currentPlayer;
+	    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+	    gameModel.newGame.over = true;
+	  } else {
+	    gameModel.winner = null;
+	    gameModel.winnerString = "Game over! It's a tie!";
+	    gameModel.newGame.over = true;
+	  }
+
+	  $('#player-turn').text(gameModel.winnerString);
+	  $('#game-update-modal').text(gameModel.winnerString);
+	  $('#gameUpdateModal').modal('show');
+
+	  return true;
+	};
+
 	var addHandlers = function addHandlers() {
 	  $('.cell').on('click', onSetCellValue);
 	};
@@ -1023,7 +1044,8 @@ webpackJsonp([0],[
 	  refreshGameInfoTable: refreshGameInfoTable,
 	  addHandlers: addHandlers,
 	  onGameCheck: onGameCheck,
-	  updatePlayerTurnAnnouncement: updatePlayerTurnAnnouncement
+	  updatePlayerTurnAnnouncement: updatePlayerTurnAnnouncement,
+	  checkGameStatus: checkGameStatus
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -1075,13 +1097,12 @@ webpackJsonp([0],[
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	'use strict';
 
 	var gameModel = __webpack_require__(9);
-	var gameMoves = __webpack_require__(9);
+	var gameMoves = __webpack_require__(12);
 	var gameApi = __webpack_require__(15);
 	var gameUi = __webpack_require__(8);
-	var turnEffects = __webpack_require__(9);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
@@ -1111,7 +1132,7 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(turnEffects.checkGameStatus).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameMoves.checkGameStatus).fail(gameUi.failure);
 	};
 
 	var togglePlayer = function togglePlayer() {
@@ -1141,35 +1162,12 @@ webpackJsonp([0],[
 	  return true;
 	};
 
-	var checkGameStatus = function checkGameStatus() {
-
-	  if (gameModel.newGame.over === false) {
-	    return false;
-	  } else if (gameModel.turnCount < gameModel.maxTurnCount) {
-	    gameModel.winner = gameModel.currentPlayer;
-	    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-	    gameModel.newGame.over = true;
-	  } else {
-	    gameModel.winner = null;
-	    gameModel.winnerString = "Game over! It's a tie!";
-	    gameModel.newGame.over = true;
-	  }
-
-	  $('#player-turn').text(gameModel.winnerString);
-	  $('#game-update-modal').text(gameModel.winnerString);
-	  $('#gameUpdateModal').modal('show');
-
-	  return true;
-	};
-
 	module.exports = {
 	  checkCellEmpty: checkCellEmpty,
 	  updateModelValues: updateModelValues,
 	  updateAPI: updateAPI,
-	  togglePlayer: togglePlayer,
-	  checkGameStatus: checkGameStatus
+	  togglePlayer: togglePlayer
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 15 */
