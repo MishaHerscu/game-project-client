@@ -130,8 +130,8 @@ const addHandlers = () => {
   $('#new-game').on('click', onNewGame);
   $('#show-any-game-info-modal').on('click', onShowAnyGameInfoModal);
   $('#play-this-game-modal').on('click', onJoinAnyGameModal);
+  $('#join-game-modal').on('click', onJoinGameModal);
 
-  $('#join-game-modal').on('submit', onJoinGameModal);
   $('#show-this-game-info').on('submit', onShowGameInfo);
   $('#show-any-game-info').on('submit', onShowAnyGameInfo);
   $('#play-this-game').on('submit', onPlayThisGame);

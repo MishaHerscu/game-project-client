@@ -127,29 +127,29 @@
 
                 <h3 id="current-game">Game Information</h3>
 
-                <div id="current-game-info" class="table table-bordered">
+                <div id="current-game-info">
 
-                  <div>
+                  <div class="row game-info-row">
                     <div id="game-id-header"  class="game-info-header col-xs-6">ID</div>
                     <div id="game-id-data"  class="game-info-cell col-xs-6"></div>
                   </div>
 
-                  <div>
+                  <div class="row game-info-row">
                     <div id="game-cells-header"  class="game-info-header col-xs-6">Cells</div>
                     <div id="game-cells-data"  class="game-info-cell col-xs-6"></div>
                   </div>
 
-                  <div>
+                  <div class="row game-info-row">
                     <div id="game-over-header"  class="game-info-header col-xs-6">Game Over</div>
                     <div id="game-over-data"  class="game-info-cell col-xs-6"></div>
                   </div>
 
-                  <div>
+                  <div class="row game-info-row">
                     <div id="player-x-header"  class="game-info-header col-xs-6">Player_X</div>
                     <div id="player-x-data"  class="game-info-cell col-xs-6"></div>
                   </div>
 
-                  <div>
+                  <div class="row game-info-row">
                     <div id="player-o-header"  class="game-info-header col-xs-6">Player_O</div>
                     <div id="player-o-data"  class="game-info-cell col-xs-6"></div>
                   </div>
@@ -516,7 +516,7 @@
                   <h4 class="modal-title">Select Game to View</h4>
                 </div>
 
-                <form id="show-any-game-info" class="signed-in-view">
+                <form id="show-any-game-info" class="signed-in-view modal-content-form">
                   <input type="submit" value="Check Any Game Info" class="btn btn-default">
                   <input type="number" id="any-game-id" placeholder="Game ID">
                   <input type="text" id="any-game-auth">
@@ -544,7 +544,7 @@
                   <h4 class="modal-title">Player Stats</h4>
                 </div>
 
-                    <form id="play-this-game" class="signed-in-view">
+                    <form id="play-this-game" class="signed-in-view modal-content-form">
                       <input type="submit" value="Continue Playing this Game" class="btn btn-default">
                       <input type="number" id="game-to-play-id" placeholder="Game ID">
                       <input type="text" id="game-to-play-auth">

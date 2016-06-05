@@ -204,12 +204,21 @@ a {
   width: 80%;
 }
 
+.modal-content-form {
+  margin-bottom: 10%;
+  margin-left: 20%;
+  margin-top: 10%;
+  width: 60%;
+}
+
 .game-info-header {
   border: 1px solid $paper-white;
   display: inline;
+  height: 100px;
 }
 
 .game-info-cell {
   border: 1px solid $paper-white;
   display: inline;
+  height: 100px;
 }
