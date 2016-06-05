@@ -3,7 +3,146 @@
 const games = require('./games.js');
 const gameModel = require('./gameModel.js');
 const gameChecks = require('./gameChecks.js');
-const turnEffects = require('./turnEffects.js');
+const gameApi = require('../apiActions/gameActions/api.js');
+const gameUi = require('../apiActions/gameActions/ui.js');
+
+const checkCellEmpty = function(val){
+  if(val !== ""){
+    // console.log('Sorry! Someone already went there.');
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const updateModelValues = function(currentSymbol, clickedCell){
+  gameModel.boardDict[clickedCell] = currentSymbol;
+  let modelGameIndex = gameModel.boardTrans.indexOf(clickedCell);
+  gameModel.newGame.cells[modelGameIndex] = currentSymbol;
+  return modelGameIndex;
+};
+
+const checkGameStatus = function (){
+
+  if(gameModel.newGame.over === false){
+    return false;
+  } else if(gameModel.turnCount < gameModel.maxTurnCount){
+    gameModel.winner = gameModel.currentPlayer;
+    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+    gameModel.newGame.over = true;
+  } else {
+    gameModel.winner = null;
+    gameModel.winnerString = "Game over! It's a tie!";
+    gameModel.newGame.over = true;
+  }
+
+  $('#player-turn').text(gameModel.winnerString);
+  $('#game-update-modal').text(gameModel.winnerString);
+  $('#gameUpdateModal').modal('show');
+
+  return true;
+};
+
+// just updates what the user sees, not the actual state
+const updatePlayerTurnAnnouncement = function(){
+
+  if(gameModel.gameType === games.gameTypes[0]){
+
+    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+
+  } else if(gameModel.gameType === games.gameTypes[1]){
+
+    $('#player-turn').text(gameModel.currentPlayer);
+    $('#game-update-modal').text(gameModel.currentPlayer);
+
+  } else if(gameModel.gameType === games.gameTypes[2]){
+
+    $('#player-turn').text(gameModel.currentPlayer);
+    $('#game-update-modal').text(gameModel.currentPlayer);
+
+  } else {
+    $('#player-turn').text('An error occurred. Please start a new game.');
+    $('#game-update-modal').text('An error occurred. Please start a new game.');
+  }
+};
+
+const onGameCheck = function(gameObject){
+
+  if(gameObject.over === false){
+
+    updatePlayerTurnAnnouncement();
+
+  } else if (gameModel.winner === null){
+    gameModel.winner = 'Tie';
+    gameModel.winnerString = "Game over! It's a tie!";
+    gameModel.newGame.over = true;
+
+    $('#player-turn').text(gameModel.winnerString);
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+
+    $('.table-section').hide();
+    $('.game-over-section').show();
+
+  } else {
+    gameModel.winner = gameModel.otherPlayer;
+    gameModel.winnerString = 'Game over! ' + gameModel.otherPlayer + ' Wins!';
+    gameModel.newGame.over = true;
+
+    $('#player-turn').text(gameModel.winnerString);
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+
+    $('.table-section').hide();
+    $('.game-over-section').show();
+  }
+};
+
+const updateAPI = function(modelGameIndex,currentSymbol){
+  let updateGameData = {
+    "game": {
+      "cell": {
+        "index": modelGameIndex,
+        "value": currentSymbol
+      },
+      "over": gameModel.newGame.over
+    }
+  };
+
+  // update game in the back end
+  gameApi.updateGame(updateGameData)
+  .done(gameUi.successMove)
+  .then(checkGameStatus())
+  .fail(gameUi.failure);
+};
+
+const togglePlayer = function(){
+
+  // update gameType (single vs double player)
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+  if(gameModel.gameOver === false){
+
+    // swap players
+    let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+
+    gameModel.currentPlayer = NewPlayersSymbols[0];
+    gameModel.otherPlayer = NewPlayersSymbols[1];
+    gameModel.currentSymbol = NewPlayersSymbols[2];
+    gameModel.otherSymbol  = NewPlayersSymbols[3];
+
+    // count turn number
+    gameModel.turnCount += 1;
+
+    // check game and show responses
+    onGameCheck(gameModel.newGame);
+
+    //show changes
+  }
+
+  return true;
+};
 
 const refreshCounts = function(){
 
@@ -91,62 +230,6 @@ const refreshGameInfoTable = function(gameObject){
   return true;
 };
 
-// just updates what the user sees, not the actual state
-const updatePlayerTurnAnnouncement = function(){
-
-  if(gameModel.gameType === games.gameTypes[0]){
-
-    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
-
-  } else if(gameModel.gameType === games.gameTypes[1]){
-
-    $('#player-turn').text(gameModel.currentPlayer);
-    $('#game-update-modal').text(gameModel.currentPlayer);
-
-  } else if(gameModel.gameType === games.gameTypes[2]){
-
-    $('#player-turn').text(gameModel.currentPlayer);
-    $('#game-update-modal').text(gameModel.currentPlayer);
-
-  } else {
-    $('#player-turn').text('An error occurred. Please start a new game.');
-    $('#game-update-modal').text('An error occurred. Please start a new game.');
-  }
-};
-
-const onGameCheck = function(gameObject){
-
-  if(gameObject.over === false){
-
-    updatePlayerTurnAnnouncement();
-
-  } else if (gameModel.winner === null){
-    gameModel.winner = 'Tie';
-    gameModel.winnerString = "Game over! It's a tie!";
-    gameModel.newGame.over = true;
-
-    $('#player-turn').text(gameModel.winnerString);
-    $('#game-update-modal').text(gameModel.winnerString);
-    $('#gameUpdateModal').modal('show');
-
-    $('.table-section').hide();
-    $('.game-over-section').show();
-
-  } else {
-    gameModel.winner = gameModel.otherPlayer;
-    gameModel.winnerString = 'Game over! ' + gameModel.otherPlayer + ' Wins!';
-    gameModel.newGame.over = true;
-
-    $('#player-turn').text(gameModel.winnerString);
-    $('#game-update-modal').text(gameModel.winnerString);
-    $('#gameUpdateModal').modal('show');
-
-    $('.table-section').hide();
-    $('.game-over-section').show();
-  }
-};
-
 const onSetCellValue = function(){
 
   // refresh counts
@@ -177,7 +260,7 @@ const onSetCellValue = function(){
     let clickedCell = this.id;
 
     // check if the cell is empty
-    if(!turnEffects.checkCellEmpty(currentVal)){
+    if(!checkCellEmpty(currentVal)){
       return false;
     } else {
 
@@ -188,7 +271,7 @@ const onSetCellValue = function(){
       refreshCounts();
 
       // update model
-      let modelGameIndex = turnEffects.updateModelValues(gameModel.currentSymbol, clickedCell);
+      let modelGameIndex = updateModelValues(gameModel.currentSymbol, clickedCell);
 
       // update game info view
       refreshGameInfoTable(gameModel.newGame);
@@ -198,14 +281,14 @@ const onSetCellValue = function(){
       gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
       // update object for API
-      turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
+      updateAPI(modelGameIndex, gameModel.currentSymbol);
 
       // show modal if game over
       if(gameModel.gameOver === true){
         $('#game-update-modal').modal('show');
       }
 
-      turnEffects.togglePlayer();
+      togglePlayer();
 
     }
   } else if (gameModel.gameOver === true){
@@ -228,32 +311,15 @@ const onSetCellValue = function(){
   return true;
 };
 
-const checkGameStatus = function (){
-
-  if(gameModel.newGame.over === false){
-    return false;
-  } else if(gameModel.turnCount < gameModel.maxTurnCount){
-    gameModel.winner = gameModel.currentPlayer;
-    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-    gameModel.newGame.over = true;
-  } else {
-    gameModel.winner = null;
-    gameModel.winnerString = "Game over! It's a tie!";
-    gameModel.newGame.over = true;
-  }
-
-  $('#player-turn').text(gameModel.winnerString);
-  $('#game-update-modal').text(gameModel.winnerString);
-  $('#gameUpdateModal').modal('show');
-
-  return true;
-};
-
 const addHandlers = () => {
   $('.cell').on('click', onSetCellValue);
 };
 
 module.exports = {
+  checkCellEmpty,
+  updateModelValues,
+  updateAPI,
+  togglePlayer,
   refreshCounts,
   redrawBoard,
   refreshGameInfoTable,
