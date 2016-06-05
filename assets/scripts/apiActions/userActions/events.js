@@ -57,6 +57,14 @@ const onShowTokenModal = function(){
   $('#tokenModal').modal('show');
 };
 
+const onShowPlayerStatsModal = function() {
+  event.preventDefault();
+  $('#get-games').submit();
+  $('#get-done-games').submit();
+
+  $('#playerStatsModal').modal('show');
+};
+
 const addHandlers = () => {
 
   //
@@ -70,6 +78,7 @@ const addHandlers = () => {
   // note click since not in a form
   $('#sign-out').on('click', onSignOut);
   $('#show-token-modal').on('click', onShowTokenModal);
+  $('#show-player-stats-modal').on('click', onShowPlayerStatsModal);
 
 };
 

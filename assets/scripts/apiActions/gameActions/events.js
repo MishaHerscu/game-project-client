@@ -42,6 +42,7 @@ const onGetDoneGames = function(event){
 
 const onJoinGame = function(event){
   event.preventDefault();
+  $('selectGameToJoinModal').modal('hide');  
   let gameId = $('#game-to-join').val();
 
   api.joinGame(gameId)
@@ -112,9 +113,15 @@ const onStartAnotherGame = function() {
   onNewGame.submit();
 };
 
+const onJoinGameModal = function() {
+  $('selectGameToJoinModal').modal('show');
+};
+
 const addHandlers = () => {
 
-  $('#new-game').on('submit', onNewGame);
+  $('#new-game').on('click', onNewGame);
+  $('#join-game-modal').on('click', onJoinGameModal);
+
   $('#select-game-type').on('submit', onSelectGameType);
   $('#get-games').on('submit', onGetGames);
   $('#get-done-games').on('submit', onGetDoneGames);

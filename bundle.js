@@ -122,6 +122,14 @@ webpackJsonp([0],[
 	  $('#tokenModal').modal('show');
 	};
 
+	var onShowPlayerStatsModal = function onShowPlayerStatsModal() {
+	  event.preventDefault();
+	  $('#get-games').submit();
+	  $('#get-done-games').submit();
+
+	  $('#playerStatsModal').modal('show');
+	};
+
 	var addHandlers = function addHandlers() {
 
 	  //
@@ -135,6 +143,7 @@ webpackJsonp([0],[
 	  // note click since not in a form
 	  $('#sign-out').on('click', onSignOut);
 	  $('#show-token-modal').on('click', onShowTokenModal);
+	  $('#show-player-stats-modal').on('click', onShowPlayerStatsModal);
 	};
 
 	module.exports = {
@@ -1544,6 +1553,7 @@ webpackJsonp([0],[
 
 	var onJoinGame = function onJoinGame(event) {
 	  event.preventDefault();
+	  $('selectGameToJoinModal').modal('hide');
 	  var gameId = $('#game-to-join').val();
 
 	  api.joinGame(gameId).done(ui.success).then(ui.successJoin).fail(ui.failure);
@@ -1605,9 +1615,15 @@ webpackJsonp([0],[
 	  onNewGame.submit();
 	};
 
+	var onJoinGameModal = function onJoinGameModal() {
+	  $('selectGameToJoinModal').modal('show');
+	};
+
 	var addHandlers = function addHandlers() {
 
-	  $('#new-game').on('submit', onNewGame);
+	  $('#new-game').on('click', onNewGame);
+	  $('#join-game-modal').on('click', onJoinGameModal);
+
 	  $('#select-game-type').on('submit', onSelectGameType);
 	  $('#get-games').on('submit', onGetGames);
 	  $('#get-done-games').on('submit', onGetDoneGames);

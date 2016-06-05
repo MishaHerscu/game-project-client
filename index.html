@@ -17,23 +17,27 @@
         </span>
 
         <span class="modal-button-container not-signed-in">
-          <input type="submit" class="modal-button btn-lg" data-toggle="modal" data-target="#signUpModal" value="Sign Up!">
+          <input type="submit" class="modal-button btn btn-default" data-toggle="modal" data-target="#signUpModal" value="Sign Up!">
         </span>
 
         <span class="modal-button-container not-signed-in">
-          <input type="submit" class="modal-button btn-lg" data-toggle="modal" data-target="#signInModal" value="Sign In!">
+          <input type="submit" class="modal-button btn btn-default" data-toggle="modal" data-target="#signInModal" value="Sign In!">
         </span>
 
         <span class="modal-button-container hideable">
-          <input type="submit" class="modal-button btn-lg" data-toggle="modal" data-target="#changePWModal" value="Change Password">
+          <input type="submit" class="modal-button btn btn-default" data-toggle="modal" data-target="#changePWModal" value="Change Password">
         </span>
 
         <span>
-          <input id="sign-out" class="modal-button btn-lg hideable" type="submit" name="submit" value="Sign out!">
+          <input id="sign-out" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Sign out!">
         </span>
 
         <span>
-          <input id="show-token-modal" class="modal-button btn-lg hideable" type="submit" name="submit" value="Show Auth Token">
+          <input id="show-player-stats-modal" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Stats">
+        </span>
+
+        <span>
+          <input id="show-token-modal" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Auth Token">
         </span>
 
       </nav>
@@ -45,53 +49,13 @@
 
       <br>
 
-      <div class="hideable">
-        <h2>Player Stats</h2>
-      </div>
-
-      <br>
-
-      <div id="game-management" class="hideable">
-
-        <form class="game-mgmt-button" id="new-game">
-            <input type="submit" name="submit" value="Start New Game!" class="btn btn-default">
-        </form>
-
+      <div id="game-management" class="hideable hidden">
         <form class="game-mgmt-button" id="get-games">
             <input type="submit" name="submit" value="Refresh Games Info!" class="btn btn-default">
         </form>
-
         <form class="game-mgmt-button hideable" id="get-done-games">
             <input type="submit" name="submit" value="Refresh Done Games Info!" class="btn btn-default">
         </form>
-
-        <form class="game-setting" id="game-board-size">
-            <br>
-            <h4>
-              Board Size (default = 3)
-            </h4>
-            <!-- <input type="number" name="board-size" value="3" placeholder="board size"> -->
-        </form>
-
-      </div>
-
-      <br>
-
-      <div id="player-stats" class="hideable stats-table">
-
-        <table class="table table-bordered hideable">
-          <tr>
-            <th>Player ID</th>
-            <th>Games</th>
-            <th>Finished Games</th>
-          </tr>
-          <tr>
-            <td id="stats-player-id"></td>
-            <td id="stats-games"></td>
-            <td id="stats-finished-games"></td>
-          </tr>
-        </table>
-
       </div>
 
       <br>
@@ -100,35 +64,16 @@
         <h2>Game Management</h2>
       </div>
 
-      <br>
-
-      <div class="hideable">
-        <form id="join-game" class="hideable">
-          <fieldset>
-            <legend>Join Game!</legend>
-            <input type="text" id="game-to-join" name="game-id" placeholder="Game ID">
-            <input type="submit" name="submit" value="Join Game!" class="btn btn-default">
-          </fieldset>
-        </form>
-      </div>
-
-      <div class="hideable">
-        <form id="watch-game" class="hidden">
-          <fieldset>
-            <legend>Watch Game!</legend>
-            <input type="text" id="game-to-watch" name="game-id" placeholder="Game ID">
-            <input type="submit" name="submit" value="Watch Game!" class="btn btn-default">
-          </fieldset>
-        </form>
+      <div>
+        <span>
+          <input id="new-game" class="btn btn-default hideable" type="submit" name="submit" value="Start New Game!">
+        </span>
+        <span>
+          <input id="join-game-modal" class="btn btn-default hideable" type="submit" name="submit" value="Join Game!">
+        </span>
       </div>
 
       <br>
-
-      <div class="game-over-section hideable">
-        <h4>
-          Start a game.
-        </h4>
-      </div>
 
       <div class="game-section">
         <div>
@@ -170,18 +115,14 @@
           <br>
 
           <form id="show-this-game-info" class="hideable">
-            <input type="submit" value="Show Current Game's Info" class="btn btn-default">
+            <input type="submit" value="Refresh Current Game's Info" class="btn btn-default">
           </form>
-
-          <br>
 
           <form id="show-any-game-info" class="hideable">
             <input type="submit" value="Check Any Game Info" class="btn btn-default">
             <input type="number" id="any-game-id" placeholder="Game ID">
             <input type="text" id="any-game-auth">
           </form>
-
-          <br>
 
           <form id="play-this-game" class="hideable">
             <input type="submit" value="Continue Playing this Game" class="btn btn-default">
@@ -355,6 +296,39 @@
             </div>
           </div>
 
+          <!-- Select Game To Join Modal -->
+          <div id="selectGameToJoinModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Select Game To Join</h4>
+                </div>
+
+                <div class="modal-body">
+
+                  <form id="join-game">
+                    <fieldset>
+                      <legend>Join Game!</legend>
+                      <input type="text" id="game-to-join" name="game-id" placeholder="Game ID">
+                      <input type="submit" name="submit" value="Join Game!" class="btn btn-default">
+                    </fieldset>
+                  </form>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
           <!-- Waiting for Player to Join Modal -->
           <div id="waitingForPlayerModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -477,6 +451,44 @@
                 <div class="modal-body">
                   <p id="auth-token-p" class="auth-token-td"></p>
                 </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Player Stats Modal -->
+          <div id="playerStatsModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Player Stats</h4>
+                </div>
+
+                  <div id="player-stats" class="stats-table">
+
+                    <table class="table table-bordered hideable carbon-text">
+                      <tr>
+                        <th class="carbon-text">Player ID</th>
+                        <th class="carbon-text">Games</th>
+                        <th class="carbon-text">Finished Games</th>
+                      </tr>
+                      <tr>
+                        <td id="stats-player-id" class="carbon-text"></td>
+                        <td id="stats-games" class="carbon-text"></td>
+                        <td id="stats-finished-games" class="carbon-text"></td>
+                      </tr>
+                    </table>
+
+                  </div>
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
