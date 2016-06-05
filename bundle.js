@@ -32,7 +32,7 @@ webpackJsonp([0],[
 	var app = __webpack_require__(3);
 
 	$('.table-section').hide();
-	$('.hideable').hide();
+	$('.signed-in-view').hide();
 	$('.hidden').hide();
 	$('.game-over-section').hide();
 	$('.not-signed-in').show();
@@ -322,7 +322,7 @@ webpackJsonp([0],[
 	  app.user = null;
 	  $('.not-signed-in').show();
 	  $('.table-section').hide();
-	  $('.hideable').hide();
+	  $('.signed-in-view').hide();
 	  $('#signInModal').modal('hide');
 	  $('#signUpModal').modal('hide');
 	  $('#gameUpdateModal').modal('hide');
@@ -371,12 +371,12 @@ webpackJsonp([0],[
 	};
 
 	var showBoard = function showBoard() {
-	  $('.hideable').show();
+	  $('.signed-in-view').show();
 	};
 
 	var hideBoard = function hideBoard() {
 	  $('.table-section').hide();
-	  $('.hideable').hide();
+	  $('.signed-in-view').hide();
 	};
 
 	var updateView = function updateView() {
@@ -444,7 +444,7 @@ webpackJsonp([0],[
 	  gameMoves.refreshCounts();
 
 	  $('.table-section').hide();
-	  $('.hideable').hide();
+	  $('.signed-in-view').hide();
 	  $('.game-over-section').hide();
 	  $('#gameUpdateModal').modal('hide');
 
@@ -475,7 +475,7 @@ webpackJsonp([0],[
 
 	  // reset view
 	  $('.table-section').show();
-	  $('.hideable').show();
+	  $('.signed-in-view').show();
 	  $('.not-signed-in').hide();
 	};
 
@@ -507,7 +507,7 @@ webpackJsonp([0],[
 	  gameModel.playerJoined = false;
 
 	  $('.table-section').hide();
-	  $('.hideable').hide();
+	  $('.signed-in-view').hide();
 	  $('.game-over-section').hide();
 	  $('#gameUpdateModal').modal('hide');
 
@@ -534,7 +534,7 @@ webpackJsonp([0],[
 
 	  // reset view
 	  $('.table-section').show();
-	  $('.hideable').show();
+	  $('.signed-in-view').show();
 	  $('.not-signed-in').hide();
 	};
 

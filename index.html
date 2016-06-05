@@ -25,27 +25,27 @@
         </span>
 
         <span>
-          <input id="new-game" class="btn btn-default hideable" type="submit" name="submit" value="Start New Game!">
+          <input id="new-game" class="btn btn-default signed-in-view" type="submit" name="submit" value="Start New Game!">
         </span>
 
         <span>
-          <input id="join-game-modal" class="btn btn-default hideable" type="submit" name="submit" value="Join Game!">
+          <input id="join-game-modal" class="btn btn-default signed-in-view" type="submit" name="submit" value="Join Game!">
         </span>
 
         <span>
-          <input id="show-player-stats-modal" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Stats">
+          <input id="show-player-stats-modal" class="modal-button btn btn-default signed-in-view" type="submit" name="submit" value="Stats">
         </span>
 
         <span>
-          <input id="show-token-modal" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Auth Token">
+          <input id="show-token-modal" class="modal-button btn btn-default signed-in-view" type="submit" name="submit" value="Auth Token">
         </span>
 
-        <span class="modal-button-container hideable">
+        <span class="modal-button-container signed-in-view">
           <input type="submit" class="modal-button btn btn-default" data-toggle="modal" data-target="#changePWModal" value="Change Password">
         </span>
 
         <span>
-          <input id="sign-out" class="modal-button btn btn-default hideable" type="submit" name="submit" value="Sign out!">
+          <input id="sign-out" class="modal-button btn btn-default signed-in-view" type="submit" name="submit" value="Sign out!">
         </span>
 
       </nav>
@@ -60,11 +60,11 @@
 
         <br>
 
-        <div id="game-management" class="hideable hidden">
+        <div id="game-management" class="signed-in-view hidden">
           <form class="game-mgmt-button" id="get-games">
               <input type="submit" name="submit" value="Refresh Games Info!" class="btn btn-default">
           </form>
-          <form class="game-mgmt-button hideable" id="get-done-games">
+          <form class="game-mgmt-button signed-in-view" id="get-done-games">
               <input type="submit" name="submit" value="Refresh Done Games Info!" class="btn btn-default">
           </form>
         </div>
@@ -73,14 +73,14 @@
 
         <div class="game-section">
 
-          <div id="table-container" class="hideable">
+          <div id="table-container" class="signed-in-view">
 
             <div class="row">
               <div class="col-lg-8 col-xs-12">
 
                 <div>
-                  <h3 id="instructructions-title" class="hideable">Instructions</h3>
-                  <p id="instructructions" class="hideable">
+                  <h3 id="instructructions-title" class="signed-in-view">Instructions</h3>
+                  <p id="instructructions" class="signed-in-view">
                     Click a box when it is your turn.
                     Try to connect three in a row to win.
                   </p>
@@ -113,17 +113,17 @@
 
                 <h3 id="current-game">Game Information</h3>
 
-                <form id="show-this-game-info" class="hideable">
+                <form id="show-this-game-info" class="signed-in-view">
                   <input type="submit" value="Refresh Current Game's Info" class="btn btn-default">
                 </form>
 
-                <form id="show-any-game-info" class="hideable">
+                <form id="show-any-game-info" class="signed-in-view">
                   <input type="submit" value="Check Any Game Info" class="btn btn-default">
                   <input type="number" id="any-game-id" placeholder="Game ID">
                   <input type="text" id="any-game-auth">
                 </form>
 
-                <form id="play-this-game" class="hideable">
+                <form id="play-this-game" class="signed-in-view">
                   <input type="submit" value="Continue Playing this Game" class="btn btn-default">
                   <input type="number" id="game-to-play-id" placeholder="Game ID">
                   <input type="text" id="game-to-play-auth">

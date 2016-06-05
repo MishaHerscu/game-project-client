@@ -44,7 +44,7 @@ const signOutSuccess = function(){
   app.user = null;
   $('.not-signed-in').show();
   $('.table-section').hide();
-  $('.hideable').hide();
+  $('.signed-in-view').hide();
   $('#signInModal').modal('hide');
   $('#signUpModal').modal('hide');
   $('#gameUpdateModal').modal('hide');

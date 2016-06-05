@@ -28,12 +28,12 @@ const failure = function(error){
 };
 
 const showBoard = function(){
-  $('.hideable').show();
+  $('.signed-in-view').show();
 };
 
 const hideBoard = function(){
   $('.table-section').hide();
-  $('.hideable').hide();
+  $('.signed-in-view').hide();
 };
 
 const updateView = function(){
@@ -102,7 +102,7 @@ const successJoin = function(data){
   gameMoves.refreshCounts();
 
   $('.table-section').hide();
-  $('.hideable').hide();
+  $('.signed-in-view').hide();
   $('.game-over-section').hide();
   $('#gameUpdateModal').modal('hide');
 
@@ -133,7 +133,7 @@ const successJoin = function(data){
 
   // reset view
   $('.table-section').show();
-  $('.hideable').show();
+  $('.signed-in-view').show();
   $('.not-signed-in').hide();
 
 };
@@ -166,7 +166,7 @@ const newGame = function(data){
   gameModel.playerJoined = false;
 
   $('.table-section').hide();
-  $('.hideable').hide();
+  $('.signed-in-view').hide();
   $('.game-over-section').hide();
   $('#gameUpdateModal').modal('hide');
 
@@ -193,7 +193,7 @@ const newGame = function(data){
 
   // reset view
   $('.table-section').show();
-  $('.hideable').show();
+  $('.signed-in-view').show();
   $('.not-signed-in').hide();
 };
 

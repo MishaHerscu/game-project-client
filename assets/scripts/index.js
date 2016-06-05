@@ -3,7 +3,7 @@
 const app = require('./app.js');
 
 $('.table-section').hide();
-$('.hideable').hide();
+$('.signed-in-view').hide();
 $('.hidden').hide();
 $('.game-over-section').hide();
 $('.not-signed-in').show();
