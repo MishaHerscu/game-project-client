@@ -168,12 +168,11 @@ const onSetCellValue = function(){
     }
   }
 
+  console.log("status: ", gameModel.gameOver, gameModel.activeGame);
+
   // you can only go if there is an active, non-over game
   // eventually maybe these variables should be combined into one
   if(gameModel.gameOver === false && gameModel.activeGame === true){
-
-    // update gameType (single vs double player)
-    gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
     // the clicked cell and the value of that cell
     let currentVal = $(this).text();
@@ -200,8 +199,17 @@ const onSetCellValue = function(){
       gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
       gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
+      console.log("over: ", gameModel.gameOver);
+      console.log("over: ", gameModel.newGame.over);
+
       // update object for API
       turnEffects.updateAPI(modelGameIndex, gameModel.currentSymbol);
+
+      // show modal if game over
+      if(gameModel.gameOver === true){
+        $('#game-update-modal').modal('show');
+      }
+
     }
   } else if (gameModel.gameOver === true){
 
@@ -210,7 +218,7 @@ const onSetCellValue = function(){
 
     $('#player-turn').text('Game over! Start a new Game!');
     $('#game-update-modal').text('Game over! Start a new Game!');
-
+    $('#game-update-modal').modal('show');
     $('.game-over-section').show();
 
   } else if(gameModel.activeGame === false){
