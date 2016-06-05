@@ -1124,8 +1124,6 @@ webpackJsonp([0],[
 	    // swap players
 	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
-	    console.log(NewPlayersSymbols);
-
 	    gameModel.currentPlayer = NewPlayersSymbols[0];
 	    gameModel.otherPlayer = NewPlayersSymbols[1];
 	    gameModel.currentSymbol = NewPlayersSymbols[2];
