@@ -39,7 +39,6 @@ th {
 
 div {
   border: 0;
-  clear: left;
   opacity: 0%;
   width: 100%;
 }
@@ -118,6 +117,8 @@ a {
 .game-table {
   font-size: 1.5em;
   font-weight: bold;
+  height: 33%;
+  width: 33%;
 }
 
 .auth-token-header {
@@ -145,7 +146,6 @@ a {
   margin-right: 0%;
   opacity: 0%;
   text-align: center;
-  width: 33.333%;
 }
 
 .navbar-fixed-top {
@@ -176,13 +176,11 @@ a {
   opacity: 0%;
 }
 
-.row {
-  margin-left: 5%;
-  width: 90%;
-}
-
 .cell {
+  border: 1px solid $paper-white;
+  display: inline;
   font-weight: bold;
+  height: $table-line-height;
   line-height: $table-line-height;
   opacity: 0%;
   text-align: center;
