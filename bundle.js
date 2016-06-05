@@ -512,59 +512,6 @@ webpackJsonp([0],[
 	  $('.not-signed-in').hide();
 	};
 
-	var togglePlayer = function togglePlayer() {
-
-	  // update gameType (single vs double player)
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-	  if (gameModel.gameOver === false) {
-
-	    // swap players
-	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-	    console.log(NewPlayersSymbols);
-
-	    gameModel.currentPlayer = NewPlayersSymbols[0];
-	    gameModel.otherPlayer = NewPlayersSymbols[1];
-	    gameModel.currentSymbol = NewPlayersSymbols[2];
-	    gameModel.otherSymbol = NewPlayersSymbols[3];
-
-	    // count turn number
-	    gameModel.turnCount += 1;
-
-	    // check game and show responses
-	    gameMoves.onGameCheck(gameModel.newGame);
-
-	    //show changes
-	  }
-
-	  return true;
-	};
-
-	var checkGameStatus = function checkGameStatus() {
-
-	  if (gameModel.newGame.over === false) {
-	    return false;
-	  } else if (gameModel.turnCount < gameModel.maxTurnCount) {
-	    gameModel.winner = gameModel.currentPlayer;
-	    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-	    gameModel.newGame.over = true;
-	  } else {
-	    gameModel.winner = null;
-	    gameModel.winnerString = "Game over! It's a tie!";
-	    gameModel.newGame.over = true;
-	  }
-
-	  $('#player-turn').text(gameModel.winnerString);
-	  $('#game-update-modal').text(gameModel.winnerString);
-	  $('#gameUpdateModal').modal('show');
-
-	  $('.table-section').hide();
-	  $('.game-over-section').show();
-
-	  return true;
-	};
-
 	module.exports = {
 	  success: success,
 	  failure: failure,
@@ -577,9 +524,7 @@ webpackJsonp([0],[
 	  successShowGameInfo: successShowGameInfo,
 	  successJoin: successJoin,
 	  successPlayThisGame: successPlayThisGame,
-	  newGame: newGame,
-	  togglePlayer: togglePlayer,
-	  checkGameStatus: checkGameStatus
+	  newGame: newGame
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -865,7 +810,6 @@ webpackJsonp([0],[
 	var gameModel = __webpack_require__(9);
 	var gameChecks = __webpack_require__(13);
 	var turnEffects = __webpack_require__(14);
-	var ui = __webpack_require__(8);
 
 	var refreshCounts = function refreshCounts() {
 
@@ -1048,7 +992,7 @@ webpackJsonp([0],[
 	        $('#game-update-modal').modal('show');
 	      }
 
-	      ui.togglePlayer();
+	      turnEffects.togglePlayer();
 	    }
 	  } else if (gameModel.gameOver === true) {
 
@@ -1131,11 +1075,13 @@ webpackJsonp([0],[
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var gameModel = __webpack_require__(9);
+	var gameMoves = __webpack_require__(9);
 	var gameApi = __webpack_require__(15);
 	var gameUi = __webpack_require__(8);
+	var turnEffects = __webpack_require__(9);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
@@ -1165,14 +1111,70 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameUi.checkGameStatus).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(turnEffects.checkGameStatus).fail(gameUi.failure);
+	};
+
+	var togglePlayer = function togglePlayer() {
+
+	  // update gameType (single vs double player)
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+	  if (gameModel.gameOver === false) {
+
+	    // swap players
+	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+
+	    console.log(NewPlayersSymbols);
+
+	    gameModel.currentPlayer = NewPlayersSymbols[0];
+	    gameModel.otherPlayer = NewPlayersSymbols[1];
+	    gameModel.currentSymbol = NewPlayersSymbols[2];
+	    gameModel.otherSymbol = NewPlayersSymbols[3];
+
+	    // count turn number
+	    gameModel.turnCount += 1;
+
+	    // check game and show responses
+	    gameMoves.onGameCheck(gameModel.newGame);
+
+	    //show changes
+	  }
+
+	  return true;
+	};
+
+	var checkGameStatus = function checkGameStatus() {
+
+	  if (gameModel.newGame.over === false) {
+	    return false;
+	  } else if (gameModel.turnCount < gameModel.maxTurnCount) {
+	    gameModel.winner = gameModel.currentPlayer;
+	    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
+	    gameModel.newGame.over = true;
+	  } else {
+	    gameModel.winner = null;
+	    gameModel.winnerString = "Game over! It's a tie!";
+	    gameModel.newGame.over = true;
+	  }
+
+	  $('#player-turn').text(gameModel.winnerString);
+	  $('#game-update-modal').text(gameModel.winnerString);
+	  $('#gameUpdateModal').modal('show');
+
+	  $('.table-section').hide();
+	  $('.game-over-section').show();
+
+	  return true;
 	};
 
 	module.exports = {
 	  checkCellEmpty: checkCellEmpty,
 	  updateModelValues: updateModelValues,
-	  updateAPI: updateAPI
+	  updateAPI: updateAPI,
+	  togglePlayer: togglePlayer,
+	  checkGameStatus: checkGameStatus
 	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 15 */

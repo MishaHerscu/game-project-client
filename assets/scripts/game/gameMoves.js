@@ -4,7 +4,6 @@ const games = require('./games.js');
 const gameModel = require('./gameModel.js');
 const gameChecks = require('./gameChecks.js');
 const turnEffects = require('./turnEffects.js');
-const ui = require('../apiActions/gameActions/ui.js');
 
 const refreshCounts = function(){
 
@@ -206,7 +205,7 @@ const onSetCellValue = function(){
         $('#game-update-modal').modal('show');
       }
 
-      ui.togglePlayer();
+      turnEffects.togglePlayer();
 
     }
   } else if (gameModel.gameOver === true){

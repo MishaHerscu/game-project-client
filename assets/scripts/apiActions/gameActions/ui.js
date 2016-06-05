@@ -185,60 +185,6 @@ const newGame = function(data){
   $('.table-section').show();
   $('.hideable').show();
   $('.not-signed-in').hide();
-
-};
-
-const togglePlayer = function(){
-
-  // update gameType (single vs double player)
-  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-  if(gameModel.gameOver === false){
-
-    // swap players
-    let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-    console.log(NewPlayersSymbols);
-
-    gameModel.currentPlayer = NewPlayersSymbols[0];
-    gameModel.otherPlayer = NewPlayersSymbols[1];
-    gameModel.currentSymbol = NewPlayersSymbols[2];
-    gameModel.otherSymbol  = NewPlayersSymbols[3];
-
-    // count turn number
-    gameModel.turnCount += 1;
-
-    // check game and show responses
-    gameMoves.onGameCheck(gameModel.newGame);
-
-    //show changes
-  }
-
-  return true;
-};
-
-const checkGameStatus = function (){
-
-  if(gameModel.newGame.over === false){
-    return false;
-  } else if(gameModel.turnCount < gameModel.maxTurnCount){
-    gameModel.winner = gameModel.currentPlayer;
-    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-    gameModel.newGame.over = true;
-  } else {
-    gameModel.winner = null;
-    gameModel.winnerString = "Game over! It's a tie!";
-    gameModel.newGame.over = true;
-  }
-
-  $('#player-turn').text(gameModel.winnerString);
-  $('#game-update-modal').text(gameModel.winnerString);
-  $('#gameUpdateModal').modal('show');
-
-  $('.table-section').hide();
-  $('.game-over-section').show();
-
-  return true;
 };
 
 module.exports = {
@@ -254,6 +200,4 @@ module.exports = {
   successJoin,
   successPlayThisGame,
   newGame,
-  togglePlayer,
-  checkGameStatus,
 };
