@@ -197,7 +197,6 @@ const swapPlayers = function(gameObject){
         NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
 
       }else{
-        // console.log('There is an error with toggling currentPlayer!');
         return false;
       }
       break;

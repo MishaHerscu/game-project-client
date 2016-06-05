@@ -522,6 +522,8 @@ webpackJsonp([0],[
 	    // swap players
 	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
 
+	    console.log(NewPlayersSymbols);
+
 	    gameModel.currentPlayer = NewPlayersSymbols[0];
 	    gameModel.otherPlayer = NewPlayersSymbols[1];
 	    gameModel.currentSymbol = NewPlayersSymbols[2];
@@ -763,7 +765,6 @@ webpackJsonp([0],[
 
 	        NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
 	      } else {
-	        // console.log('There is an error with toggling currentPlayer!');
 	        return false;
 	      }
 	      break;
@@ -864,6 +865,7 @@ webpackJsonp([0],[
 	var gameModel = __webpack_require__(9);
 	var gameChecks = __webpack_require__(13);
 	var turnEffects = __webpack_require__(14);
+	var ui = __webpack_require__(8);
 
 	var refreshCounts = function refreshCounts() {
 
@@ -1045,6 +1047,8 @@ webpackJsonp([0],[
 	      if (gameModel.gameOver === true) {
 	        $('#game-update-modal').modal('show');
 	      }
+
+	      ui.togglePlayer();
 	    }
 	  } else if (gameModel.gameOver === true) {
 
