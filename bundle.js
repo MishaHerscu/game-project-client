@@ -1553,7 +1553,7 @@ webpackJsonp([0],[
 
 	var onJoinGame = function onJoinGame(event) {
 	  event.preventDefault();
-	  $('selectGameToJoinModal').modal('hide');
+	  $('#selectGameToJoinModal').modal('hide');
 	  var gameId = $('#game-to-join').val();
 
 	  api.joinGame(gameId).done(ui.success).then(ui.successJoin).fail(ui.failure);
@@ -1611,12 +1611,12 @@ webpackJsonp([0],[
 	};
 
 	var onStartAnotherGame = function onStartAnotherGame() {
-	  $('gameUpdateModal').modal('hide');
+	  $('#gameUpdateModal').modal('hide');
 	  onNewGame.submit();
 	};
 
 	var onJoinGameModal = function onJoinGameModal() {
-	  $('selectGameToJoinModal').modal('show');
+	  $('#selectGameToJoinModal').modal('show');
 	};
 
 	var addHandlers = function addHandlers() {

@@ -42,7 +42,7 @@ const onGetDoneGames = function(event){
 
 const onJoinGame = function(event){
   event.preventDefault();
-  $('selectGameToJoinModal').modal('hide');  
+  $('#selectGameToJoinModal').modal('hide');
   let gameId = $('#game-to-join').val();
 
   api.joinGame(gameId)
@@ -109,12 +109,12 @@ const onSwitchGameType = function() {
 };
 
 const onStartAnotherGame = function() {
-  $('gameUpdateModal').modal('hide');
+  $('#gameUpdateModal').modal('hide');
   onNewGame.submit();
 };
 
 const onJoinGameModal = function() {
-  $('selectGameToJoinModal').modal('show');
+  $('#selectGameToJoinModal').modal('show');
 };
 
 const addHandlers = () => {
