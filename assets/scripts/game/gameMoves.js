@@ -91,6 +91,7 @@ const refreshGameInfoTable = function(gameObject){
   return true;
 };
 
+// just updates what the user sees, not the actual state
 const updatePlayerTurnAnnouncement = function(){
 
   if(gameModel.gameType === games.gameTypes[0]){

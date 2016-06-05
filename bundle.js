@@ -443,9 +443,8 @@ webpackJsonp([0],[
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  }
 
-	  // display status
-	  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-	  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+	  // update player announcement
+	  gameMoves.updatePlayerTurnAnnouncement();
 
 	  // reset view
 	  $('.table-section').show();
@@ -1064,6 +1063,7 @@ webpackJsonp([0],[
 	  return true;
 	};
 
+	// just updates what the user sees, not the actual state
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
 	  if (gameModel.gameType === games.gameTypes[0]) {

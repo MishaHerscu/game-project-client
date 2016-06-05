@@ -117,9 +117,8 @@ const successJoin = function(data){
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
 
-  // display status
-  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+  // update player announcement
+  gameMoves.updatePlayerTurnAnnouncement();
 
   // reset view
   $('.table-section').show();
