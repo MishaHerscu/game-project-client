@@ -117,18 +117,29 @@ const onJoinGameModal = function() {
   $('#selectGameToJoinModal').modal('show');
 };
 
+const onShowAnyGameInfoModal = function() {
+  $('#anyGameInfoModal').modal('show');
+};
+
+const onJoinAnyGameModal = function() {
+  $('#joinAnyGameModal').modal('show');
+};
+
 const addHandlers = () => {
 
   $('#new-game').on('click', onNewGame);
-  $('#join-game-modal').on('click', onJoinGameModal);
+  $('#show-any-game-info-modal').on('click', onShowAnyGameInfoModal);
+  $('#play-this-game-modal').on('click', onJoinAnyGameModal);
+
+  $('#join-game-modal').on('submit', onJoinGameModal);
+  $('#show-this-game-info').on('submit', onShowGameInfo);
+  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
+  $('#play-this-game').on('submit', onPlayThisGame);
 
   $('#select-game-type').on('submit', onSelectGameType);
   $('#get-games').on('submit', onGetGames);
   $('#get-done-games').on('submit', onGetDoneGames);
   $('#join-game').on('submit', onJoinGame);
-  $('#show-this-game-info').on('submit', onShowGameInfo);
-  $('#show-any-game-info').on('submit', onShowAnyGameInfo);
-  $('#play-this-game').on('submit', onPlayThisGame);
   $('#start-another-game').on('submit', onNewGame);
   $('#cancel-game').on('submit', onCancelGame);
   $('#switch-to-single-player').on('submit', onSwitchGameType);

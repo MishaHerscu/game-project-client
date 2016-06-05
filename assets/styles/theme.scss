@@ -91,7 +91,6 @@ button {
 nav {
   border: 0;
   color: $paper-white;
-  float: none;
   margin: 0%;
   opacity: 0%;
 }
@@ -203,4 +202,14 @@ a {
 .stats-table {
   margin: 10%;
   width: 80%;
+}
+
+.game-info-header {
+  border: 1px solid $paper-white;
+  display: inline;
+}
+
+.game-info-cell {
+  border: 1px solid $paper-white;
+  display: inline;
 }

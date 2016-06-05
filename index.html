@@ -33,6 +33,18 @@
         </span>
 
         <span>
+          <input id="show-this-game-info" class="btn btn-default signed-in-view" type="submit" name="submit" value="Refresh Game Info">
+        </span>
+
+        <span>
+          <input id="show-any-game-info-modal" class="btn btn-default signed-in-view" type="submit" name="submit" value="View Other Game">
+        </span>
+
+        <span>
+          <input id="play-this-game-modal" class="btn btn-default signed-in-view" type="submit" name="submit" value="Play Other Game">
+        </span>
+
+        <span>
           <input id="show-player-stats-modal" class="modal-button btn btn-default signed-in-view" type="submit" name="submit" value="Stats">
         </span>
 
@@ -76,12 +88,14 @@
           <div id="table-container" class="signed-in-view">
 
             <div class="row">
-              <div class="col-lg-8 col-xs-12">
+              <div class="col-lg-6 col-xs-12">
 
                 <div>
                   <h3 id="instructructions-title" class="signed-in-view">Instructions</h3>
-                  <p id="instructructions" class="signed-in-view">
+                  <p id="instructructions-1" class="signed-in-view">
                     Click a box when it is your turn.
+                  </p>
+                  <p id="instructructions-2" class="signed-in-view">
                     Try to connect three in a row to win.
                   </p>
                 </div>
@@ -109,54 +123,38 @@
 
                 </div>
 
-              <div class="col-lg-4 col-xs-12">
+              <div class="col-lg-6 col-xs-12">
 
                 <h3 id="current-game">Game Information</h3>
 
-                <form id="show-this-game-info" class="signed-in-view">
-                  <input type="submit" value="Refresh Current Game's Info" class="btn btn-default">
-                </form>
+                <div id="current-game-info" class="table table-bordered">
 
-                <form id="show-any-game-info" class="signed-in-view">
-                  <input type="submit" value="Check Any Game Info" class="btn btn-default">
-                  <input type="number" id="any-game-id" placeholder="Game ID">
-                  <input type="text" id="any-game-auth">
-                </form>
+                  <div>
+                    <div id="game-id-header"  class="game-info-header col-xs-6">ID</div>
+                    <div id="game-id-data"  class="game-info-cell col-xs-6"></div>
+                  </div>
 
-                <form id="play-this-game" class="signed-in-view">
-                  <input type="submit" value="Continue Playing this Game" class="btn btn-default">
-                  <input type="number" id="game-to-play-id" placeholder="Game ID">
-                  <input type="text" id="game-to-play-auth">
-                </form>
+                  <div>
+                    <div id="game-cells-header"  class="game-info-header col-xs-6">Cells</div>
+                    <div id="game-cells-data"  class="game-info-cell col-xs-6"></div>
+                  </div>
 
-                <table id="current-game-info" class="table table-bordered">
+                  <div>
+                    <div id="game-over-header"  class="game-info-header col-xs-6">Game Over</div>
+                    <div id="game-over-data"  class="game-info-cell col-xs-6"></div>
+                  </div>
 
-                  <tr>
-                    <th id="game-id-header"  class="game-info-header">ID</th>
-                    <td id="game-id-data"  class="game-info-cell"></td>
-                  </tr>
+                  <div>
+                    <div id="player-x-header"  class="game-info-header col-xs-6">Player_X</div>
+                    <div id="player-x-data"  class="game-info-cell col-xs-6"></div>
+                  </div>
 
-                  <tr>
-                    <th id="game-cells-header"  class="game-info-header">Cells</th>
-                    <td id="game-cells-data"  class="game-info-cell"></td>
-                  </tr>
+                  <div>
+                    <div id="player-o-header"  class="game-info-header col-xs-6">Player_O</div>
+                    <div id="player-o-data"  class="game-info-cell col-xs-6"></div>
+                  </div>
 
-                  <tr>
-                    <th id="game-over-header"  class="game-info-header">Game Over</th>
-                    <td id="game-over-data"  class="game-info-cell"></td>
-                  </tr>
-
-                  <tr>
-                    <th id="player-x-header"  class="game-info-header">Player_X</th>
-                    <td id="player-x-data"  class="game-info-cell"></td>
-                  </tr>
-
-                  <tr>
-                    <th id="player-o-header"  class="game-info-header">Player_O</th>
-                    <td id="player-o-data"  class="game-info-cell"></td>
-                  </tr>
-
-                </table>
+                </div>
 
               </div>
             </div>
@@ -495,6 +493,62 @@
                     </table>
 
                   </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- Any Game Info Modal -->
+          <div id="anyGameInfoModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Select Game to View</h4>
+                </div>
+
+                <form id="show-any-game-info" class="signed-in-view">
+                  <input type="submit" value="Check Any Game Info" class="btn btn-default">
+                  <input type="number" id="any-game-id" placeholder="Game ID">
+                  <input type="text" id="any-game-auth">
+                </form>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- Join Any Game Modal -->
+          <div id="joinAnyGameModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Player Stats</h4>
+                </div>
+
+                    <form id="play-this-game" class="signed-in-view">
+                      <input type="submit" value="Continue Playing this Game" class="btn btn-default">
+                      <input type="number" id="game-to-play-id" placeholder="Game ID">
+                      <input type="text" id="game-to-play-auth">
+                    </form>
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
