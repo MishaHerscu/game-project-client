@@ -29,7 +29,7 @@ const signUpSuccess = function(){
 const signInSuccess = function(data){
   app.user = data.user;
   $('.not-signed-in').hide();
-  $('#auth-token-td').text(app.user.token);
+  $('#auth-token-p').text(app.user.token);
   $('#any-game-auth').val(app.user.token);
   $('#game-to-play-auth').val(app.user.token);
   $('#signInModal').modal('hide');

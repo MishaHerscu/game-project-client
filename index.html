@@ -32,6 +32,10 @@
           <input id="sign-out" class="modal-button btn-lg hideable" type="submit" name="submit" value="Sign out!">
         </span>
 
+        <span>
+          <input id="show-token-modal" class="modal-button btn-lg hideable" type="submit" name="submit" value="Show Auth Token">
+        </span>
+
       </nav>
 
       <br><br><br><br><br>
@@ -89,15 +93,6 @@
         </table>
 
       </div>
-
-      <div class="hideable">
-        <h3 class="auth-token-header">Your Auth Token Shh!</h3>
-        <table class="table table-bordered hideable">
-          <tr>
-            <td id="auth-token-td" class="auth-token-td"></td>
-          </tr>
-        </table>
-    </div>
 
       <br>
 
@@ -456,6 +451,31 @@
 
                 <div class="modal-body">
                   <p id="spot-taken-modal">Please choose another move.</p>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Spot Taken Modal -->
+          <div id="tokenModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Auth Token:</h4>
+                </div>
+
+                <div class="modal-body">
+                  <p id="auth-token-p" class="auth-token-td"></p>
                 </div>
 
                 <div class="modal-footer">

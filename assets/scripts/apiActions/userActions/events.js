@@ -1,5 +1,6 @@
 'use strict';
 
+const app = require('../../app.js');
 const getFormFields = require('../../../../lib/get-form-fields.js');
 const api = require('./api.js');
 const ui = require('./ui.js');
@@ -50,6 +51,11 @@ const onChangePassword = function(event){
 
 };
 
+const onShowTokenModal = function(){
+  event.preventDefault();
+  $('#auth-token-p').text(app.user.token);
+  $('#tokenModal').modal('show');
+};
 
 const addHandlers = () => {
 
@@ -63,6 +69,7 @@ const addHandlers = () => {
 
   // note click since not in a form
   $('#sign-out').on('click', onSignOut);
+  $('#show-token-modal').on('click', onShowTokenModal);
 
 };
 
