@@ -1159,9 +1159,6 @@ webpackJsonp([0],[
 	  $('#game-update-modal').text(gameModel.winnerString);
 	  $('#gameUpdateModal').modal('show');
 
-	  $('.table-section').hide();
-	  $('.game-over-section').show();
-
 	  return true;
 	};
 
@@ -1601,6 +1598,11 @@ webpackJsonp([0],[
 	  $('#waitingForPlayerModal').modal('hide');
 	};
 
+	var onStartAnotherGame = function onStartAnotherGame() {
+	  $('gameUpdateModal').modal('hide');
+	  onNewGame.submit();
+	};
+
 	var addHandlers = function addHandlers() {
 
 	  $('#new-game').on('submit', onNewGame);
@@ -1614,6 +1616,7 @@ webpackJsonp([0],[
 	  $('#start-another-game').on('submit', onNewGame);
 	  $('#cancel-game').on('submit', onCancelGame);
 	  $('#switch-to-single-player').on('submit', onSwitchGameType);
+	  $('#start-another-game').on('submit', onStartAnotherGame);
 	};
 
 	module.exports = {

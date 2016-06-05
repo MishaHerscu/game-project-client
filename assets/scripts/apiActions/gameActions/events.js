@@ -107,6 +107,11 @@ const onSwitchGameType = function() {
   $('#waitingForPlayerModal').modal('hide');
 };
 
+const onStartAnotherGame = function() {
+  $('gameUpdateModal').modal('hide');
+  onNewGame.submit();
+};
+
 const addHandlers = () => {
 
   $('#new-game').on('submit', onNewGame);
@@ -120,6 +125,7 @@ const addHandlers = () => {
   $('#start-another-game').on('submit', onNewGame);
   $('#cancel-game').on('submit', onCancelGame);
   $('#switch-to-single-player').on('submit', onSwitchGameType);
+  $('#start-another-game').on('submit', onStartAnotherGame);
 
 };
 

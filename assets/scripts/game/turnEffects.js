@@ -85,9 +85,6 @@ const checkGameStatus = function (){
   $('#game-update-modal').text(gameModel.winnerString);
   $('#gameUpdateModal').modal('show');
 
-  $('.table-section').hide();
-  $('.game-over-section').show();
-
   return true;
 };
 
