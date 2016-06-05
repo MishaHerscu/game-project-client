@@ -1035,11 +1035,9 @@ webpackJsonp([0],[
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	  // make sure it is your turn before you go
-	  if (gameModel.gameType === games.gameTypes[1]) {
+	  if (gameModel.gameType !== games.gameTypes[0]) {
 	    if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
-
-	      // console.log('waiting for other player...');
-
+	      $('#awaitingMoveModal').modal('show');
 	      return false;
 	    }
 	  }
@@ -1054,6 +1052,7 @@ webpackJsonp([0],[
 
 	    // check if the cell is empty
 	    if (!checkCellEmpty(currentVal)) {
+	      $('#spotTakenModal').modal('show');
 	      return false;
 	    } else {
 

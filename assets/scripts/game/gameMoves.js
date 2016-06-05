@@ -239,17 +239,15 @@ const onSetCellValue = function(){
   gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   // make sure it is your turn before you go
-  if(gameModel.gameType === games.gameTypes[1]){
+  if(gameModel.gameType !== games.gameTypes[0]){
     if(
       (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount) ||
       (gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount)
       ){
-
-      // console.log('waiting for other player...');
-
-      return false;
+        $('#awaitingMoveModal').modal('show');
+        return false;
+      }
     }
-  }
 
   // you can only go if there is an active, non-over game
   // eventually maybe these variables should be combined into one
@@ -261,6 +259,7 @@ const onSetCellValue = function(){
 
     // check if the cell is empty
     if(!checkCellEmpty(currentVal)){
+      $('#spotTakenModal').modal('show');
       return false;
     } else {
 
