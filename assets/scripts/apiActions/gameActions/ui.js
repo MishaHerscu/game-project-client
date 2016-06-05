@@ -170,8 +170,13 @@ const newGame = function(data){
   gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
 
   // display status
-  $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-  $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+  if(gameModel.gameType === games.gameTypes[0]){
+    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+  } else {
+    $('#player-turn').text(gameModel.currentPlayer);
+    $('#game-update-modal').text(gameModel.currentPlayer);
+  }
 
   // watch for updates
   $('#game-to-watch').val(gameModel.newGame.id);
@@ -205,6 +210,11 @@ const togglePlayer = function(){
     // check if game over now
     gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
     gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
+    // show modal if game over
+    if(gameModel.gameOver === true){
+      $('#game-update-modal').modal('show');
+    }
 
     // check game and show responses
     gameMoves.onGameCheck(gameModel.newGame);

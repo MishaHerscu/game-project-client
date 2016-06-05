@@ -56,6 +56,12 @@ const updateView = function(){
   gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
   gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
   gameMoves.updatePlayerTurnAnnouncement();
+
+  // show modal if game over
+  if(gameModel.gameOver === true){
+    $('#game-update-modal').modal('show');
+  }
+  
 };
 
 module.exports = {
