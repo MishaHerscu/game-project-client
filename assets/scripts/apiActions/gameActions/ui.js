@@ -1,7 +1,6 @@
 'use strict';
 
 const app = require('../../app.js');
-const gameChecks = require('../../game/gameChecks.js');
 const gameModel = require('../../game/gameModel.js');
 const gameMoves = require('../../game/gameMoves.js');
 const games = require('../../game/games.js');
@@ -207,17 +206,10 @@ const togglePlayer = function(){
     // count turn number
     gameModel.turnCount += 1;
 
-    // check if game over now
-    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
-    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
-
-    // show modal if game over
-    if(gameModel.gameOver === true){
-      $('#game-update-modal').modal('show');
-    }
-
     // check game and show responses
     gameMoves.onGameCheck(gameModel.newGame);
+
+    //show changes
   }
 
   return true;
