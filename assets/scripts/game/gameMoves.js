@@ -253,7 +253,6 @@ const addHandlers = () => {
   $('.cell').on('click', onSetCellValue);
 };
 
-
 module.exports = {
   refreshCounts,
   redrawBoard,
