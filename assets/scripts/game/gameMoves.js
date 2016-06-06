@@ -87,13 +87,6 @@ const refreshCounts = function(){
 
 const togglePlayer = function(){
 
-  console.log('togglePlayer happening');
-
-  // update gameType (single vs double player)
-  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-  console.log('gametype: ', gameModel.gameType);
-
   if(gameModel.gameOver === false && gameModel.gameType === games.gameTypes[0]){
 
     if(gameModel.currentPlayer === players.players[0]){
@@ -143,7 +136,6 @@ const updateAPI = function(modelGameIndex,currentSymbol){
     .fail(gameUi.failure))
   .then(gameUi.successMove)
   .then(refreshCounts())
-  // .then(gameModel.gameType = gameModel.updateGameType(gameModel.newGame))
   .then(gameChecks.checkGame(gameModel.newGame))
   .then(togglePlayer)
   .then(gameUi.updateView)
@@ -185,8 +177,6 @@ const refreshGameInfoTable = function(gameObject){
     return false;
   }else{
 
-    console.log("gameObject within refreshGameInfoTable: ", gameObject);
-
     $("#game-id-data").text(gameObject.id);
     $("#game-cells-data").text(gameObject.cells);
     $("#game-over-data").text(gameObject.over);
@@ -218,12 +208,6 @@ const clearGameInfoTable = function(){
 };
 
 const onSetCellValue = function(){
-
-  // update gameType (single vs double player)
-  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-  console.log(gameModel.newGame);
-
 
   // update counts before checking whose turn it is
   refreshCounts();
@@ -266,15 +250,9 @@ const onSetCellValue = function(){
       gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
       gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
-      // // update game info view
-      // refreshGameInfoTable(gameModel.newGame);
-
-      console.log("gameModel.newGame, within setcellval: ", gameModel.newGame);
-
       // update object for API --- ASYNC
       updateAPI(modelGameIndex, gameModel.currentSymbol);
 
-      console.log("gameModel.newGame, within setcellval: ", gameModel.newGame);
       // update game info view
       refreshGameInfoTable(gameModel.newGame);
 
@@ -283,7 +261,7 @@ const onSetCellValue = function(){
         $('#game-update-modal').text(gameModel.winnerString);
         $('#gameUpdateModal').modal('show');
       } else{
-        // console.log('toggling players');
+        // NOW I ONLY TOGGLE PLAYERS IN A CHAINED ASYNC CALL ABOVE
         // togglePlayer();
       }
     }

@@ -37,7 +37,6 @@ const hideBoard = function(){
 };
 
 const updateView = function(){
-  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
   gameMoves.refreshCounts();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
@@ -56,7 +55,6 @@ const updateView = function(){
 const successMove = function(){
   if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameMoves.refreshCounts();
-    // gameModel.updateGameType(gameModel.newGame);
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
 };
@@ -105,8 +103,6 @@ const successJoin = function(data){
   $('.game-over-section').hide();
   $('#gameUpdateModal').modal('hide');
 
-  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
   gameModel.activeGame = true;
   gameModel.gameType = games.gameTypes[1];
 
@@ -151,9 +147,6 @@ const newGame = function(data){
 
   // instantiate new game
   gameModel.newGame = new games.game(data.game);
-
-  // check game type
-  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   // should be zero
   gameMoves.refreshCounts();

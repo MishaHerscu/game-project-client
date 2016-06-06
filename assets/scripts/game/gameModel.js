@@ -125,17 +125,6 @@ const cancelGameResets = function(){
   return true;
 };
 
-// const updateGameType = function(gameObject){
-//   if(gameObject.player_x !== null && gameObject.player_x !== undefined && gameObject.player_o !== null && gameObject.player_o !== undefined && botGame === false){
-//     gameType = gameTypes[1];
-//   }else if(botGame === true){
-//     gameType = gameTypes[2];
-//   }else{
-//     gameType = gameTypes[0];
-//   }
-//   return gameType;
-// };
-
 module.exports = {
   currentPlayer,
   currentSymbol,
@@ -154,7 +143,6 @@ module.exports = {
   winnerString,
   newWatcher,
   gameType,
-  // updateGameType,
   xCount,
   oCount,
   playerJoined,
