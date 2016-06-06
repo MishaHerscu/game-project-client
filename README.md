@@ -13,9 +13,9 @@ The technologies used were:
 
 Several user stories I began with include:
 
-1. As a first user, I want to be able to create an account, login, and start a game, so that I can play with friends. 
-2. As another user I want to be able to sign in and join a game so that I can play against a friend. 
-3. As someone playing a game, I want the board to prevent me from selecting a place where someone already went so that the game adheres to the rules. 
+1. As a first user, I want to be able to create an account, login, and start a game, so that I can play with friends.
+2. As another user I want to be able to sign in and join a game so that I can play against a friend.
+3. As someone playing a game, I want the board to prevent me from selecting a place where someone already went so that the game adheres to the rules.
 4. As a user, I want to be able to play someone over the web, so that I can play someone remotely.
 5. As a user, I want to be able to see some stats about how my games have gone.
 
@@ -35,8 +35,4 @@ The full feature set of the final version of the game, includes:
 * users can pick up where they left off in another game
 * if users have another session's auth token, they can take over games associated with that token
 * users can exit games, clearing the game model
-* i started working on a bot but ran out of time
-
-
-
-
+* next to the game board, there is also a table that displays up-to-date information about the current game
