@@ -459,7 +459,7 @@ webpackJsonp([0],[
 	  gameModel.otherPlayer = gameModel.players.players[0];
 	  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
 	  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
-	  gameMoves.onGameCheck(gameModel.newGame);
+	  gameModel.over = gameChecks.checkGame(gameModel.newGame);
 
 	  // redraw Board
 	  gameMoves.redrawBoard();
@@ -852,31 +852,10 @@ webpackJsonp([0],[
 	  return modelGameIndex;
 	};
 
-	var checkGameStatus = function checkGameStatus() {
-
-	  if (gameModel.newGame.over === false) {
-	    return false;
-	  } else if (gameModel.turnCount < gameModel.maxTurnCount) {
-	    gameModel.winner = gameModel.currentPlayer;
-	    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-	    gameModel.newGame.over = true;
-	  } else {
-	    gameModel.winner = null;
-	    gameModel.winnerString = "Game over! It's a tie!";
-	    gameModel.newGame.over = true;
-	  }
-
-	  $('#player-turn').text(gameModel.winnerString);
-	  $('#game-update-modal').text(gameModel.winnerString);
-	  $('#gameUpdateModal').modal('show');
-
-	  return true;
-	};
-
 	// just updates what the user sees, not the actual state
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
-	  if (gameModel.activeGame === true) {
+	  if (gameModel.activeGame === true && gameModel.gameOver === false) {
 	    if (gameModel.gameType === games.gameTypes[0]) {
 
 	      $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
@@ -899,36 +878,6 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var onGameCheck = function onGameCheck(gameObject) {
-
-	  if (gameObject.over === false) {
-
-	    updatePlayerTurnAnnouncement();
-	  } else if (gameModel.winner === null) {
-	    gameModel.winner = 'Tie';
-	    gameModel.winnerString = "Game over! It's a tie!";
-	    gameModel.newGame.over = true;
-
-	    $('#player-turn').text(gameModel.winnerString);
-	    $('#game-update-modal').text(gameModel.winnerString);
-	    $('#gameUpdateModal').modal('show');
-
-	    $('.table-section').hide();
-	    $('.game-over-section').show();
-	  } else {
-	    gameModel.winner = gameModel.otherPlayer;
-	    gameModel.winnerString = 'Game over! ' + gameModel.otherPlayer + ' Wins!';
-	    gameModel.newGame.over = true;
-
-	    $('#player-turn').text(gameModel.winnerString);
-	    $('#game-update-modal').text(gameModel.winnerString);
-	    $('#gameUpdateModal').modal('show');
-
-	    $('.table-section').hide();
-	    $('.game-over-section').show();
-	  }
-	};
-
 	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
 	  var updateGameData = {
 	    "game": {
@@ -941,7 +890,7 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(checkGameStatus()).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameChecks.checkGame(gameModel.newGame)).fail(gameUi.failure);
 	};
 
 	var togglePlayer = function togglePlayer() {
@@ -963,7 +912,7 @@ webpackJsonp([0],[
 	    gameModel.turnCount += 1;
 
 	    // check game and show responses
-	    onGameCheck(gameModel.newGame);
+	    gameChecks.checkGame(gameModel.newGame);
 
 	    //show changes
 	  }
@@ -1145,9 +1094,7 @@ webpackJsonp([0],[
 	  refreshGameInfoTable: refreshGameInfoTable,
 	  clearGameInfoTable: clearGameInfoTable,
 	  addHandlers: addHandlers,
-	  onGameCheck: onGameCheck,
-	  updatePlayerTurnAnnouncement: updatePlayerTurnAnnouncement,
-	  checkGameStatus: checkGameStatus
+	  updatePlayerTurnAnnouncement: updatePlayerTurnAnnouncement
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -1155,7 +1102,7 @@ webpackJsonp([0],[
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	// imports
 
@@ -1194,6 +1141,11 @@ webpackJsonp([0],[
 	          gameModel.winner = players.players[1];
 	          gameModel.winnerString = 'Game over! ' + gameModel.winner + ' Wins!';
 	        }
+	        $('#player-turn').text(gameModel.winnerString);
+	        $('#game-update-modal').text(gameModel.winnerString);
+	        $('#gameUpdateModal').modal('show');
+	        $('.table-section').hide();
+	        $('.game-over-section').show();
 	        return gameOver;
 	      }
 	    }
@@ -1203,17 +1155,20 @@ webpackJsonp([0],[
 	    gameOver = true;
 	    gameModel.winner = null;
 	    gameModel.winnerString = "Game over! It's a tie!";
+	    $('#player-turn').text(gameModel.winnerString);
+	    $('#game-update-modal').text(gameModel.winnerString);
+	    $('#gameUpdateModal').modal('show');
+	    $('.table-section').hide();
+	    $('.game-over-section').show();
 	    return gameOver;
 	  }
-
 	  return gameOver;
 	};
 
 	module.exports = {
-	  // checkSame,
-	  // checkDiags,
 	  checkGame: checkGame
 	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 14 */

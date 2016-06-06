@@ -21,31 +21,10 @@ const updateModelValues = function(currentSymbol, clickedCell){
   return modelGameIndex;
 };
 
-const checkGameStatus = function (){
-
-  if(gameModel.newGame.over === false){
-    return false;
-  } else if(gameModel.turnCount < gameModel.maxTurnCount){
-    gameModel.winner = gameModel.currentPlayer;
-    gameModel.winnerString = 'Game over! ' + gameModel.currentPlayer + ' Wins!';
-    gameModel.newGame.over = true;
-  } else {
-    gameModel.winner = null;
-    gameModel.winnerString = "Game over! It's a tie!";
-    gameModel.newGame.over = true;
-  }
-
-  $('#player-turn').text(gameModel.winnerString);
-  $('#game-update-modal').text(gameModel.winnerString);
-  $('#gameUpdateModal').modal('show');
-
-  return true;
-};
-
 // just updates what the user sees, not the actual state
 const updatePlayerTurnAnnouncement = function(){
 
-  if(gameModel.activeGame === true){
+  if(gameModel.activeGame === true && gameModel.gameOver === false){
     if(gameModel.gameType === games.gameTypes[0]){
 
       $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
@@ -71,38 +50,6 @@ const updatePlayerTurnAnnouncement = function(){
   }
 };
 
-const onGameCheck = function(gameObject){
-
-  if(gameObject.over === false){
-
-    updatePlayerTurnAnnouncement();
-
-  } else if (gameModel.winner === null){
-    gameModel.winner = 'Tie';
-    gameModel.winnerString = "Game over! It's a tie!";
-    gameModel.newGame.over = true;
-
-    $('#player-turn').text(gameModel.winnerString);
-    $('#game-update-modal').text(gameModel.winnerString);
-    $('#gameUpdateModal').modal('show');
-
-    $('.table-section').hide();
-    $('.game-over-section').show();
-
-  } else {
-    gameModel.winner = gameModel.otherPlayer;
-    gameModel.winnerString = 'Game over! ' + gameModel.otherPlayer + ' Wins!';
-    gameModel.newGame.over = true;
-
-    $('#player-turn').text(gameModel.winnerString);
-    $('#game-update-modal').text(gameModel.winnerString);
-    $('#gameUpdateModal').modal('show');
-
-    $('.table-section').hide();
-    $('.game-over-section').show();
-  }
-};
-
 const updateAPI = function(modelGameIndex,currentSymbol){
   let updateGameData = {
     "game": {
@@ -117,7 +64,7 @@ const updateAPI = function(modelGameIndex,currentSymbol){
   // update game in the back end
   gameApi.updateGame(updateGameData)
   .done(gameUi.successMove)
-  .then(checkGameStatus())
+  .then(gameChecks.checkGame(gameModel.newGame))
   .fail(gameUi.failure);
 };
 
@@ -140,7 +87,7 @@ const togglePlayer = function(){
     gameModel.turnCount += 1;
 
     // check game and show responses
-    onGameCheck(gameModel.newGame);
+    gameChecks.checkGame(gameModel.newGame);
 
     //show changes
   }
@@ -332,7 +279,5 @@ module.exports = {
   refreshGameInfoTable,
   clearGameInfoTable,
   addHandlers,
-  onGameCheck,
   updatePlayerTurnAnnouncement,
-  checkGameStatus,
 };

@@ -47,6 +47,11 @@ const checkGame = function(gameObject) {
           gameModel.winnerString = 'Game over! ' + gameModel.winner + ' Wins!';
 
         }
+        $('#player-turn').text(gameModel.winnerString);
+        $('#game-update-modal').text(gameModel.winnerString);
+        $('#gameUpdateModal').modal('show');
+        $('.table-section').hide();
+        $('.game-over-section').show();
         return gameOver;
       }
     }
@@ -56,15 +61,16 @@ const checkGame = function(gameObject) {
     gameOver = true;
     gameModel.winner = null;
     gameModel.winnerString = "Game over! It's a tie!";
+    $('#player-turn').text(gameModel.winnerString);
+    $('#game-update-modal').text(gameModel.winnerString);
+    $('#gameUpdateModal').modal('show');
+    $('.table-section').hide();
+    $('.game-over-section').show();
     return gameOver;
   }
-
   return gameOver;
 };
 
 module.exports = {
-  // checkSame,
-  // checkDiags,
   checkGame,
-  // newCheckGame,
 };

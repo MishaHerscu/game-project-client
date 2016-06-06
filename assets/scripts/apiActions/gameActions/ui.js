@@ -117,7 +117,7 @@ const successJoin = function(data){
   gameModel.otherPlayer = gameModel.players.players[0];
   gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
   gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
-  gameMoves.onGameCheck(gameModel.newGame);
+  gameModel.over = gameChecks.checkGame(gameModel.newGame);
 
   // redraw Board
   gameMoves.redrawBoard();
