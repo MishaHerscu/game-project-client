@@ -276,11 +276,6 @@ const onSetCellValue = function(){
       gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
       gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
-      console.log("game object: ", gameModel.newGame);
-      console.log("count: ", gameModel.turnCount);
-      console.log("Xcount: ", gameModel.xCount);
-      console.log("Ocount: ", gameModel.oCount);
-
       // update object for API
       updateAPI(modelGameIndex, gameModel.currentSymbol);
 

@@ -1045,9 +1045,6 @@ webpackJsonp([0],[
 
 	var onSetCellValue = function onSetCellValue() {
 
-	  // refresh counts
-	  refreshCounts();
-
 	  // update gameType (single vs double player)
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
@@ -1076,11 +1073,11 @@ webpackJsonp([0],[
 	      // set the new value using the currentSymbol
 	      $(this).text(gameModel.currentSymbol);
 
-	      // refresh counts
-	      refreshCounts();
-
 	      // update model
 	      var modelGameIndex = updateModelValues(gameModel.currentSymbol, clickedCell);
+
+	      // refresh counts
+	      refreshCounts();
 
 	      // update game info view
 	      refreshGameInfoTable(gameModel.newGame);
@@ -1167,6 +1164,10 @@ webpackJsonp([0],[
 	        gameOver = true;
 	      }
 	    }
+	  }
+
+	  if (gameModel.turnCount === gameModel.maxTurnCount || gameModel.turnCount > gameModel.maxTurnCount) {
+	    gameOver = true;
 	  }
 
 	  return gameOver;
