@@ -37,7 +37,7 @@ const hideBoard = function(){
 };
 
 const updateView = function(){
-  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
   gameMoves.refreshCounts();
   gameMoves.refreshGameInfoTable(gameModel.newGame);
   gameMoves.redrawBoard();
@@ -56,7 +56,7 @@ const updateView = function(){
 const successMove = function(){
   if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
     gameMoves.refreshCounts();
-    gameModel.updateGameType(gameModel.newGame);
+    // gameModel.updateGameType(gameModel.newGame);
     gameMoves.refreshGameInfoTable(gameModel.newGame);
   }
 };
@@ -105,9 +105,10 @@ const successJoin = function(data){
   $('.game-over-section').hide();
   $('#gameUpdateModal').modal('hide');
 
-  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   gameModel.activeGame = true;
+  gameModel.gameType = games.gameTypes[1];
 
   gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
   gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
@@ -142,8 +143,7 @@ const successPlayThisGame = function(data){
 
   // show game info
   if(gameModel.newGame.id !== null){
-    gameMoves.refreshGameInfoTable(gameModel.newGame);
-    gameMoves.refreshCounts();
+    updateView();
   }
 };
 
@@ -153,7 +153,7 @@ const newGame = function(data){
   gameModel.newGame = new games.game(data.game);
 
   // check game type
-  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
   // should be zero
   gameMoves.refreshCounts();

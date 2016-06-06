@@ -29,7 +29,8 @@ const onChange = function(data){
 
     gameModel.playerJoined = true;
     $('#waitingForPlayerModal').modal('hide');
-    gameModel.updateGameType(gameModel.newGame);
+    $('#show-this-game-info').submit();
+    // gameModel.updateGameType(gameModel.newGame);
 
     // refresh all data, to get new user info
     gameApi.show(gameModel.newGame.id, app.user.token)
@@ -40,7 +41,10 @@ const onChange = function(data){
   } else if(data.game !== null && data.game !== undefined){
     gameModel.playerJoined = true;
     $('#waitingForPlayerModal').modal('hide');
-    gameModel.updateGameType(gameModel.newGame);
+    $('#show-this-game-info').submit();
+    // gameModel.updateGameType(gameModel.newGame);
+    
+
   } else{
     // console.log(data);
   }

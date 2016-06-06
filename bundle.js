@@ -380,7 +380,7 @@ webpackJsonp([0],[
 	};
 
 	var updateView = function updateView() {
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
@@ -398,7 +398,7 @@ webpackJsonp([0],[
 	var successMove = function successMove() {
 	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
 	    gameMoves.refreshCounts();
-	    gameModel.updateGameType(gameModel.newGame);
+	    // gameModel.updateGameType(gameModel.newGame);
 	    gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  }
 	};
@@ -447,9 +447,10 @@ webpackJsonp([0],[
 	  $('.game-over-section').hide();
 	  $('#gameUpdateModal').modal('hide');
 
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	  gameModel.activeGame = true;
+	  gameModel.gameType = games.gameTypes[1];
 
 	  gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
 	  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
@@ -483,8 +484,7 @@ webpackJsonp([0],[
 
 	  // show game info
 	  if (gameModel.newGame.id !== null) {
-	    gameMoves.refreshGameInfoTable(gameModel.newGame);
-	    gameMoves.refreshCounts();
+	    updateView();
 	  }
 	};
 
@@ -494,7 +494,7 @@ webpackJsonp([0],[
 	  gameModel.newGame = new games.game(data.game);
 
 	  // check game type
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
 	  // should be zero
 	  gameMoves.refreshCounts();
@@ -686,16 +686,16 @@ webpackJsonp([0],[
 	  return true;
 	};
 
-	var updateGameType = function updateGameType(gameObject) {
-	  if (gameObject.player_x !== null && gameObject.player_x !== undefined && gameObject.player_o !== null && gameObject.player_o !== undefined && botGame === false) {
-	    gameType = gameTypes[1];
-	  } else if (botGame === true) {
-	    gameType = gameTypes[2];
-	  } else {
-	    gameType = gameTypes[0];
-	  }
-	  return gameType;
-	};
+	// const updateGameType = function(gameObject){
+	//   if(gameObject.player_x !== null && gameObject.player_x !== undefined && gameObject.player_o !== null && gameObject.player_o !== undefined && botGame === false){
+	//     gameType = gameTypes[1];
+	//   }else if(botGame === true){
+	//     gameType = gameTypes[2];
+	//   }else{
+	//     gameType = gameTypes[0];
+	//   }
+	//   return gameType;
+	// };
 
 	module.exports = {
 	  currentPlayer: currentPlayer,
@@ -715,7 +715,7 @@ webpackJsonp([0],[
 	  winnerString: winnerString,
 	  newWatcher: newWatcher,
 	  gameType: gameType,
-	  updateGameType: updateGameType,
+	  // updateGameType,
 	  xCount: xCount,
 	  oCount: oCount,
 	  playerJoined: playerJoined,
@@ -784,6 +784,7 @@ webpackJsonp([0],[
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
+	var app = __webpack_require__(3);
 	var games = __webpack_require__(11);
 	var players = __webpack_require__(10);
 	var gameModel = __webpack_require__(9);
@@ -808,8 +809,6 @@ webpackJsonp([0],[
 
 	// just updates what the user sees, not the actual state
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
-
-	  console.log(gameModel.currentPlayer);
 
 	  if (gameModel.activeGame === true && gameModel.gameOver === false) {
 	    if (gameModel.gameType === games.gameTypes[0]) {
@@ -863,25 +862,14 @@ webpackJsonp([0],[
 	  return true;
 	};
 
-	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
-	  var updateGameData = {
-	    "game": {
-	      "cell": {
-	        "index": modelGameIndex,
-	        "value": currentSymbol
-	      },
-	      "over": gameModel.newGame.over
-	    }
-	  };
-
-	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(refreshCounts()).then(gameChecks.checkGame(gameModel.newGame)).fail(gameUi.failure);
-	};
-
 	var togglePlayer = function togglePlayer() {
 
+	  console.log('togglePlayer happening');
+
 	  // update gameType (single vs double player)
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+	  console.log('gametype: ', gameModel.gameType);
 
 	  if (gameModel.gameOver === false && gameModel.gameType === games.gameTypes[0]) {
 
@@ -908,6 +896,23 @@ webpackJsonp([0],[
 	  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
 	  return true;
+	};
+
+	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
+	  var updateGameData = {
+	    "game": {
+	      "cell": {
+	        "index": modelGameIndex,
+	        "value": currentSymbol
+	      },
+	      "over": gameModel.newGame.over
+	    }
+	  };
+
+	  // update game in the back end
+	  gameApi.updateGame(updateGameData).done(gameApi.play(gameModel.newGame.id, app.user.token).done(gameUi.successPlayThisGame).fail(gameUi.failure)).then(gameUi.successMove).then(refreshCounts())
+	  // .then(gameModel.gameType = gameModel.updateGameType(gameModel.newGame))
+	  .then(gameChecks.checkGame(gameModel.newGame)).then(togglePlayer).then(gameUi.updateView).fail(gameUi.failure);
 	};
 
 	var redrawBoard = function redrawBoard() {
@@ -943,6 +948,8 @@ webpackJsonp([0],[
 	    return false;
 	  } else {
 
+	    console.log("gameObject within refreshGameInfoTable: ", gameObject);
+
 	    $("#game-id-data").text(gameObject.id);
 	    $("#game-cells-data").text(gameObject.cells);
 	    $("#game-over-data").text(gameObject.over);
@@ -975,7 +982,9 @@ webpackJsonp([0],[
 	var onSetCellValue = function onSetCellValue() {
 
 	  // update gameType (single vs double player)
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+	  console.log(gameModel.newGame);
 
 	  // update counts before checking whose turn it is
 	  refreshCounts();
@@ -1015,32 +1024,39 @@ webpackJsonp([0],[
 	      gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
 	      gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
+	      // // update game info view
+	      // refreshGameInfoTable(gameModel.newGame);
+
+	      console.log("gameModel.newGame, within setcellval: ", gameModel.newGame);
+
+	      // update object for API --- ASYNC
+	      updateAPI(modelGameIndex, gameModel.currentSymbol);
+
+	      console.log("gameModel.newGame, within setcellval: ", gameModel.newGame);
 	      // update game info view
 	      refreshGameInfoTable(gameModel.newGame);
-
-	      // update object for API
-	      updateAPI(modelGameIndex, gameModel.currentSymbol);
 
 	      // show modal if game over
 	      if (gameModel.gameOver === true) {
 	        $('#game-update-modal').text(gameModel.winnerString);
 	        $('#gameUpdateModal').modal('show');
 	      } else {
-	        togglePlayer();
+	        // console.log('toggling players');
+	        // togglePlayer();
 	      }
 	    }
 	  } else if (gameModel.gameOver === true) {
 
-	    $('.table-section').hide();
-	    $('#player-turn').text('Game over! Start a new Game!');
-	    $('#game-update-modal').text('Game over! Start a new Game!');
-	    $('#gameUpdateModal').modal('show');
-	    $('.game-over-section').show();
-	  } else if (gameModel.activeGame === false) {
-	    $('#requireStartGameModal').modal('show');
-	  } else {
-	    $('#errorModal').modal('show');
-	  }
+	      $('.table-section').hide();
+	      $('#player-turn').text('Game over! Start a new Game!');
+	      $('#game-update-modal').text('Game over! Start a new Game!');
+	      $('#gameUpdateModal').modal('show');
+	      $('.game-over-section').show();
+	    } else if (gameModel.activeGame === false) {
+	      $('#requireStartGameModal').modal('show');
+	    } else {
+	      $('#errorModal').modal('show');
+	    }
 	  return true;
 	};
 
@@ -1371,17 +1387,19 @@ webpackJsonp([0],[
 
 	    gameModel.playerJoined = true;
 	    $('#waitingForPlayerModal').modal('hide');
-	    gameModel.updateGameType(gameModel.newGame);
+	    $('#show-this-game-info').submit();
+	    // gameModel.updateGameType(gameModel.newGame);
 
 	    // refresh all data, to get new user info
 	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.updateModel).then(ui.updateView).fail(ui.failure);
 	  } else if (data.game !== null && data.game !== undefined) {
 	    gameModel.playerJoined = true;
 	    $('#waitingForPlayerModal').modal('hide');
-	    gameModel.updateGameType(gameModel.newGame);
+	    $('#show-this-game-info').submit();
+	    // gameModel.updateGameType(gameModel.newGame);
 	  } else {
-	    // console.log(data);
-	  }
+	      // console.log(data);
+	    }
 	};
 
 	var onError = function onError(event) {
@@ -1451,7 +1469,7 @@ webpackJsonp([0],[
 	};
 
 	var updateView = function updateView() {
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+	  // gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 	  gameMoves.refreshCounts();
 	  gameMoves.refreshGameInfoTable(gameModel.newGame);
 	  gameMoves.redrawBoard();
