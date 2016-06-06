@@ -115,8 +115,8 @@ a {
 .game-table {
   font-size: 1.5em;
   font-weight: bold;
-  height: 33%;
-  width: 33%;
+  margin: 10%;
+  width: 80%;
 }
 
 .auth-token-header {
@@ -221,4 +221,8 @@ a {
   border: 1px solid $paper-white;
   display: inline;
   height: 100px;
+}
+
+.btn {
+  background: transparent;
 }

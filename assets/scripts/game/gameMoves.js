@@ -286,24 +286,18 @@ const onSetCellValue = function(){
       if(gameModel.gameOver === true){
         $('#game-update-modal').text(gameModel.winnerString);
         $('#gameUpdateModal').modal('show');
+      } else{
+        togglePlayer();
       }
-
-      togglePlayer();
-
     }
   } else if (gameModel.gameOver === true){
-
-    // console.log('The game is over! Start a new game!');
     $('.table-section').hide();
-
     $('#player-turn').text('Game over! Start a new Game!');
     $('#game-update-modal').text('Game over! Start a new Game!');
     $('#gameUpdateModal').modal('show');
     $('.game-over-section').show();
-
   } else if(gameModel.activeGame === false){
-    // console.log('You need to activate or start a game!');
-
+    $('#requireStartGameModal').modal('show');
   } else {
     // console.log('There is an unexpected error with gameOver');
   }
