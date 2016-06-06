@@ -7,7 +7,6 @@
 // const games = require('./games');
 const players = require('./players.js');
 const games = require('./games.js');
-const app = require('../app.js');
 
 //
 // variables that don't change during games
@@ -137,74 +136,6 @@ const updateGameType = function(gameObject){
   return gameType;
 };
 
-const swapPlayers = function(gameObject){
-
-  let NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
-
-  switch(gameType){
-    case gameTypes[1]:
-
-      if(gameObject.player_x.email === app.user.email){
-        currentPlayer = players.players[0];
-        currentSymbol = players.symbols[currentPlayer];
-        otherPlayer = players.players[1];
-        otherSymbol = players.symbols[otherPlayer];
-      }else{
-        currentPlayer = players.players[1];
-        currentSymbol = players.symbols[currentPlayer];
-        otherPlayer = players.players[0];
-        otherSymbol = players.symbols[otherSymbol];
-      }
-
-      NewPlayersSymbols = [
-        currentPlayer,
-        otherPlayer,
-        currentSymbol,
-        otherSymbol
-      ];
-
-      break;
-
-    case gameTypes[2]:
-
-      NewPlayersSymbols = [
-        currentPlayer,
-        otherPlayer,
-        currentSymbol,
-        otherSymbol
-      ];
-
-      break;
-
-    default:
-
-      if(currentPlayer === players.players[0]){
-
-        currentPlayer = players.players[1];
-        currentSymbol = players.symbols[players.players[1]];
-        otherPlayer = players.players[0];
-        otherSymbol = players.symbols[players.players[0]];
-
-        NewPlayersSymbols = [players.players[1], players.players[0], players.symbols[players.players[1]], players.symbols[players.players[0]]];
-
-      }else if (currentPlayer === players.players[1]){
-
-        currentPlayer = players.players[0];
-        currentSymbol = players.symbols[players.players[0]];
-        otherPlayer = players.players[1];
-        otherSymbol = players.symbols[players.players[1]];
-
-        NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
-
-      }else{
-        return false;
-      }
-      break;
-  }
-
-  return NewPlayersSymbols;
-  };
-
 module.exports = {
   currentPlayer,
   currentSymbol,
@@ -216,7 +147,6 @@ module.exports = {
   activeGame,
   gameOver,
   gameSize,
-  swapPlayers,
   boardTrans,
   maxTurnCount,
   turnCount,

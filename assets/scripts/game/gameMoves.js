@@ -1,6 +1,7 @@
 'use strict';
 
 const games = require('./games.js');
+const players = require('./players.js');
 const gameModel = require('./gameModel.js');
 const gameChecks = require('./gameChecks.js');
 const gameApi = require('../apiActions/gameActions/api.js');
@@ -107,26 +108,34 @@ const togglePlayer = function(){
   // update gameType (single vs double player)
   gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
-  if(gameModel.gameOver === false){
+  if(gameModel.gameOver === false && gameModel.gameType === games.gameTypes[0]){
 
-    // swap players
-    let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+    if(gameModel.currentPlayer === players.players[0]){
 
-    gameModel.currentPlayer = NewPlayersSymbols[0];
-    gameModel.otherPlayer = NewPlayersSymbols[1];
-    gameModel.currentSymbol = NewPlayersSymbols[2];
-    gameModel.otherSymbol  = NewPlayersSymbols[3];
+      gameModel.currentPlayer = players.players[1];
+      gameModel.currentSymbol = players.symbols[players.players[1]];
+      gameModel.otherPlayer = players.players[0];
+      gameModel.otherSymbol = players.symbols[players.players[0]];
 
-    // refresh counts
-    refreshCounts();
+    }else if (gameModel.currentPlayer === players.players[1]){
 
-    // check game and show responses
-    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
-    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+      gameModel.currentPlayer = players.players[0];
+      gameModel.currentSymbol = players.symbols[players.players[0]];
+      gameModel.otherPlayer = players.players[1];
+      gameModel.otherSymbol = players.symbols[players.players[1]];
 
+    }
   }
 
+  // refresh counts
+  refreshCounts();
+
+  // check game and show responses
+  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
   return true;
+
 };
 
 const redrawBoard = function(){
@@ -198,9 +207,6 @@ const onSetCellValue = function(){
 
   // update gameType (single vs double player)
   gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-  console.log(gameModel.gameType);
-  console.log(gameModel.newGame);
 
   // update counts before checking whose turn it is
   refreshCounts();

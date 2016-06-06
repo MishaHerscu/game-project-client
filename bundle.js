@@ -578,7 +578,6 @@ webpackJsonp([0],[
 
 	var players = __webpack_require__(10);
 	var games = __webpack_require__(11);
-	var app = __webpack_require__(3);
 
 	//
 	// variables that don't change during games
@@ -698,62 +697,6 @@ webpackJsonp([0],[
 	  return gameType;
 	};
 
-	var swapPlayers = function swapPlayers(gameObject) {
-
-	  var NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
-
-	  switch (gameType) {
-	    case gameTypes[1]:
-
-	      if (gameObject.player_x.email === app.user.email) {
-	        currentPlayer = players.players[0];
-	        currentSymbol = players.symbols[currentPlayer];
-	        otherPlayer = players.players[1];
-	        otherSymbol = players.symbols[otherPlayer];
-	      } else {
-	        currentPlayer = players.players[1];
-	        currentSymbol = players.symbols[currentPlayer];
-	        otherPlayer = players.players[0];
-	        otherSymbol = players.symbols[otherSymbol];
-	      }
-
-	      NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
-
-	      break;
-
-	    case gameTypes[2]:
-
-	      NewPlayersSymbols = [currentPlayer, otherPlayer, currentSymbol, otherSymbol];
-
-	      break;
-
-	    default:
-
-	      if (currentPlayer === players.players[0]) {
-
-	        currentPlayer = players.players[1];
-	        currentSymbol = players.symbols[players.players[1]];
-	        otherPlayer = players.players[0];
-	        otherSymbol = players.symbols[players.players[0]];
-
-	        NewPlayersSymbols = [players.players[1], players.players[0], players.symbols[players.players[1]], players.symbols[players.players[0]]];
-	      } else if (currentPlayer === players.players[1]) {
-
-	        currentPlayer = players.players[0];
-	        currentSymbol = players.symbols[players.players[0]];
-	        otherPlayer = players.players[1];
-	        otherSymbol = players.symbols[players.players[1]];
-
-	        NewPlayersSymbols = [players.players[0], players.players[1], players.symbols[players.players[0]], players.symbols[players.players[1]]];
-	      } else {
-	        return false;
-	      }
-	      break;
-	  }
-
-	  return NewPlayersSymbols;
-	};
-
 	module.exports = {
 	  currentPlayer: currentPlayer,
 	  currentSymbol: currentSymbol,
@@ -765,7 +708,6 @@ webpackJsonp([0],[
 	  activeGame: activeGame,
 	  gameOver: gameOver,
 	  gameSize: gameSize,
-	  swapPlayers: swapPlayers,
 	  boardTrans: boardTrans,
 	  maxTurnCount: maxTurnCount,
 	  turnCount: turnCount,
@@ -843,6 +785,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var games = __webpack_require__(11);
+	var players = __webpack_require__(10);
 	var gameModel = __webpack_require__(9);
 	var gameChecks = __webpack_require__(13);
 	var gameApi = __webpack_require__(14);
@@ -938,23 +881,29 @@ webpackJsonp([0],[
 	  // update gameType (single vs double player)
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
-	  if (gameModel.gameOver === false) {
+	  if (gameModel.gameOver === false && gameModel.gameType === games.gameTypes[0]) {
 
-	    // swap players
-	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+	    if (gameModel.currentPlayer === players.players[0]) {
 
-	    gameModel.currentPlayer = NewPlayersSymbols[0];
-	    gameModel.otherPlayer = NewPlayersSymbols[1];
-	    gameModel.currentSymbol = NewPlayersSymbols[2];
-	    gameModel.otherSymbol = NewPlayersSymbols[3];
+	      gameModel.currentPlayer = players.players[1];
+	      gameModel.currentSymbol = players.symbols[players.players[1]];
+	      gameModel.otherPlayer = players.players[0];
+	      gameModel.otherSymbol = players.symbols[players.players[0]];
+	    } else if (gameModel.currentPlayer === players.players[1]) {
 
-	    // refresh counts
-	    refreshCounts();
-
-	    // check game and show responses
-	    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
-	    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+	      gameModel.currentPlayer = players.players[0];
+	      gameModel.currentSymbol = players.symbols[players.players[0]];
+	      gameModel.otherPlayer = players.players[1];
+	      gameModel.otherSymbol = players.symbols[players.players[1]];
+	    }
 	  }
+
+	  // refresh counts
+	  refreshCounts();
+
+	  // check game and show responses
+	  gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+	  gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
 	  return true;
 	};
@@ -1025,9 +974,6 @@ webpackJsonp([0],[
 
 	  // update gameType (single vs double player)
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-	  console.log(gameModel.gameType);
-	  console.log(gameModel.newGame);
 
 	  // update counts before checking whose turn it is
 	  refreshCounts();
@@ -1400,7 +1346,7 @@ webpackJsonp([0],[
 	var gameApi = __webpack_require__(14);
 
 	var onChange = function onChange(data) {
-	  console.log(data);
+
 	  if (data.timeout) {
 	    //not an error
 
