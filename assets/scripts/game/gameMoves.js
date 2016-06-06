@@ -50,50 +50,6 @@ const updatePlayerTurnAnnouncement = function(){
   }
 };
 
-const updateAPI = function(modelGameIndex,currentSymbol){
-  let updateGameData = {
-    "game": {
-      "cell": {
-        "index": modelGameIndex,
-        "value": currentSymbol
-      },
-      "over": gameModel.newGame.over
-    }
-  };
-
-  // update game in the back end
-  gameApi.updateGame(updateGameData)
-  .done(gameUi.successMove)
-  .then(gameChecks.checkGame(gameModel.newGame))
-  .fail(gameUi.failure);
-};
-
-const togglePlayer = function(){
-
-  // update gameType (single vs double player)
-  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-  if(gameModel.gameOver === false){
-
-    // swap players
-    let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-    gameModel.currentPlayer = NewPlayersSymbols[0];
-    gameModel.otherPlayer = NewPlayersSymbols[1];
-    gameModel.currentSymbol = NewPlayersSymbols[2];
-    gameModel.otherSymbol  = NewPlayersSymbols[3];
-
-    // count turn number
-    gameModel.turnCount += 1;
-
-    // check game and show responses
-    gameChecks.checkGame(gameModel.newGame);
-
-    //show changes
-  }
-
-  return true;
-};
 
 const refreshCounts = function(){
 
@@ -124,6 +80,52 @@ const refreshCounts = function(){
       gameModel.oCount += 1;
     }
   }
+  return true;
+};
+
+const updateAPI = function(modelGameIndex,currentSymbol){
+  let updateGameData = {
+    "game": {
+      "cell": {
+        "index": modelGameIndex,
+        "value": currentSymbol
+      },
+      "over": gameModel.newGame.over
+    }
+  };
+
+  // update game in the back end
+  gameApi.updateGame(updateGameData)
+  .done(gameUi.successMove)
+  .then(refreshCounts())
+  .then(gameChecks.checkGame(gameModel.newGame))
+  .fail(gameUi.failure);
+};
+
+const togglePlayer = function(){
+
+  // update gameType (single vs double player)
+  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+  if(gameModel.gameOver === false){
+
+    // swap players
+    let NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+
+    gameModel.currentPlayer = NewPlayersSymbols[0];
+    gameModel.otherPlayer = NewPlayersSymbols[1];
+    gameModel.currentSymbol = NewPlayersSymbols[2];
+    gameModel.otherSymbol  = NewPlayersSymbols[3];
+
+    // refresh counts
+    refreshCounts();
+
+    // check game and show responses
+    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
+  }
+
   return true;
 };
 

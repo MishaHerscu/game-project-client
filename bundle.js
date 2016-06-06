@@ -878,48 +878,6 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
-	  var updateGameData = {
-	    "game": {
-	      "cell": {
-	        "index": modelGameIndex,
-	        "value": currentSymbol
-	      },
-	      "over": gameModel.newGame.over
-	    }
-	  };
-
-	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(gameChecks.checkGame(gameModel.newGame)).fail(gameUi.failure);
-	};
-
-	var togglePlayer = function togglePlayer() {
-
-	  // update gameType (single vs double player)
-	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
-
-	  if (gameModel.gameOver === false) {
-
-	    // swap players
-	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
-
-	    gameModel.currentPlayer = NewPlayersSymbols[0];
-	    gameModel.otherPlayer = NewPlayersSymbols[1];
-	    gameModel.currentSymbol = NewPlayersSymbols[2];
-	    gameModel.otherSymbol = NewPlayersSymbols[3];
-
-	    // count turn number
-	    gameModel.turnCount += 1;
-
-	    // check game and show responses
-	    gameChecks.checkGame(gameModel.newGame);
-
-	    //show changes
-	  }
-
-	  return true;
-	};
-
 	var refreshCounts = function refreshCounts() {
 
 	  if (gameModel.newGame === undefined || gameModel.newGame === null || gameModel.newGame.cells === undefined || gameModel.newGame.cells === null) {
@@ -946,6 +904,47 @@ webpackJsonp([0],[
 	      gameModel.oCount += 1;
 	    }
 	  }
+	  return true;
+	};
+
+	var updateAPI = function updateAPI(modelGameIndex, currentSymbol) {
+	  var updateGameData = {
+	    "game": {
+	      "cell": {
+	        "index": modelGameIndex,
+	        "value": currentSymbol
+	      },
+	      "over": gameModel.newGame.over
+	    }
+	  };
+
+	  // update game in the back end
+	  gameApi.updateGame(updateGameData).done(gameUi.successMove).then(refreshCounts()).then(gameChecks.checkGame(gameModel.newGame)).fail(gameUi.failure);
+	};
+
+	var togglePlayer = function togglePlayer() {
+
+	  // update gameType (single vs double player)
+	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
+
+	  if (gameModel.gameOver === false) {
+
+	    // swap players
+	    var NewPlayersSymbols = gameModel.swapPlayers(gameModel.newGame);
+
+	    gameModel.currentPlayer = NewPlayersSymbols[0];
+	    gameModel.otherPlayer = NewPlayersSymbols[1];
+	    gameModel.currentSymbol = NewPlayersSymbols[2];
+	    gameModel.otherSymbol = NewPlayersSymbols[3];
+
+	    // refresh counts
+	    refreshCounts();
+
+	    // check game and show responses
+	    gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
+	    gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+	  }
+
 	  return true;
 	};
 
