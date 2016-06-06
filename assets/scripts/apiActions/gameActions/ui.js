@@ -67,6 +67,36 @@ const updateGames = function(data){
     $('#stats-player-id').text(app.user.id);
     $('#stats-games').text(app.games.length);
     $('#stats-finished-games').text(app.finished_games.length);
+
+    // get detailed results
+    let xWins = 0;
+    let oWins = 0;
+    let ties = 0;
+    let inProgress = 0;
+
+    let gameCount = app.games.length;
+    for(let i = 0; i < gameCount; i++){
+      switch(gameChecks.checkGameOutcome(app.games[i])){
+        case "X":
+          xWins += 1;
+          break;
+        case "O":
+          oWins += 1;
+          break;
+        case "tie":
+          ties += 1;
+          break;
+        default:
+          inProgress += 1;
+          break;
+      }
+    }
+
+    $('#x-wins').text(xWins);
+    $('#o-wins').text(oWins);
+    $('#ties').text(ties);
+    $('#in-progress').text(inProgress);
+
   }
 };
 

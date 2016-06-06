@@ -409,6 +409,35 @@ webpackJsonp([0],[
 	    $('#stats-player-id').text(app.user.id);
 	    $('#stats-games').text(app.games.length);
 	    $('#stats-finished-games').text(app.finished_games.length);
+
+	    // get detailed results
+	    var xWins = 0;
+	    var oWins = 0;
+	    var ties = 0;
+	    var inProgress = 0;
+
+	    var gameCount = app.games.length;
+	    for (var i = 0; i < gameCount; i++) {
+	      switch (gameChecks.checkGameOutcome(app.games[i])) {
+	        case "X":
+	          xWins += 1;
+	          break;
+	        case "O":
+	          oWins += 1;
+	          break;
+	        case "tie":
+	          ties += 1;
+	          break;
+	        default:
+	          inProgress += 1;
+	          break;
+	      }
+	    }
+
+	    $('#x-wins').text(xWins);
+	    $('#o-wins').text(oWins);
+	    $('#ties').text(ties);
+	    $('#in-progress').text(inProgress);
 	  }
 	};
 
@@ -1104,8 +1133,55 @@ webpackJsonp([0],[
 	  return gameOver;
 	};
 
+	var checkGameOutcome = function checkGameOutcome(gameObject) {
+
+	  var gameStatus = void 0;
+	  var cells = gameObject.cells;
+
+	  var winConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+
+	  // first check for victories
+	  for (var i = 0; i < winConditions.length; i++) {
+
+	    var checkVal = cells[winConditions[i][0]];
+
+	    if (checkVal !== '') {
+	      var match = true;
+
+	      for (var j = 0; j < gameModel.gameSize; j++) {
+
+	        if (gameObject.cells[winConditions[i][j]] !== checkVal) {
+	          match = false;
+	        }
+	      }
+
+	      if (match === true) {
+	        gameStatus = checkVal;
+	        return gameStatus; // this should be X, or O, as a winner
+	      }
+	    }
+	  }
+
+	  // check for ties
+	  var gameTurnCount = 0;
+	  for (var _i = 0; _i < gameModel.gameSize; _i++) {
+	    if (cells[_i] !== '') {
+	      gameTurnCount += 1;
+	    }
+	  }
+	  if (gameTurnCount === gameModel.gameSize) {
+	    gameStatus = 'tie';
+	    return gameStatus;
+	  }
+
+	  // the last option is an "in-progress" game
+	  gameStatus = 'in progress';
+	  return gameStatus;
+	};
+
 	module.exports = {
-	  checkGame: checkGame
+	  checkGame: checkGame,
+	  checkGameOutcome: checkGameOutcome
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
