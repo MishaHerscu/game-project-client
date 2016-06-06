@@ -839,7 +839,6 @@ webpackJsonp([0],[
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
-	    // console.log('Sorry! Someone already went there.');
 	    return false;
 	  } else {
 	    return true;
@@ -1099,12 +1098,12 @@ webpackJsonp([0],[
 	      // refresh counts
 	      refreshCounts();
 
-	      // update game info view
-	      refreshGameInfoTable(gameModel.newGame);
-
 	      // check if the game is over
 	      gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
 	      gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
+	      // update game info view
+	      refreshGameInfoTable(gameModel.newGame);
 
 	      // update object for API
 	      updateAPI(modelGameIndex, gameModel.currentSymbol);
@@ -1118,6 +1117,7 @@ webpackJsonp([0],[
 	      }
 	    }
 	  } else if (gameModel.gameOver === true) {
+
 	    $('.table-section').hide();
 	    $('#player-turn').text('Game over! Start a new Game!');
 	    $('#game-update-modal').text('Game over! Start a new Game!');
@@ -1126,9 +1126,8 @@ webpackJsonp([0],[
 	  } else if (gameModel.activeGame === false) {
 	    $('#requireStartGameModal').modal('show');
 	  } else {
-	    // console.log('There is an unexpected error with gameOver');
+	    $('#errorModal').modal('show');
 	  }
-
 	  return true;
 	};
 
@@ -1161,6 +1160,7 @@ webpackJsonp([0],[
 	// imports
 
 	var gameModel = __webpack_require__(9);
+	var players = __webpack_require__(10);
 
 	var checkGame = function checkGame(gameObject) {
 	  var gameOver = false;
@@ -1182,13 +1182,28 @@ webpackJsonp([0],[
 	      }
 
 	      if (match === true) {
+
 	        gameOver = true;
+	        gameModel.gameOver = true;
+	        gameModel.newGame.over = true;
+
+	        if (checkVal === players.symbols[players.players[0]]) {
+	          gameModel.winner = players.players[0];
+	          gameModel.winnerString = 'Game over! ' + gameModel.winner + ' Wins!';
+	        } else if (checkVal === players.symbols[players.players[1]]) {
+	          gameModel.winner = players.players[1];
+	          gameModel.winnerString = 'Game over! ' + gameModel.winner + ' Wins!';
+	        }
+	        return gameOver;
 	      }
 	    }
 	  }
 
 	  if (gameModel.turnCount === gameModel.maxTurnCount || gameModel.turnCount > gameModel.maxTurnCount) {
 	    gameOver = true;
+	    gameModel.winner = null;
+	    gameModel.winnerString = "Game over! It's a tie!";
+	    return gameOver;
 	  }
 
 	  return gameOver;

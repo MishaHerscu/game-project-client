@@ -8,7 +8,6 @@ const gameUi = require('../apiActions/gameActions/ui.js');
 
 const checkCellEmpty = function(val){
   if(val !== ""){
-    // console.log('Sorry! Someone already went there.');
     return false;
   } else {
     return true;
@@ -205,7 +204,7 @@ const redrawBoard = function(){
     }
 
     refreshCounts();
-    
+
   }
   return true;
 };
@@ -285,12 +284,12 @@ const onSetCellValue = function(){
       // refresh counts
       refreshCounts();
 
-      // update game info view
-      refreshGameInfoTable(gameModel.newGame);
-
       // check if the game is over
       gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
       gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
+      // update game info view
+      refreshGameInfoTable(gameModel.newGame);
 
       // update object for API
       updateAPI(modelGameIndex, gameModel.currentSymbol);
@@ -304,17 +303,18 @@ const onSetCellValue = function(){
       }
     }
   } else if (gameModel.gameOver === true){
+
     $('.table-section').hide();
     $('#player-turn').text('Game over! Start a new Game!');
     $('#game-update-modal').text('Game over! Start a new Game!');
     $('#gameUpdateModal').modal('show');
     $('.game-over-section').show();
+
   } else if(gameModel.activeGame === false){
     $('#requireStartGameModal').modal('show');
   } else {
-    // console.log('There is an unexpected error with gameOver');
+    $('#errorModal').modal('show');
   }
-
   return true;
 };
 
