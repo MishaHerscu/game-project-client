@@ -426,8 +426,7 @@ webpackJsonp([0],[
 	};
 
 	var successShowGameInfo = function successShowGameInfo(data) {
-	  var gameObject = data.game;
-	  gameMoves.refreshGameInfoTable(gameObject);
+	  gameMoves.refreshGameInfoTable(data.game);
 	  gameMoves.redrawBoard();
 	  gameMoves.refreshCounts();
 	};
@@ -878,21 +877,26 @@ webpackJsonp([0],[
 	// just updates what the user sees, not the actual state
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
-	  if (gameModel.gameType === games.gameTypes[0]) {
+	  if (gameModel.activeGame === true) {
+	    if (gameModel.gameType === games.gameTypes[0]) {
 
-	    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-	    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
-	  } else if (gameModel.gameType === games.gameTypes[1]) {
+	      $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+	      $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+	    } else if (gameModel.gameType === games.gameTypes[1]) {
 
-	    $('#player-turn').text(gameModel.currentPlayer);
-	    $('#game-update-modal').text(gameModel.currentPlayer);
-	  } else if (gameModel.gameType === games.gameTypes[2]) {
+	      $('#player-turn').text(gameModel.currentPlayer);
+	      $('#game-update-modal').text(gameModel.currentPlayer);
+	    } else if (gameModel.gameType === games.gameTypes[2]) {
 
-	    $('#player-turn').text(gameModel.currentPlayer);
-	    $('#game-update-modal').text(gameModel.currentPlayer);
+	      $('#player-turn').text(gameModel.currentPlayer);
+	      $('#game-update-modal').text(gameModel.currentPlayer);
+	    } else {
+	      $('#player-turn').text('An error occurred. Please start a new game.');
+	      $('#game-update-modal').text('An error occurred. Please start a new game.');
+	    }
 	  } else {
-	    $('#player-turn').text('An error occurred. Please start a new game.');
-	    $('#game-update-modal').text('An error occurred. Please start a new game.');
+	    $('#player-turn').text('');
+	    $('#game-update-modal').text('');
 	  }
 	};
 
@@ -1000,28 +1004,33 @@ webpackJsonp([0],[
 	var redrawBoard = function redrawBoard() {
 
 	  // check that game exists
-	  if (gameModel.newGame === undefined || gameModel.newGame === null || gameModel.newGame.cells === undefined || gameModel.newGame.cells === null) {
+	  if (gameModel.newGame === undefined || gameModel.newGame === null) {
 	    return false;
+	  } else if (gameModel.newGame.cells === undefined || gameModel.newGame.cells === null) {
+
+	    var max = gameModel.maxTurnCount;
+
+	    // update board
+	    for (var i = 0; i < max; i++) {
+	      $('#' + gameModel.boardTrans[i]).text('');
+	    }
+	  } else {
+
+	    var _max = gameModel.newGame.cells.length;
+
+	    // update board
+	    for (var _i = 0; _i < _max; _i++) {
+	      $('#' + gameModel.boardTrans[_i]).text(gameModel.newGame.cells[_i]);
+	    }
+
+	    refreshCounts();
 	  }
-
-	  // set variables
-	  var max = gameModel.newGame.cells.length;
-
-	  // update board
-	  for (var i = 0; i < max; i++) {
-	    $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
-	  }
-
-	  // refresh counts
-	  refreshCounts();
-
 	  return true;
 	};
 
 	var refreshGameInfoTable = function refreshGameInfoTable(gameObject) {
 
-	  if (gameObject === null || gameObject.id === null || gameObject === undefined || gameObject.id === undefined) {
-
+	  if (gameObject === null || gameObject === undefined) {
 	    return false;
 	  } else {
 
@@ -1040,6 +1049,17 @@ webpackJsonp([0],[
 	      $("#player-o-data").text(gameObject.player_o.email);
 	    }
 	  }
+	  return true;
+	};
+
+	var clearGameInfoTable = function clearGameInfoTable() {
+
+	  $("#game-id-data").text('');
+	  $("#game-cells-data").text('');
+	  $("#game-over-data").text('');
+	  $("#player-x-data").text('');
+	  $("#player-o-data").text('');
+
 	  return true;
 	};
 
@@ -1124,6 +1144,7 @@ webpackJsonp([0],[
 	  refreshCounts: refreshCounts,
 	  redrawBoard: redrawBoard,
 	  refreshGameInfoTable: refreshGameInfoTable,
+	  clearGameInfoTable: clearGameInfoTable,
 	  addHandlers: addHandlers,
 	  onGameCheck: onGameCheck,
 	  updatePlayerTurnAnnouncement: updatePlayerTurnAnnouncement,
@@ -1595,19 +1616,66 @@ webpackJsonp([0],[
 	  }
 	};
 
-	var onCancelGame = function onCancelGame() {
+	var onCancelGame = function onCancelGame(event) {
 	  event.preventDefault();
-	  gameModel.cancelGameResets();
+
+	  gameModel.currentPlayer = gameModel.players.players[0];
+	  gameModel.otherPlayer = gameModel.players.players[1];
+	  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
+	  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
+
+	  gameModel.activeGame = false;
+	  gameModel.gameOver = false;
+
+	  gameModel.turnCount = 0;
+	  gameModel.xCount = 0;
+	  gameModel.oCount = 0;
+
+	  gameModel.winner = null;
+	  gameModel.winnerString = '';
+
+	  gameModel.newWatcher = null;
+
+	  gameModel.gameType = games.gameTypes[0];
+	  gameModel.botGame = false;
+
+	  gameModel.playerJoined = false;
+
+	  gameModel.newGame = {
+	    id: null,
+	    cells: null,
+	    over: null,
+	    player_x: null,
+	    player_o: null
+	  };
+
+	  gameModel.boardDict = {
+	    'cell-00': '',
+	    'cell-01': '',
+	    'cell-02': '',
+	    'cell-10': '',
+	    'cell-11': '',
+	    'cell-12': '',
+	    'cell-20': '',
+	    'cell-21': '',
+	    'cell-22': ''
+	  };
+
+	  gameMoves.updatePlayerTurnAnnouncement();
+	  gameMoves.redrawBoard();
+	  gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  gameMoves.clearGameInfoTable();
 	  $('#waitingForPlayerModal').modal('hide');
 	};
 
-	var onSwitchGameType = function onSwitchGameType() {
+	var onSwitchGameType = function onSwitchGameType(event) {
 	  event.preventDefault();
 	  gameModel.gameType = games.gameTypes[0];
 	  $('#waitingForPlayerModal').modal('hide');
 	};
 
-	var onStartAnotherGame = function onStartAnotherGame() {
+	var onStartAnotherGame = function onStartAnotherGame(event) {
+	  event.preventDefault();
 	  $('#gameUpdateModal').modal('hide');
 	  onNewGame.submit();
 	};
@@ -1624,12 +1692,63 @@ webpackJsonp([0],[
 	  $('#joinAnyGameModal').modal('show');
 	};
 
+	var onExitGame = function onExitGame() {
+
+	  gameModel.currentPlayer = gameModel.players.players[0];
+	  gameModel.otherPlayer = gameModel.players.players[1];
+	  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
+	  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
+
+	  gameModel.activeGame = false;
+	  gameModel.gameOver = false;
+
+	  gameModel.turnCount = 0;
+	  gameModel.xCount = 0;
+	  gameModel.oCount = 0;
+
+	  gameModel.winner = null;
+	  gameModel.winnerString = '';
+
+	  gameModel.newWatcher = null;
+
+	  gameModel.gameType = games.gameTypes[0];
+	  gameModel.botGame = false;
+
+	  gameModel.playerJoined = false;
+
+	  gameModel.newGame = {
+	    id: null,
+	    cells: null,
+	    over: null,
+	    player_x: null,
+	    player_o: null
+	  };
+
+	  gameModel.boardDict = {
+	    'cell-00': '',
+	    'cell-01': '',
+	    'cell-02': '',
+	    'cell-10': '',
+	    'cell-11': '',
+	    'cell-12': '',
+	    'cell-20': '',
+	    'cell-21': '',
+	    'cell-22': ''
+	  };
+
+	  gameMoves.updatePlayerTurnAnnouncement();
+	  gameMoves.redrawBoard();
+	  gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  gameMoves.clearGameInfoTable();
+	};
+
 	var addHandlers = function addHandlers() {
 
 	  $('#new-game').on('click', onNewGame);
 	  $('#show-any-game-info-modal').on('click', onShowAnyGameInfoModal);
 	  $('#play-this-game-modal').on('click', onJoinAnyGameModal);
 	  $('#join-game-modal').on('click', onJoinGameModal);
+	  $('#exit-game').on('click', onExitGame);
 
 	  $('#show-this-game-info').on('submit', onShowGameInfo);
 	  $('#show-any-game-info').on('submit', onShowAnyGameInfo);

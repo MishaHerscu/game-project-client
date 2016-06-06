@@ -46,24 +46,29 @@ const checkGameStatus = function (){
 // just updates what the user sees, not the actual state
 const updatePlayerTurnAnnouncement = function(){
 
-  if(gameModel.gameType === games.gameTypes[0]){
+  if(gameModel.activeGame === true){
+    if(gameModel.gameType === games.gameTypes[0]){
 
-    $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
-    $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
+      $('#player-turn').text(gameModel.currentPlayer + "'s Turn!");
+      $('#game-update-modal').text(gameModel.currentPlayer + "'s Turn!");
 
-  } else if(gameModel.gameType === games.gameTypes[1]){
+    } else if(gameModel.gameType === games.gameTypes[1]){
 
-    $('#player-turn').text(gameModel.currentPlayer);
-    $('#game-update-modal').text(gameModel.currentPlayer);
+      $('#player-turn').text(gameModel.currentPlayer);
+      $('#game-update-modal').text(gameModel.currentPlayer);
 
-  } else if(gameModel.gameType === games.gameTypes[2]){
+    } else if(gameModel.gameType === games.gameTypes[2]){
 
-    $('#player-turn').text(gameModel.currentPlayer);
-    $('#game-update-modal').text(gameModel.currentPlayer);
+      $('#player-turn').text(gameModel.currentPlayer);
+      $('#game-update-modal').text(gameModel.currentPlayer);
 
-  } else {
-    $('#player-turn').text('An error occurred. Please start a new game.');
-    $('#game-update-modal').text('An error occurred. Please start a new game.');
+    } else {
+      $('#player-turn').text('An error occurred. Please start a new game.');
+      $('#game-update-modal').text('An error occurred. Please start a new game.');
+    }
+  } else{
+    $('#player-turn').text('');
+    $('#game-update-modal').text('');
   }
 };
 
@@ -179,36 +184,36 @@ const refreshCounts = function(){
 const redrawBoard = function(){
 
   // check that game exists
-  if(gameModel.newGame === undefined ||
-    gameModel.newGame === null ||
-    gameModel.newGame.cells === undefined ||
-    gameModel.newGame.cells === null){
+  if(gameModel.newGame === undefined || gameModel.newGame === null){
     return false;
+  } else if (gameModel.newGame.cells === undefined || gameModel.newGame.cells === null){
+
+    let max = gameModel.maxTurnCount;
+
+    // update board
+    for(let i = 0; i < max; i++){
+      $('#' + gameModel.boardTrans[i]).text('');
+    }
+
+  } else {
+
+    let max = gameModel.newGame.cells.length;
+
+    // update board
+    for(let i = 0; i < max; i++){
+      $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
+    }
+
+    refreshCounts();
+    
   }
-
-  // set variables
-  let max = gameModel.newGame.cells.length;
-
-  // update board
-  for(let i = 0; i < max; i++){
-    $('#' + gameModel.boardTrans[i]).text(gameModel.newGame.cells[i]);
-  }
-
-  // refresh counts
-  refreshCounts();
-
   return true;
 };
 
 const refreshGameInfoTable = function(gameObject){
 
-  if(gameObject === null ||
-    gameObject.id === null ||
-    gameObject === undefined ||
-    gameObject.id === undefined){
-
+  if(gameObject === null || gameObject === undefined){
     return false;
-
   }else{
 
     $("#game-id-data").text(gameObject.id);
@@ -227,6 +232,17 @@ const refreshGameInfoTable = function(gameObject){
     }
 
   }
+  return true;
+};
+
+const clearGameInfoTable = function(){
+
+  $("#game-id-data").text('');
+  $("#game-cells-data").text('');
+  $("#game-over-data").text('');
+  $("#player-x-data").text('');
+  $("#player-o-data").text('');
+
   return true;
 };
 
@@ -314,6 +330,7 @@ module.exports = {
   refreshCounts,
   redrawBoard,
   refreshGameInfoTable,
+  clearGameInfoTable,
   addHandlers,
   onGameCheck,
   updatePlayerTurnAnnouncement,

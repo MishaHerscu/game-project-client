@@ -84,8 +84,7 @@ const updateFinishedGames = function(data){
   };
 
 const successShowGameInfo = function(data){
-  let gameObject = data.game;
-  gameMoves.refreshGameInfoTable(gameObject);
+  gameMoves.refreshGameInfoTable(data.game);
   gameMoves.redrawBoard();
   gameMoves.refreshCounts();
 };
