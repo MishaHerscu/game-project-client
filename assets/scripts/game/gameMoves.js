@@ -232,9 +232,6 @@ const refreshGameInfoTable = function(gameObject){
 
 const onSetCellValue = function(){
 
-  // refresh counts
-  refreshCounts();
-
   // update gameType (single vs double player)
   gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
@@ -266,11 +263,11 @@ const onSetCellValue = function(){
       // set the new value using the currentSymbol
       $(this).text(gameModel.currentSymbol);
 
-      // refresh counts
-      refreshCounts();
-
       // update model
       let modelGameIndex = updateModelValues(gameModel.currentSymbol, clickedCell);
+
+      // refresh counts
+      refreshCounts();
 
       // update game info view
       refreshGameInfoTable(gameModel.newGame);
@@ -278,6 +275,11 @@ const onSetCellValue = function(){
       // check if the game is over
       gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
       gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
+      console.log("game object: ", gameModel.newGame);
+      console.log("count: ", gameModel.turnCount);
+      console.log("Xcount: ", gameModel.xCount);
+      console.log("Ocount: ", gameModel.oCount);
 
       // update object for API
       updateAPI(modelGameIndex, gameModel.currentSymbol);

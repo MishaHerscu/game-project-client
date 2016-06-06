@@ -37,6 +37,10 @@ const checkGame = function(gameObject) {
     }
   }
 
+  if(gameModel.turnCount === gameModel.maxTurnCount || gameModel.turnCount > gameModel.maxTurnCount){
+    gameOver = true;
+  }
+
   return gameOver;
 };
 
