@@ -173,11 +173,23 @@ const newGame = function(data){
   gameModel.gameOver = gameModel.newGame.over;
   gameModel.activeGame = true;
 
+  // watch for updates
+  gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
+  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
+
   // set initial params
   gameModel.currentPlayer = gameModel.players.players[0];
   gameModel.otherPlayer = gameModel.players.players[1];
   gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
   gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
+
+  // redraw Board
+  gameMoves.redrawBoard();
+
+  // show game info
+  if(gameModel.newGame.id !== null && gameModel.newGame.id !== undefined){
+    gameMoves.refreshGameInfoTable(gameModel.newGame);
+  }
 
   // display status
   if(gameModel.gameType === games.gameTypes[0]){
@@ -186,9 +198,8 @@ const newGame = function(data){
     $('#player-turn').text(gameModel.currentPlayer);
   }
 
-  // watch for updates
-  $('#game-to-watch').val(gameModel.newGame.id);
-  $('#watch-game').submit();
+  // update player announcement
+  gameMoves.updatePlayerTurnAnnouncement();
 
   // reset view
   $('.table-section').show();

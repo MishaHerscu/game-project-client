@@ -514,11 +514,23 @@ webpackJsonp([0],[
 	  gameModel.gameOver = gameModel.newGame.over;
 	  gameModel.activeGame = true;
 
+	  // watch for updates
+	  gameModel.newWatcher = gameWatcherMaker.gameWatcher(gameModel.newGame.id, app.user.token);
+	  gameWatcherAttachHandler.addHandlers(gameModel.newWatcher);
+
 	  // set initial params
 	  gameModel.currentPlayer = gameModel.players.players[0];
 	  gameModel.otherPlayer = gameModel.players.players[1];
 	  gameModel.currentSymbol = gameModel.players.symbols[gameModel.currentPlayer];
 	  gameModel.otherSymbol = gameModel.players.symbols[gameModel.otherPlayer];
+
+	  // redraw Board
+	  gameMoves.redrawBoard();
+
+	  // show game info
+	  if (gameModel.newGame.id !== null && gameModel.newGame.id !== undefined) {
+	    gameMoves.refreshGameInfoTable(gameModel.newGame);
+	  }
 
 	  // display status
 	  if (gameModel.gameType === games.gameTypes[0]) {
@@ -527,9 +539,8 @@ webpackJsonp([0],[
 	    $('#player-turn').text(gameModel.currentPlayer);
 	  }
 
-	  // watch for updates
-	  $('#game-to-watch').val(gameModel.newGame.id);
-	  $('#watch-game').submit();
+	  // update player announcement
+	  gameMoves.updatePlayerTurnAnnouncement();
 
 	  // reset view
 	  $('.table-section').show();
@@ -1015,6 +1026,12 @@ webpackJsonp([0],[
 	  // update gameType (single vs double player)
 	  gameModel.gameType = gameModel.updateGameType(gameModel.newGame);
 
+	  console.log(gameModel.gameType);
+	  console.log(gameModel.newGame);
+
+	  // update counts before checking whose turn it is
+	  refreshCounts();
+
 	  // make sure it is your turn before you go
 	  if (gameModel.gameType !== games.gameTypes[0]) {
 	    if (gameModel.currentPlayer === gameModel.players.players[0] && gameModel.xCount > gameModel.oCount || gameModel.currentPlayer === gameModel.players.players[1] && gameModel.xCount === gameModel.oCount) {
@@ -1383,6 +1400,7 @@ webpackJsonp([0],[
 	var gameApi = __webpack_require__(14);
 
 	var onChange = function onChange(data) {
+	  console.log(data);
 	  if (data.timeout) {
 	    //not an error
 
@@ -1403,13 +1421,16 @@ webpackJsonp([0],[
 
 	    gameModel.newGame.cells[cell.index] = cell.value;
 
+	    gameModel.playerJoined = true;
 	    $('#waitingForPlayerModal').modal('hide');
+	    gameModel.updateGameType(gameModel.newGame);
 
 	    // refresh all data, to get new user info
 	    gameApi.show(gameModel.newGame.id, app.user.token).done(ui.updateModel).then(ui.updateView).fail(ui.failure);
-	  } else if (data.game) {
+	  } else if (data.game !== null && data.game !== undefined) {
 	    gameModel.playerJoined = true;
 	    $('#waitingForPlayerModal').modal('hide');
+	    gameModel.updateGameType(gameModel.newGame);
 	  } else {
 	    // console.log(data);
 	  }

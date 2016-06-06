@@ -6,6 +6,7 @@ const gameModel = require('../game/gameModel.js');
 const gameApi = require('../apiActions/gameActions/api.js');
 
 const onChange = function(data){
+  console.log(data);
   if (data.timeout) { //not an error
 
     if(this !== undefined && this !== null){
@@ -26,8 +27,9 @@ const onChange = function(data){
 
     gameModel.newGame.cells[cell.index] = cell.value;
 
+    gameModel.playerJoined = true;
     $('#waitingForPlayerModal').modal('hide');
-    gameModel.updateGameType();
+    gameModel.updateGameType(gameModel.newGame);
 
     // refresh all data, to get new user info
     gameApi.show(gameModel.newGame.id, app.user.token)
@@ -35,10 +37,10 @@ const onChange = function(data){
     .then(ui.updateView)
     .fail(ui.failure);
 
-  } else if(data.game){
+  } else if(data.game !== null && data.game !== undefined){
     gameModel.playerJoined = true;
     $('#waitingForPlayerModal').modal('hide');
-    gameModel.updateGameType();
+    gameModel.updateGameType(gameModel.newGame);
   } else{
     // console.log(data);
   }
