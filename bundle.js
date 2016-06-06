@@ -809,6 +809,8 @@ webpackJsonp([0],[
 	// just updates what the user sees, not the actual state
 	var updatePlayerTurnAnnouncement = function updatePlayerTurnAnnouncement() {
 
+	  console.log(gameModel.currentPlayer);
+
 	  if (gameModel.activeGame === true && gameModel.gameOver === false) {
 	    if (gameModel.gameType === games.gameTypes[0]) {
 

@@ -25,6 +25,8 @@ const updateModelValues = function(currentSymbol, clickedCell){
 // just updates what the user sees, not the actual state
 const updatePlayerTurnAnnouncement = function(){
 
+  console.log(gameModel.currentPlayer);
+
   if(gameModel.activeGame === true && gameModel.gameOver === false){
     if(gameModel.gameType === games.gameTypes[0]){
 
