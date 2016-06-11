@@ -1539,10 +1539,7 @@ webpackJsonp([0],[
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
-
 	  $('#selectGameTypeModal').modal('show');
-
-	  api.newGame().done(ui.success).then(ui.newGame).then(ui.showBoard).then(ui.updateView).fail(ui.failure);
 	};
 
 	var onGetGames = function onGetGames(event) {
@@ -1593,6 +1590,9 @@ webpackJsonp([0],[
 
 	var onSelectGameType = function onSelectGameType(event) {
 	  event.preventDefault();
+
+	  api.newGame().done(ui.success).then(ui.newGame).then(ui.showBoard).then(ui.updateView).fail(ui.failure);
+
 	  var gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
 	  gameModel.gameType = games.gameTypes[gameTypeSelection];
 

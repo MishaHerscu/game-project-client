@@ -8,16 +8,7 @@ const games = require('../../game/games.js');
 
 const onNewGame = function(event){
   event.preventDefault();
-
   $('#selectGameTypeModal').modal('show');
-
-  api.newGame()
-  .done(ui.success)
-  .then(ui.newGame)
-  .then(ui.showBoard)
-  .then(ui.updateView)
-  .fail(ui.failure);
-
 };
 
 const onGetGames = function(event){
@@ -85,6 +76,14 @@ const onPlayThisGame = function(event){
 
 const onSelectGameType = function(event) {
   event.preventDefault();
+
+  api.newGame()
+  .done(ui.success)
+  .then(ui.newGame)
+  .then(ui.showBoard)
+  .then(ui.updateView)
+  .fail(ui.failure);
+
   let gameTypeSelection = $("input[type='radio'][name='gametype']:checked").val();
   gameModel.gameType = games.gameTypes[gameTypeSelection];
 
