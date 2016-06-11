@@ -25,6 +25,7 @@ const onSignIn = function(event){
   let data = getFormFields(event.target);
   api.signIn(data)
   .done(ui.signInSuccess)
+  .then(ui.resetSessionStats)
   .then(gameUi.showBoard)
   .fail(ui.failure);
 };

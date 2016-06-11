@@ -10,6 +10,9 @@ $('.not-signed-in').show();
 $('#signInModal').modal('hide');
 $('#signUpModal').modal('hide');
 $('#gameUpdateModal').modal('hide');
+$('#session-x-wins').text("X Wins: " + 0 + "  ");
+$('#session-o-wins').text("O Wins: " + 0 + "  ");
+$('#session-ties').text("Ties: " + 0);
 
 app.user = null;
 app.games = [];

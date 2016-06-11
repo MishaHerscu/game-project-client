@@ -39,6 +39,9 @@ webpackJsonp([0],[
 	$('#signInModal').modal('hide');
 	$('#signUpModal').modal('hide');
 	$('#gameUpdateModal').modal('hide');
+	$('#session-x-wins').text("X Wins: " + 0 + "  ");
+	$('#session-o-wins').text("O Wins: " + 0 + "  ");
+	$('#session-ties').text("Ties: " + 0);
 
 	app.user = null;
 	app.games = [];
@@ -83,8 +86,8 @@ webpackJsonp([0],[
 	var getFormFields = __webpack_require__(5);
 	var api = __webpack_require__(6);
 	var ui = __webpack_require__(7);
-	var gameUi = __webpack_require__(8);
-	var gameModel = __webpack_require__(9);
+	var gameUi = __webpack_require__(11);
+	var gameModel = __webpack_require__(8);
 
 	var onSignUp = function onSignUp(event) {
 	  event.preventDefault();
@@ -99,7 +102,7 @@ webpackJsonp([0],[
 	  gameModel.activeGame = false;
 
 	  var data = getFormFields(event.target);
-	  api.signIn(data).done(ui.signInSuccess).then(gameUi.showBoard).fail(ui.failure);
+	  api.signIn(data).done(ui.signInSuccess).then(ui.resetSessionStats).then(gameUi.showBoard).fail(ui.failure);
 	};
 
 	var onSignOut = function onSignOut(event) {
@@ -281,6 +284,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
+	var gameModel = __webpack_require__(8);
 
 	var success = function success(data) {
 
@@ -328,13 +332,23 @@ webpackJsonp([0],[
 	  $('#gameUpdateModal').modal('hide');
 	};
 
+	var resetSessionStats = function resetSessionStats() {
+	  gameModel.xSessionWins = 0;
+	  gameModel.oSessionWins = 0;
+	  gameModel.sessionTies = 0;
+	  $('#session-x-wins').text("X Wins: " + gameModel.xSessionWins + "  ");
+	  $('#session-o-wins').text("O Wins: " + gameModel.oSessionWins + "  ");
+	  $('#session-ties').text("Ties: " + gameModel.sessionTies);
+	};
+
 	module.exports = {
 	  success: success,
 	  failure: failure,
 	  signUpSuccess: signUpSuccess,
 	  signInSuccess: signInSuccess,
 	  changePasswordSuccess: changePasswordSuccess,
-	  signOutSuccess: signOutSuccess
+	  signOutSuccess: signOutSuccess,
+	  resetSessionStats: resetSessionStats
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
@@ -342,13 +356,222 @@ webpackJsonp([0],[
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	//
+	// imports
+	//
+
+	// const games = require('./games');
+
+	var players = __webpack_require__(9);
+	var games = __webpack_require__(10);
+
+	//
+	// variables that don't change during games
+	//
+
+	var gameTypes = games.gameTypes;
+
+	var gameSize = 3;
+	var maxTurnCount = Math.pow(gameSize, 2);
+
+	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
+
+	//
+	// variables that may change during games
+	//
+
+	var currentPlayer = players.players[0];
+	var otherPlayer = players.players[1];
+	var currentSymbol = players.symbols[currentPlayer];
+	var otherSymbol = players.symbols[otherPlayer];
+
+	var activeGame = false;
+	var gameOver = false;
+
+	var turnCount = 0;
+	var xCount = 0;
+	var oCount = 0;
+
+	var xSessionWins = 0;
+	var oSessionWins = 0;
+	var sessionTies = 0;
+
+	var winner = null;
+	var winnerString = '';
+
+	var newWatcher = null;
+
+	var gameType = gameTypes[0];
+	var botGame = false;
+
+	var playerJoined = false;
+
+	var newGame = {
+	  id: null,
+	  cells: null,
+	  over: null,
+	  player_x: null,
+	  player_o: null
+	};
+
+	var boardDict = {
+	  'cell-00': '',
+	  'cell-01': '',
+	  'cell-02': '',
+	  'cell-10': '',
+	  'cell-11': '',
+	  'cell-12': '',
+	  'cell-20': '',
+	  'cell-21': '',
+	  'cell-22': ''
+	};
+
+	//
+	// functions
+	//
+
+	var cancelGameResets = function cancelGameResets() {
+
+	  currentPlayer = players.players[0];
+	  otherPlayer = players.players[1];
+	  currentSymbol = players.symbols[currentPlayer];
+	  otherSymbol = players.symbols[otherPlayer];
+
+	  activeGame = false;
+	  gameOver = false;
+
+	  turnCount = 0;
+	  xCount = 0;
+	  oCount = 0;
+
+	  winner = null;
+	  winnerString = '';
+
+	  newWatcher = null;
+
+	  gameType = gameTypes[0];
+	  botGame = false;
+
+	  playerJoined = false;
+
+	  newGame = {
+	    id: null,
+	    cells: null,
+	    over: null,
+	    player_x: null,
+	    player_o: null
+	  };
+
+	  boardDict = {
+	    'cell-00': '',
+	    'cell-01': '',
+	    'cell-02': '',
+	    'cell-10': '',
+	    'cell-11': '',
+	    'cell-12': '',
+	    'cell-20': '',
+	    'cell-21': '',
+	    'cell-22': ''
+	  };
+	  return true;
+	};
+
+	module.exports = {
+	  currentPlayer: currentPlayer,
+	  currentSymbol: currentSymbol,
+	  otherPlayer: otherPlayer,
+	  otherSymbol: otherSymbol,
+	  players: players,
+	  newGame: newGame,
+	  boardDict: boardDict,
+	  activeGame: activeGame,
+	  gameOver: gameOver,
+	  gameSize: gameSize,
+	  boardTrans: boardTrans,
+	  maxTurnCount: maxTurnCount,
+	  turnCount: turnCount,
+	  winner: winner,
+	  winnerString: winnerString,
+	  newWatcher: newWatcher,
+	  gameType: gameType,
+	  xCount: xCount,
+	  oCount: oCount,
+	  playerJoined: playerJoined,
+	  cancelGameResets: cancelGameResets,
+	  xSessionWins: xSessionWins,
+	  oSessionWins: oSessionWins,
+	  sessionTies: sessionTies
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	//
+	// player variables
+	//
+
+	var players = ['player_x', 'player_o'];
+
+	var symbols = {
+	  player_x: "X",
+	  player_o: "O"
+	};
+
+	var altSymbols = {
+	  Player_X: "X",
+	  Player_O: "O"
+	};
+
+	module.exports = {
+	  symbols: symbols,
+	  players: players,
+	  altSymbols: altSymbols
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	//
+	// define games objects
+	//
+
+	// create new game
+
+	var game = function game(gameData) {
+	  this.id = gameData.id;
+	  this.cells = gameData.cells;
+	  this.over = gameData.over;
+	  this.player_x = gameData.player_x;
+	  this.player_o = gameData.player_o;
+	};
+
+	// game types
+	var gameTypes = ['singleDevice', 'twoDevice', 'bot'];
+
+	module.exports = {
+	  game: game,
+	  gameTypes: gameTypes
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(8);
 	var gameMoves = __webpack_require__(12);
 	var gameChecks = __webpack_require__(13);
-	var games = __webpack_require__(11);
+	var games = __webpack_require__(10);
 	var gameWatcherMaker = __webpack_require__(15);
 	var gameWatcherAttachHandler = __webpack_require__(17);
 
@@ -587,220 +810,18 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	//
-	// imports
-	//
-
-	// const games = require('./games');
-
-	var players = __webpack_require__(10);
-	var games = __webpack_require__(11);
-
-	//
-	// variables that don't change during games
-	//
-
-	var gameTypes = games.gameTypes;
-
-	var gameSize = 3;
-	var maxTurnCount = Math.pow(gameSize, 2);
-
-	var boardTrans = ['cell-00', 'cell-01', 'cell-02', 'cell-10', 'cell-11', 'cell-12', 'cell-20', 'cell-21', 'cell-22'];
-
-	//
-	// variables that may change during games
-	//
-
-	var currentPlayer = players.players[0];
-	var otherPlayer = players.players[1];
-	var currentSymbol = players.symbols[currentPlayer];
-	var otherSymbol = players.symbols[otherPlayer];
-
-	var activeGame = false;
-	var gameOver = false;
-
-	var turnCount = 0;
-	var xCount = 0;
-	var oCount = 0;
-
-	var winner = null;
-	var winnerString = '';
-
-	var newWatcher = null;
-
-	var gameType = gameTypes[0];
-	var botGame = false;
-
-	var playerJoined = false;
-
-	var newGame = {
-	  id: null,
-	  cells: null,
-	  over: null,
-	  player_x: null,
-	  player_o: null
-	};
-
-	var boardDict = {
-	  'cell-00': '',
-	  'cell-01': '',
-	  'cell-02': '',
-	  'cell-10': '',
-	  'cell-11': '',
-	  'cell-12': '',
-	  'cell-20': '',
-	  'cell-21': '',
-	  'cell-22': ''
-	};
-
-	//
-	// functions
-	//
-
-	var cancelGameResets = function cancelGameResets() {
-
-	  currentPlayer = players.players[0];
-	  otherPlayer = players.players[1];
-	  currentSymbol = players.symbols[currentPlayer];
-	  otherSymbol = players.symbols[otherPlayer];
-
-	  activeGame = false;
-	  gameOver = false;
-
-	  turnCount = 0;
-	  xCount = 0;
-	  oCount = 0;
-
-	  winner = null;
-	  winnerString = '';
-
-	  newWatcher = null;
-
-	  gameType = gameTypes[0];
-	  botGame = false;
-
-	  playerJoined = false;
-
-	  newGame = {
-	    id: null,
-	    cells: null,
-	    over: null,
-	    player_x: null,
-	    player_o: null
-	  };
-
-	  boardDict = {
-	    'cell-00': '',
-	    'cell-01': '',
-	    'cell-02': '',
-	    'cell-10': '',
-	    'cell-11': '',
-	    'cell-12': '',
-	    'cell-20': '',
-	    'cell-21': '',
-	    'cell-22': ''
-	  };
-	  return true;
-	};
-
-	module.exports = {
-	  currentPlayer: currentPlayer,
-	  currentSymbol: currentSymbol,
-	  otherPlayer: otherPlayer,
-	  otherSymbol: otherSymbol,
-	  players: players,
-	  newGame: newGame,
-	  boardDict: boardDict,
-	  activeGame: activeGame,
-	  gameOver: gameOver,
-	  gameSize: gameSize,
-	  boardTrans: boardTrans,
-	  maxTurnCount: maxTurnCount,
-	  turnCount: turnCount,
-	  winner: winner,
-	  winnerString: winnerString,
-	  newWatcher: newWatcher,
-	  gameType: gameType,
-	  xCount: xCount,
-	  oCount: oCount,
-	  playerJoined: playerJoined,
-	  cancelGameResets: cancelGameResets
-	};
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	//
-	// player variables
-	//
-
-	var players = ['player_x', 'player_o'];
-
-	var symbols = {
-	  player_x: "X",
-	  player_o: "O"
-	};
-
-	var altSymbols = {
-	  Player_X: "X",
-	  Player_O: "O"
-	};
-
-	module.exports = {
-	  symbols: symbols,
-	  players: players,
-	  altSymbols: altSymbols
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	//
-	// define games objects
-	//
-
-	// create new game
-
-	var game = function game(gameData) {
-	  this.id = gameData.id;
-	  this.cells = gameData.cells;
-	  this.over = gameData.over;
-	  this.player_x = gameData.player_x;
-	  this.player_o = gameData.player_o;
-	};
-
-	// game types
-	var gameTypes = ['singleDevice', 'twoDevice', 'bot'];
-
-	module.exports = {
-	  game: game,
-	  gameTypes: gameTypes
-	};
-
-/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var games = __webpack_require__(11);
-	var players = __webpack_require__(10);
-	var gameModel = __webpack_require__(9);
+	var games = __webpack_require__(10);
+	var players = __webpack_require__(9);
+	var gameModel = __webpack_require__(8);
 	var gameChecks = __webpack_require__(13);
 	var gameApi = __webpack_require__(14);
-	var gameUi = __webpack_require__(8);
+	var gameUi = __webpack_require__(11);
 
 	var checkCellEmpty = function checkCellEmpty(val) {
 	  if (val !== "") {
@@ -1026,6 +1047,18 @@ webpackJsonp([0],[
 
 	      // show modal if game over
 	      if (gameModel.gameOver === true) {
+	        if (gameModel.winner === players.players[0]) {
+	          gameModel.xSessionWins += 1;
+	        } else if (gameModel.winner === players.players[1]) {
+	          gameModel.oSessionWins += 1;
+	        } else {
+	          gameModel.sessionTies += 1;
+	        }
+
+	        $('#session-x-wins').text("X Wins: " + gameModel.xSessionWins + "  ");
+	        $('#session-o-wins').text("O Wins: " + gameModel.oSessionWins + "  ");
+	        $('#session-ties').text("Ties: " + gameModel.sessionTies);
+
 	        $('#game-update-modal').text(gameModel.winnerString);
 	        $('#gameUpdateModal').modal('show');
 	      } else {
@@ -1074,8 +1107,8 @@ webpackJsonp([0],[
 
 	// imports
 
-	var gameModel = __webpack_require__(9);
-	var players = __webpack_require__(10);
+	var gameModel = __webpack_require__(8);
+	var players = __webpack_require__(9);
 
 	var checkGame = function checkGame(gameObject) {
 	  var gameOver = false;
@@ -1192,7 +1225,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(8);
 
 	// show game status
 	var show = function show(gameId, authToken) {
@@ -1395,7 +1428,7 @@ webpackJsonp([0],[
 
 	var app = __webpack_require__(3);
 	var ui = __webpack_require__(18);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(8);
 	var gameApi = __webpack_require__(14);
 
 	var onChange = function onChange(data) {
@@ -1457,7 +1490,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var app = __webpack_require__(3);
-	var gameModel = __webpack_require__(9);
+	var gameModel = __webpack_require__(8);
 	var gameChecks = __webpack_require__(13);
 	var gameWatcherMaker = __webpack_require__(15);
 	var gameWatcherAttachHandler = __webpack_require__(17);
@@ -1532,10 +1565,10 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var api = __webpack_require__(14);
-	var ui = __webpack_require__(8);
-	var gameModel = __webpack_require__(9);
+	var ui = __webpack_require__(11);
+	var gameModel = __webpack_require__(8);
 	var gameMoves = __webpack_require__(12);
-	var games = __webpack_require__(11);
+	var games = __webpack_require__(10);
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();

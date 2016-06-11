@@ -258,6 +258,18 @@ const onSetCellValue = function(){
 
       // show modal if game over
       if(gameModel.gameOver === true){
+        if(gameModel.winner === players.players[0]){
+          gameModel.xSessionWins += 1;
+        }else if(gameModel.winner === players.players[1]){
+          gameModel.oSessionWins += 1;
+        }else{
+          gameModel.sessionTies += 1;
+        }
+
+        $('#session-x-wins').text("X Wins: " + gameModel.xSessionWins + "  ");
+        $('#session-o-wins').text("O Wins: " + gameModel.oSessionWins + "  ");
+        $('#session-ties').text("Ties: " + gameModel.sessionTies);
+
         $('#game-update-modal').text(gameModel.winnerString);
         $('#gameUpdateModal').modal('show');
       } else{

@@ -1,6 +1,7 @@
 'use strict';
 
 const app = require('../../app.js');
+const gameModel = require('../../game/gameModel.js');
 
 const success = function(data){
 
@@ -50,6 +51,15 @@ const signOutSuccess = function(){
   $('#gameUpdateModal').modal('hide');
 };
 
+const resetSessionStats = function(){
+  gameModel.xSessionWins = 0;
+  gameModel.oSessionWins = 0;
+  gameModel.sessionTies = 0;
+  $('#session-x-wins').text("X Wins: " + gameModel.xSessionWins + "  ");
+  $('#session-o-wins').text("O Wins: " + gameModel.oSessionWins + "  ");
+  $('#session-ties').text("Ties: " + gameModel.sessionTies);
+};
+
 module.exports = {
   success,
   failure,
@@ -57,4 +67,5 @@ module.exports = {
   signInSuccess,
   changePasswordSuccess,
   signOutSuccess,
+  resetSessionStats,
 };

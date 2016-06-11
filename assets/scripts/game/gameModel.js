@@ -45,6 +45,10 @@ let turnCount = 0;
 let xCount = 0;
 let oCount = 0;
 
+let xSessionWins = 0;
+let oSessionWins = 0;
+let sessionTies = 0;
+
 let winner = null;
 let winnerString = '';
 
@@ -147,4 +151,7 @@ module.exports = {
   oCount,
   playerJoined,
   cancelGameResets,
+  xSessionWins,
+  oSessionWins,
+  sessionTies,
 };
