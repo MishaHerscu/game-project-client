@@ -43,6 +43,7 @@ const changePasswordSuccess = function(){
 
 const signOutSuccess = function(){
   app.user = null;
+  $('#exit-game').click();
   $('.not-signed-in').show();
   $('.table-section').hide();
   $('.signed-in-view').hide();

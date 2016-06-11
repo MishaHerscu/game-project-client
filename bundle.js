@@ -324,6 +324,7 @@ webpackJsonp([0],[
 
 	var signOutSuccess = function signOutSuccess() {
 	  app.user = null;
+	  $('#exit-game').click();
 	  $('.not-signed-in').show();
 	  $('.table-section').hide();
 	  $('.signed-in-view').hide();
@@ -1572,6 +1573,7 @@ webpackJsonp([0],[
 
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
+	  $('#exit-game').click();
 	  $('#selectGameTypeModal').modal('show');
 	};
 

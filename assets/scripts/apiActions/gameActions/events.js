@@ -8,6 +8,7 @@ const games = require('../../game/games.js');
 
 const onNewGame = function(event){
   event.preventDefault();
+  $('#exit-game').click();
   $('#selectGameTypeModal').modal('show');
 };
 
