@@ -9,6 +9,7 @@ const games = require('../../game/games.js');
 const onNewGame = function(event){
   event.preventDefault();
   $('#exit-game').click();
+  $('#gameUpdateModal').modal('hide');
   $('#selectGameTypeModal').modal('show');
 };
 
@@ -154,12 +155,6 @@ const onSwitchGameType = function(event) {
   $('#waitingForPlayerModal').modal('hide');
 };
 
-const onStartAnotherGame = function(event) {
-  event.preventDefault();
-  $('#gameUpdateModal').modal('hide');
-  onNewGame.submit();
-};
-
 const onJoinGameModal = function() {
   $('#selectGameToJoinModal').modal('show');
 };
@@ -241,8 +236,6 @@ const addHandlers = () => {
   $('#start-another-game').on('submit', onNewGame);
   $('#cancel-game').on('submit', onCancelGame);
   $('#switch-to-single-player').on('submit', onSwitchGameType);
-  $('#start-another-game').on('submit', onStartAnotherGame);
-
 };
 
 module.exports = {

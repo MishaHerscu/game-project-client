@@ -1040,11 +1040,11 @@ webpackJsonp([0],[
 	      gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
 	      gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
 
-	      // togglePlayer
-	      togglePlayer();
-
 	      // update object for API --- ASYNC
 	      updateAPI(modelGameIndex, gameModel.currentSymbol);
+
+	      // togglePlayer
+	      togglePlayer();
 
 	      // update game info view
 	      refreshGameInfoTable(gameModel.newGame);
@@ -1577,6 +1577,7 @@ webpackJsonp([0],[
 	var onNewGame = function onNewGame(event) {
 	  event.preventDefault();
 	  $('#exit-game').click();
+	  $('#gameUpdateModal').modal('hide');
 	  $('#selectGameTypeModal').modal('show');
 	};
 
@@ -1700,12 +1701,6 @@ webpackJsonp([0],[
 	  $('#waitingForPlayerModal').modal('hide');
 	};
 
-	var onStartAnotherGame = function onStartAnotherGame(event) {
-	  event.preventDefault();
-	  $('#gameUpdateModal').modal('hide');
-	  onNewGame.submit();
-	};
-
 	var onJoinGameModal = function onJoinGameModal() {
 	  $('#selectGameToJoinModal').modal('show');
 	};
@@ -1787,7 +1782,6 @@ webpackJsonp([0],[
 	  $('#start-another-game').on('submit', onNewGame);
 	  $('#cancel-game').on('submit', onCancelGame);
 	  $('#switch-to-single-player').on('submit', onSwitchGameType);
-	  $('#start-another-game').on('submit', onStartAnotherGame);
 	};
 
 	module.exports = {
