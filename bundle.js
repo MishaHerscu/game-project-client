@@ -935,7 +935,7 @@ webpackJsonp([0],[
 	  };
 
 	  // update game in the back end
-	  gameApi.updateGame(updateGameData).done(gameApi.play(gameModel.newGame.id, app.user.token).done(gameUi.successPlayThisGame).fail(gameUi.failure)).then(gameUi.successMove).then(refreshCounts()).then(gameChecks.checkGame(gameModel.newGame)).then(togglePlayer).then(gameUi.updateView).fail(gameUi.failure);
+	  gameApi.updateGame(updateGameData).done(gameApi.play(gameModel.newGame.id, app.user.token).done(gameUi.successPlayThisGame).fail(gameUi.failure)).then(gameUi.successMove).then(refreshCounts()).then(gameChecks.checkGame(gameModel.newGame)).then(gameUi.updateView).fail(gameUi.failure);
 	};
 
 	var redrawBoard = function redrawBoard() {
@@ -1039,6 +1039,9 @@ webpackJsonp([0],[
 	      // check if the game is over
 	      gameModel.gameOver = gameChecks.checkGame(gameModel.newGame);
 	      gameModel.newGame.over = gameChecks.checkGame(gameModel.newGame);
+
+	      // togglePlayer
+	      togglePlayer();
 
 	      // update object for API --- ASYNC
 	      updateAPI(modelGameIndex, gameModel.currentSymbol);

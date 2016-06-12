@@ -137,7 +137,6 @@ const updateAPI = function(modelGameIndex,currentSymbol){
   .then(gameUi.successMove)
   .then(refreshCounts())
   .then(gameChecks.checkGame(gameModel.newGame))
-  .then(togglePlayer)
   .then(gameUi.updateView)
   .fail(gameUi.failure);
 };
@@ -252,6 +251,9 @@ const onSetCellValue = function(){
 
       // update object for API --- ASYNC
       updateAPI(modelGameIndex, gameModel.currentSymbol);
+
+      // togglePlayer
+      togglePlayer();
 
       // update game info view
       refreshGameInfoTable(gameModel.newGame);
